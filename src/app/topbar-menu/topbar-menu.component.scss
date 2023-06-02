@@ -1,0 +1,17 @@
+.router-outlet {
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    width: 100%;
+    padding: 10px 0;
+  }
+
+  .app-container{
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    width: 100%;
+    min-width: 360px;
+    max-width: 1000px;
+    padding: 10px 0;
+  }
