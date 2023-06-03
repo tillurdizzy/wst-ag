@@ -1,1 +1,19 @@
-<p>meetings works!</p>
+<div class="paragraph-header">Board of Directors Meetings</div>
+<p-table [value]="meetings" [tableStyle]="{ 'min-width': '50rem' }">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Minutes</th>
+            <th>Zoom</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-meetings>
+        <tr>
+            <td>{{ meetings.date }}</td>
+            <td>{{ meetings.type }}</td>
+            <td>{{ meetings.minutes }}</td>
+            <td>{{ meetings.zoom }}</td>
+        </tr>
+    </ng-template>
+</p-table>

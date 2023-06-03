@@ -14,47 +14,53 @@ export class TopbarMenuComponent implements OnInit {
         {
             label: 'Home',
             routerLink:"home",
-            icon: 'pi pi-fw pi-calendar',
+            icon: 'pi pi-fw pi-home',
         },
         {
             label: 'HOA',
             routerLink:"hoa",
-            icon: 'pi pi-fw pi-file',
+            icon: 'pi pi-fw pi-sitemap',
             items: [
                 {
                     label: 'Meeting Minutes',
-                    icon: 'pi pi-fw pi-plus',
+                    icon: 'pi pi-fw pi-file-pdf',
                     routerLink:'hoa/hoa-meetings',
+                },
+                {
+                    label: 'Current Issues',
+                    icon: 'pi pi-fw pi-bars',
+                    routerLink:"hoa/hoa-issues",
+                },
+                {
+                    label: 'Major Expenditures',
+                    icon: 'pi pi-fw pi-dollar',
+                    routerLink:'hoa/hoa-expenditures',
                 },
                 {
                     label: 'Board Members',
                     icon: 'pi pi-fw pi-trash',
                     routerLink:'hoa/hoa-members',
                 },
-                {
-                    label: 'Current Issues',
-                    icon: 'pi pi-fw pi-external-link',
-                    routerLink:"hoa/hoa-issues",
-                }
+                
             ]
         },
         {
             label: 'Committees',
-            icon: 'pi pi-fw pi-pencil',
+            icon: 'pi pi-fw pi-users',
             items: [
                 {
                     label: 'Landscape',
-                    icon: 'pi pi-fw pi-align-left',
+                    icon: 'pi pi-fw pi-sun',
                     routerLink:'/committees/committees-landscape'
                 },
                 {
                     label: 'Hospitality',
-                    icon: 'pi pi-fw pi-align-right',
+                    icon: 'pi pi-fw pi-heart',
                     routerLink:'/committees/committees-hospitality'
                 },
                 {
                     label: 'Events',
-                    icon: 'pi pi-fw pi-align-center',
+                    icon: 'pi pi-fw pi-calendar',
                     routerLink:'/committees/committees-events'
                 },
                 {
@@ -77,11 +83,11 @@ export class TopbarMenuComponent implements OnInit {
         },
         {
             label: 'Forum',
-            icon: 'pi pi-fw pi-calendar',
+            icon: 'pi pi-fw pi-book',
         },
         {
             label: 'Sign In',
-            icon: 'pi pi-fw pi-power-off',
+            icon: 'pi pi-fw pi-lock-open',
             routerLink:'/signin'
         },
        

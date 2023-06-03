@@ -15,6 +15,7 @@ import { RulesComponent } from './committees/rules/rules.component';
 import { HospitalityComponent } from './committees/hospitality/hospitality.component';
 import { EventCalendarComponent } from './event-calendar/event-calendar.component';
 import { NavErrorComponent } from './library/nav-error/nav-error.component';
+import { ExpendituresComponent } from './hoa/expenditures/expenditures.component';
 
 
 const routes: Routes = [
@@ -29,6 +30,7 @@ const routes: Routes = [
           [
             {path:'', redirectTo:'hoa-meetings', pathMatch:'full'},
             {path:'hoa-meetings', component: MeetingsComponent},
+            {path:'hoa-expenditures', component: ExpendituresComponent},
             {path:'hoa-issues', component: IssuesComponent},
             {path:'hoa-members', component: MembersComponent},
 

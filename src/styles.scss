@@ -5,3 +5,65 @@
 body {
     font-family: var(--font-family);
 }
+
+.home-panel{
+    display: block;
+    min-width: 300px;
+}
+
+.sidebar-container{
+    display:flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.sidebar{
+    flex-basis: 250px;
+    flex-grow: 1;
+}
+
+.sidebar200{
+    flex-basis: 200px;
+    flex-grow: 1;
+}
+
+.not-sidebar{
+    flex-basis: 0;
+    flex-grow: 999;
+    min-inline-size:50%;
+}
+
+.section-header {
+    display: block;
+    font-size: 1.3em;
+    font-weight: bold;
+    color: darkblue;
+}
+.paragraph-header {
+    display: block;
+    font-size: 1em;
+    font-weight: bold;
+}
+.paragraph-header-alerts {
+    display: block;
+    font-size: 1em;
+    font-weight: bold;
+    color: red;
+}
+.paragraph-copy {
+    display: block;
+    font-size: .8em;
+}
+
+.paragraph-copy-bold {
+    display: block;
+    font-size: .8em;
+    font-weight: bold;
+}
+
+.gallery{
+    display:flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: space-between;
+}

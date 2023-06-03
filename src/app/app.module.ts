@@ -6,6 +6,10 @@ import { AppComponent } from './app.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ButtonModule } from 'primeng/button';
 import { MenubarModule } from 'primeng/menubar';
+import { TabViewModule } from 'primeng/tabview';
+import { PanelModule } from 'primeng/panel';
+import { DividerModule } from 'primeng/divider';
+import { TableModule } from 'primeng/table';
 import { TopbarMenuComponent } from './topbar-menu/topbar-menu.component';
 import { HomeComponent } from './home/home.component';
 import { HoaComponent } from './hoa/hoa.component';
@@ -23,6 +27,11 @@ import { NavErrorComponent } from './library/nav-error/nav-error.component';
 import { HospitalityComponent } from './committees/hospitality/hospitality.component';
 import { DialogComponent } from './library/dialog/dialog.component';
 import { EventCalendarComponent } from './event-calendar/event-calendar.component';
+import { PanelTopComponent } from './home/panel-top/panel-top.component';
+import { PanelBottomComponent } from './home/panel-bottom/panel-bottom.component';
+import { PanelMiddleComponent } from './home/panel-middle/panel-middle.component';
+import { PanelSideComponent } from './home/panel-side/panel-side.component';
+import { ExpendituresComponent } from './hoa/expenditures/expenditures.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +52,12 @@ import { EventCalendarComponent } from './event-calendar/event-calendar.componen
     NavErrorComponent,
     HospitalityComponent,
     DialogComponent,
-    EventCalendarComponent
+    EventCalendarComponent,
+    PanelTopComponent,
+    PanelBottomComponent,
+    PanelMiddleComponent,
+    PanelSideComponent,
+    ExpendituresComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,7 +65,11 @@ import { EventCalendarComponent } from './event-calendar/event-calendar.componen
     AppRoutingModule,
     FlexLayoutModule,
     ButtonModule,
-    MenubarModule
+    MenubarModule,
+    TabViewModule,
+    PanelModule,
+    DividerModule,
+    TableModule
   ],
   providers: [],
   bootstrap: [AppComponent,DialogComponent]
