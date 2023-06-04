@@ -11,3 +11,8 @@ export interface IMeeting {
   type: string;
   zoom: string;
 }
+
+export interface IDocs {
+  description: string;
+  link: string;
+}

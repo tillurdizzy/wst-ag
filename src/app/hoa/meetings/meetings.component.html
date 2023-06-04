@@ -1,4 +1,5 @@
-<div class="paragraph-header">Board of Directors Meetings</div>
+<div class="section-header">Minutes from the Meetings of the Board of Directors</div>
+<p-divider></p-divider>
 <p-table [value]="meetings" [tableStyle]="{ 'min-width': '50rem' }">
     <ng-template pTemplate="header">
         <tr>
@@ -12,8 +13,13 @@
         <tr>
             <td>{{ meetings.date }}</td>
             <td>{{ meetings.type }}</td>
-            <td>{{ meetings.minutes }}</td>
-            <td>{{ meetings.zoom }}</td>
+            <td>
+                <button type="button" pButton icon="pi pi-file-pdf" (click)="openURL(meetings.minutes)"></button>
+            </td>
+            <td>
+                <button type="button" pButton icon="pi pi-microphone" (click)="openURL(meetings.zoom)"></button>
+            </td>
+           
         </tr>
     </ng-template>
 </p-table>

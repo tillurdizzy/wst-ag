@@ -1,0 +1,18 @@
+<div class="section-header">Documents</div>
+<p-divider></p-divider>
+<p-table [value]="docs" [tableStyle]="{ 'min-width': '50rem' }">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Description</th>
+            <th>PDF Link</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-docs>
+        <tr>
+            <td>{{ docs.description }}</td>
+            <td>
+                <button type="button" pButton icon="pi pi-file-pdf" (click)="selectPdf(docs.link)"></button>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>

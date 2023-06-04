@@ -13,4 +13,8 @@ export class MeetingsComponent {
   ngOnInit(): void {
    this.meetings.push(this.obj)
   }
+
+  openURL(url:string){
+    window.open(url, "_blank");
+  }
 }

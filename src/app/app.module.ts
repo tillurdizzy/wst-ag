@@ -16,8 +16,6 @@ import { HoaComponent } from './hoa/hoa.component';
 import { MeetingsComponent } from './hoa/meetings/meetings.component';
 import { MembersComponent } from './hoa/members/members.component';
 import { IssuesComponent } from './hoa/issues/issues.component';
-import { SigninComponent } from './home/signin/signin.component';
-import { PasswordResetComponent } from './home/password-reset/password-reset.component';
 import { CommitteesComponent } from './committees/committees.component';
 import { LandscapeComponent } from './committees/landscape/landscape.component';
 import { EventsComponent } from './committees/events/events.component';
@@ -32,6 +30,9 @@ import { PanelBottomComponent } from './home/panel-bottom/panel-bottom.component
 import { PanelMiddleComponent } from './home/panel-middle/panel-middle.component';
 import { PanelSideComponent } from './home/panel-side/panel-side.component';
 import { ExpendituresComponent } from './hoa/expenditures/expenditures.component';
+import { DocsComponent } from './hoa/docs/docs.component';
+import { UsersComponent } from './users/users.component';
+import { SigninComponent } from './users/signin/signin.component';
 
 @NgModule({
   declarations: [
@@ -42,8 +43,6 @@ import { ExpendituresComponent } from './hoa/expenditures/expenditures.component
     MeetingsComponent,
     MembersComponent,
     IssuesComponent,
-    SigninComponent,
-    PasswordResetComponent,
     CommitteesComponent,
     LandscapeComponent,
     EventsComponent,
@@ -58,6 +57,9 @@ import { ExpendituresComponent } from './hoa/expenditures/expenditures.component
     PanelMiddleComponent,
     PanelSideComponent,
     ExpendituresComponent,
+    DocsComponent,
+    UsersComponent,
+    SigninComponent,
   ],
   imports: [
     BrowserModule,

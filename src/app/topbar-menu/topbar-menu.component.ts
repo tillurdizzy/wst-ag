@@ -18,7 +18,6 @@ export class TopbarMenuComponent implements OnInit {
         },
         {
             label: 'HOA',
-            routerLink:"hoa",
             icon: 'pi pi-fw pi-sitemap',
             items: [
                 {
@@ -27,7 +26,7 @@ export class TopbarMenuComponent implements OnInit {
                     routerLink:'hoa/hoa-meetings',
                 },
                 {
-                    label: 'Current Issues',
+                    label: 'Current Affairs',
                     icon: 'pi pi-fw pi-bars',
                     routerLink:"hoa/hoa-issues",
                 },
@@ -37,11 +36,15 @@ export class TopbarMenuComponent implements OnInit {
                     routerLink:'hoa/hoa-expenditures',
                 },
                 {
+                    label: 'Documents',
+                    icon: 'pi pi-fw pi-align-center',
+                    routerLink:'hoa/hoa-docs',
+                },
+                {
                     label: 'Board Members',
                     icon: 'pi pi-fw pi-trash',
                     routerLink:'hoa/hoa-members',
                 },
-                
             ]
         },
         {
@@ -84,11 +87,12 @@ export class TopbarMenuComponent implements OnInit {
         {
             label: 'Forum',
             icon: 'pi pi-fw pi-book',
+            routerLink:'/calendar'
         },
         {
-            label: 'Sign In',
+            label: 'Members',
             icon: 'pi pi-fw pi-lock-open',
-            routerLink:'/signin'
+            routerLink:'/members'
         },
        
     ];

@@ -5,8 +5,6 @@ import { HoaComponent } from './hoa/hoa.component';
 import { MeetingsComponent } from './hoa/meetings/meetings.component';
 import { MembersComponent } from './hoa/members/members.component';
 import { IssuesComponent } from './hoa/issues/issues.component';
-import { SigninComponent } from './home/signin/signin.component';
-import { PasswordResetComponent } from './home/password-reset/password-reset.component';
 import { CommitteesComponent } from './committees/committees.component';
 import { LandscapeComponent } from './committees/landscape/landscape.component';
 import { EventsComponent } from './committees/events/events.component';
@@ -16,6 +14,8 @@ import { HospitalityComponent } from './committees/hospitality/hospitality.compo
 import { EventCalendarComponent } from './event-calendar/event-calendar.component';
 import { NavErrorComponent } from './library/nav-error/nav-error.component';
 import { ExpendituresComponent } from './hoa/expenditures/expenditures.component';
+import { DocsComponent } from './hoa/docs/docs.component';
+import { UsersComponent } from './users/users.component';
 
 
 const routes: Routes = [
@@ -32,6 +32,7 @@ const routes: Routes = [
             {path:'hoa-meetings', component: MeetingsComponent},
             {path:'hoa-expenditures', component: ExpendituresComponent},
             {path:'hoa-issues', component: IssuesComponent},
+            {path:'hoa-docs', component: DocsComponent},
             {path:'hoa-members', component: MembersComponent},
 
           ]},
@@ -47,8 +48,7 @@ const routes: Routes = [
   
           ]},
       {path:'calendar', component: EventCalendarComponent},
-      {path:'signin', component: SigninComponent},
-      {path:'reset', component: PasswordResetComponent},
+      {path:'members', component: UsersComponent},
       {path:'events', component: NavErrorComponent },
       {path:'404', component: NavErrorComponent },
       {path:'**', redirectTo: '404',outlet:"app"},
