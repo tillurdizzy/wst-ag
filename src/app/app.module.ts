@@ -24,7 +24,6 @@ import { RulesComponent } from './committees/rules/rules.component';
 import { NavErrorComponent } from './library/nav-error/nav-error.component';
 import { HospitalityComponent } from './committees/hospitality/hospitality.component';
 import { DialogComponent } from './library/dialog/dialog.component';
-import { EventCalendarComponent } from './event-calendar/event-calendar.component';
 import { PanelTopComponent } from './home/panel-top/panel-top.component';
 import { PanelBottomComponent } from './home/panel-bottom/panel-bottom.component';
 import { PanelMiddleComponent } from './home/panel-middle/panel-middle.component';
@@ -33,6 +32,10 @@ import { ExpendituresComponent } from './hoa/expenditures/expenditures.component
 import { DocsComponent } from './hoa/docs/docs.component';
 import { UsersComponent } from './users/users.component';
 import { SigninComponent } from './users/signin/signin.component';
+import { ForumComponent } from './forum/forum.component';
+import { ForumService } from './services/forum.service';
+import { SupabaseService } from './services/supabase.service';
+import { UserService } from './services/user.service';
 
 @NgModule({
   declarations: [
@@ -51,7 +54,6 @@ import { SigninComponent } from './users/signin/signin.component';
     NavErrorComponent,
     HospitalityComponent,
     DialogComponent,
-    EventCalendarComponent,
     PanelTopComponent,
     PanelBottomComponent,
     PanelMiddleComponent,
@@ -60,6 +62,7 @@ import { SigninComponent } from './users/signin/signin.component';
     DocsComponent,
     UsersComponent,
     SigninComponent,
+    ForumComponent,
   ],
   imports: [
     BrowserModule,
@@ -73,7 +76,7 @@ import { SigninComponent } from './users/signin/signin.component';
     DividerModule,
     TableModule
   ],
-  providers: [],
+  providers: [ForumService,SupabaseService,UserService],
   bootstrap: [AppComponent,DialogComponent]
 })
 export class AppModule { }

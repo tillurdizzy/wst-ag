@@ -1,4 +1,4 @@
-@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/themes/lara-light-teal/theme.css";
 @import "primeng/resources/primeng.css";
 @import "primeicons/primeicons.css";
 
@@ -37,7 +37,7 @@ body {
     display: block;
     font-size: 1.3em;
     font-weight: bold;
-    color: darkblue;
+    color: #084A42;
 }
 .paragraph-header {
     display: block;
@@ -67,3 +67,13 @@ body {
     gap: 1rem;
     justify-content: space-between;
 }
+
+.img-border{
+    border: 2px solid #000;
+}
+
+.no-border{
+    border:0;
+}
+
+

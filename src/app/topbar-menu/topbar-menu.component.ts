@@ -17,37 +17,6 @@ export class TopbarMenuComponent implements OnInit {
             icon: 'pi pi-fw pi-home',
         },
         {
-            label: 'HOA',
-            icon: 'pi pi-fw pi-sitemap',
-            items: [
-                {
-                    label: 'Meeting Minutes',
-                    icon: 'pi pi-fw pi-file-pdf',
-                    routerLink:'hoa/hoa-meetings',
-                },
-                {
-                    label: 'Current Affairs',
-                    icon: 'pi pi-fw pi-bars',
-                    routerLink:"hoa/hoa-issues",
-                },
-                {
-                    label: 'Major Expenditures',
-                    icon: 'pi pi-fw pi-dollar',
-                    routerLink:'hoa/hoa-expenditures',
-                },
-                {
-                    label: 'Documents',
-                    icon: 'pi pi-fw pi-align-center',
-                    routerLink:'hoa/hoa-docs',
-                },
-                {
-                    label: 'Board Members',
-                    icon: 'pi pi-fw pi-trash',
-                    routerLink:'hoa/hoa-members',
-                },
-            ]
-        },
-        {
             label: 'Committees',
             icon: 'pi pi-fw pi-users',
             items: [
@@ -78,16 +47,42 @@ export class TopbarMenuComponent implements OnInit {
                 },
             ]
         },
-        
         {
-            label: 'Events',
-            icon: 'pi pi-fw pi-calendar',
-            routerLink:'/calendar'
+            label: 'HOA',
+            icon: 'pi pi-fw pi-sitemap',
+            items: [
+                {
+                    label: 'Meeting Minutes',
+                    icon: 'pi pi-fw pi-file-pdf',
+                    routerLink:'hoa/hoa-meetings',
+                },
+                {
+                    label: 'Current Affairs',
+                    icon: 'pi pi-fw pi-bars',
+                    routerLink:"hoa/hoa-issues",
+                },
+                {
+                    label: 'Major Expenditures',
+                    icon: 'pi pi-fw pi-dollar',
+                    routerLink:'hoa/hoa-expenditures',
+                },
+                {
+                    label: 'Documents',
+                    icon: 'pi pi-fw pi-align-center',
+                    routerLink:'hoa/hoa-docs',
+                },
+                {
+                    label: 'Board Members',
+                    icon: 'pi pi-fw pi-trash',
+                    routerLink:'hoa/hoa-members',
+                },
+            ]
         },
+       
         {
             label: 'Forum',
             icon: 'pi pi-fw pi-book',
-            routerLink:'/calendar'
+            routerLink:'/forum'
         },
         {
             label: 'Members',

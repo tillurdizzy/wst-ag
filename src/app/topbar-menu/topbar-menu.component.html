@@ -1,7 +1,16 @@
 <div class="app-container">
-    <img  class="images" src="assets\images\WST-AG.png"/>
+    <picture>
+        <source srcset="../../assets/images/WST-AG.png" media="(min-width: 1000px)" />
+        <source srcset="../../assets/images/WST-AG-mobile.png" />
+        <img srcset="../../assets/images/WST-AG.png" alt="My default image" />
+      </picture>
+   
+    <div class="red-divider">
+        This is a private website by and for WST Owners and is not affiliated with the official WST HOA.
+    </div>
     <div class="card">
         <p-menubar [model]="items"></p-menubar>
     </div>
+    
     <div  class="router-outlet"><router-outlet></router-outlet></div>
 </div>

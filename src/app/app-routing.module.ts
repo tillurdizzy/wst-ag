@@ -11,11 +11,11 @@ import { EventsComponent } from './committees/events/events.component';
 import { BylawsComponent } from './committees/bylaws/bylaws.component';
 import { RulesComponent } from './committees/rules/rules.component';
 import { HospitalityComponent } from './committees/hospitality/hospitality.component';
-import { EventCalendarComponent } from './event-calendar/event-calendar.component';
 import { NavErrorComponent } from './library/nav-error/nav-error.component';
 import { ExpendituresComponent } from './hoa/expenditures/expenditures.component';
 import { DocsComponent } from './hoa/docs/docs.component';
 import { UsersComponent } from './users/users.component';
+import { ForumComponent } from './forum/forum.component';
 
 
 const routes: Routes = [
@@ -47,9 +47,8 @@ const routes: Routes = [
             {path:'committees-hospitality', component: HospitalityComponent},
   
           ]},
-      {path:'calendar', component: EventCalendarComponent},
       {path:'members', component: UsersComponent},
-      {path:'events', component: NavErrorComponent },
+      {path:'forum', component: ForumComponent },
       {path:'404', component: NavErrorComponent },
       {path:'**', redirectTo: '404',outlet:"app"},
     ]
