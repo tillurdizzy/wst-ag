@@ -17,32 +17,13 @@
 }
 
 .red-divider {
-  border-top: 2px solid #f84444;
-  border-bottom: 2px solid #f84444;
+  border-top: 2px solid #b32b23;
+  border-bottom: 2px solid #b32b23;
   width: 100%;
   font-size: small;
   text-align: center;
 }
 
-.header-img {
-  background-position: center center;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-color: aqua;
-  border: 0;
-  width:auto;
-  height:auto;
-}
-
-@media (min-width: 300px) {
-  .header-img {
-    background-image: url('../../assets/images/WST-AG-mobile.png');
-  }
-}
-
-@media (min-width: 900px) {
-  .header-img {
-    background-image: url('../../assets/images/WST-AG.png');
-  }
+img{
+  border:0;
 }

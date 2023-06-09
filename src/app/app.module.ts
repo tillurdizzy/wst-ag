@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -10,6 +11,11 @@ import { TabViewModule } from 'primeng/tabview';
 import { PanelModule } from 'primeng/panel';
 import { DividerModule } from 'primeng/divider';
 import { TableModule } from 'primeng/table';
+import { DialogModule } from 'primeng/dialog';
+import { PasswordModule } from 'primeng/password';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { InputTextModule } from 'primeng/inputtext';
 import { TopbarMenuComponent } from './topbar-menu/topbar-menu.component';
 import { HomeComponent } from './home/home.component';
 import { HoaComponent } from './hoa/hoa.component';
@@ -63,10 +69,13 @@ import { UserService } from './services/user.service';
     UsersComponent,
     SigninComponent,
     ForumComponent,
+    
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    ReactiveFormsModule,
+    FormsModule,
     AppRoutingModule,
     FlexLayoutModule,
     ButtonModule,
@@ -74,9 +83,13 @@ import { UserService } from './services/user.service';
     TabViewModule,
     PanelModule,
     DividerModule,
-    TableModule
+    TableModule,
+    InputTextModule,
+    DialogModule,
+    DynamicDialogModule,
+    PasswordModule
   ],
-  providers: [ForumService,SupabaseService,UserService],
+  providers: [ForumService,SupabaseService,UserService,DialogService],
   bootstrap: [AppComponent,DialogComponent]
 })
 export class AppModule { }
