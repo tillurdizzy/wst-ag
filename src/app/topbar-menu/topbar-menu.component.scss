@@ -27,3 +27,12 @@
 img{
   border:0;
 }
+
+.menu-separator {
+  display: inline-block;
+  width: 1px;
+  height: 1.5em; /* Adjust the height as needed */
+  background-color: #ccc; /* Adjust the background color as needed */
+  margin: 0 0.5em; /* Adjust the margin as needed */
+  vertical-align: middle;
+}
