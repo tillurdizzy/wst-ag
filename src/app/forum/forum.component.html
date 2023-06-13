@@ -1,1 +1,10 @@
-<p>forum works!</p>
+<div class="forum-menu">
+  <ul>
+    <li *ngFor="let x of menuList">
+      <app-forum-menu [data]="x"></app-forum-menu>
+    </li>
+  </ul>
+</div>
+
+
+<!-- (selectTopicEvent) = "selectTopicOutput($event)" -->
