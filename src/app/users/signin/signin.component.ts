@@ -22,6 +22,9 @@ export class SigninComponent {
  
 
   ngOnInit() {
+   
+    console.log("SigninComponent >> ngOnInit()")
+   
     this.myForm = this.formBuilder.group({
       email: ['', Validators.required],
       password: ['', Validators.required]
@@ -29,7 +32,7 @@ export class SigninComponent {
   }
 
   onSubmit() {
-    const username = this.myForm.get('email').value;
+    const email = this.myForm.get('email').value;
     const password = this.myForm.get('password').value;
   };
 

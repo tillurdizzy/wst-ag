@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject, BehaviorSubject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { Subscription, BehaviorSubject } from 'rxjs'
 import { IForumMenu, IForumTopic } from 'src/app/services/interfaces/forum';
+import { SupabaseService } from '../services/supabase.service';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class ForumService {
+  private supaSubscription: Subscription
 
   //* Menu
   private menuObs$: BehaviorSubject<[]> = new BehaviorSubject(null);
@@ -29,7 +32,24 @@ export class ForumService {
   setTopicObs(t: IForumTopic[]) {
       this.topicObs$.next(t);
   }
+  ngOnDestroy(): void {
+    this.supaSubscription.unsubscribe();
+  }
  
 
-  constructor() { }
+  constructor(private supabase:SupabaseService) {
+    console.log("ForumService >> constructor()")
+    this.supaSubscription = this.supabase.getData().subscribe(x =>{
+      if(x == null){return};
+      let dataPassed = x;
+      let to = dataPassed.to;
+      if(to == "ForumService"){
+        if(dataPassed.event == 'getForumMenu'){
+          this.setMenuObs(dataPassed.result)
+        }else if(dataPassed.event == 'getForumTopic'){
+          this.setTopicObs(dataPassed.result)
+        }
+      }
+    }); //! End Of supaSubscription
+   }
 }

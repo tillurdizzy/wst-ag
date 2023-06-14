@@ -15,6 +15,40 @@ export class SupabaseService {
   private supabase: SupabaseClient;
   dialogRef: DynamicDialogRef;
 
+
+  async getForumMenu(){
+    try {
+      let { data, error } = await this.supabase.from('forum-menu').select('*')
+      let dataObj = {
+        to: 'ForumService',
+        event: 'getForumMenu',
+        result: data
+      };
+      this.sendData(dataObj);
+    } catch (error) {
+      alert("ERROR: getForumMenu  "  + JSON.stringify(error))
+    }
+  }
+
+  async getForumTopic(topicId:number){
+    try {
+      let { data, error } = await this.supabase.from('forum-topic').select('*').eq('id',topicId)
+      let dataObj = {
+        to: 'ForumService',
+        event: 'getForumTopic',
+        result: data
+      };
+      this.sendData(dataObj);
+    } catch (error) {
+      alert("ERROR: getForumTopic "  + JSON.stringify(error))
+    }
+  }
+
+
+
+
+
+
   //* >>>>>>>>>>>>>> MESSENGER <<<<<<<<<<<<<<<<
 
   private subject = new Subject<any>();
@@ -45,7 +79,7 @@ export class SupabaseService {
     }, 2000);
   }
 
-  //* Observables
+  //* AUTH
   _session: AuthSession | null = null;
   private currentUser: BehaviorSubject<User | boolean> = new BehaviorSubject(
     false

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Input, Output} from '@angular/core';
-import { IForumMenu } from 'src/app/services/interfaces/forum';
+import { Input } from '@angular/core';
+import { SupabaseService } from '../../services/supabase.service';
+
 
 @Component({
   selector: 'app-forum-menu',
@@ -12,15 +13,16 @@ export class ForumMenuComponent implements OnInit{
 
   @Input() data = null; //[{id:0,created_at:"",title:"",subTitle:""}]
 
-  handleClick(topic){
-    console.log(topic);
+  handleClick(topicID:number){
+    console.log("ForumMenuComponent >> handleClick() " + topicID);
+    this.supabase.getForumTopic(topicID);
   }
 
   ngOnInit(): void {
     console.log("ForumMenuComponent >> ngOnInit()")
   }
 
-  constructor(){
+  constructor(private supabase: SupabaseService){
    
   }
 }

@@ -1,5 +1,19 @@
-.topic-header{
-    height:80px;
-    width:100%;
+.topic-item {
+    display: block;
+
+}
+
+.topic-row {
+    display: flex;
+    flex-direction: row;
+
+}
+
+.topic-header {
+    height: 30px;
+    width: 100%;
     background-color: black;
+    color: aliceblue;
+    font-size: 1em;
+    padding-left: 6px;
 }
