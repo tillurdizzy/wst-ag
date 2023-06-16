@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { Subscription, BehaviorSubject } from 'rxjs'
-import { IForumMenu, IForumTopic } from 'src/app/services/interfaces/forum';
+import { IForumMenu, IForumTopic, IForumPost } from 'src/app/services/interfaces/forum';
 import { SupabaseService } from '../services/supabase.service';
 
 @Injectable({
@@ -13,25 +13,20 @@ export class ForumService {
 
   //* Menu
   private menuObs$: BehaviorSubject<[]> = new BehaviorSubject(null);
-
-  getMenuObs(): Observable<[]> {
-      return this.menuObs$.asObservable();
-  }
-
-  setMenuObs(m) {
-      this.menuObs$.next(m);
-  }
+  getMenuObs(): Observable<[]> {return this.menuObs$.asObservable();}
+  setMenuObs(m) {this.menuObs$.next(m);}
 
   //* Topic
   private topicObs$: BehaviorSubject<IForumTopic[]> = new BehaviorSubject(null);
+  getTopicObs(): Observable<IForumTopic[]> {return this.topicObs$.asObservable();}
+  setTopicObs(t: IForumTopic[]) {this.topicObs$.next(t);}
 
-  getTopicObs(): Observable<IForumTopic[]> {
-      return this.topicObs$.asObservable();
-  }
+  //* Post
+  private postObs$: BehaviorSubject<IForumPost[]> = new BehaviorSubject(null);
+  getPostObs(): Observable<IForumPost[]> {return this.postObs$.asObservable();}
+  setPostObs(t: IForumPost[]) {this.postObs$.next(t);}
 
-  setTopicObs(t: IForumTopic[]) {
-      this.topicObs$.next(t);
-  }
+  
   ngOnDestroy(): void {
     this.supaSubscription.unsubscribe();
   }
@@ -48,6 +43,8 @@ export class ForumService {
           this.setMenuObs(dataPassed.result)
         }else if(dataPassed.event == 'getForumTopic'){
           this.setTopicObs(dataPassed.result)
+        }else if(dataPassed.event == 'getForumPosts'){
+          this.setPostObs(dataPassed.result)
         }
       }
     }); //! End Of supaSubscription

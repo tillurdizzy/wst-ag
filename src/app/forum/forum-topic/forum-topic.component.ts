@@ -15,6 +15,10 @@ export class ForumTopicComponent implements OnInit{
     console.log("ForumMenuComponent >> ngOnInit()")
   }
 
+  topicHeaderClick(x){
+
+  }
+
   constructor(private supabase: SupabaseService){
    
   }

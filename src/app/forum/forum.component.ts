@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ForumService } from 'src/app/services/forum.service';
-import { IForumMenu,IForumTopic } from 'src/app/services/interfaces/forum';
+import { IForumMenu,IForumTopic, IForumPost } from 'src/app/services/interfaces/forum';
 import { SupabaseService } from '../services/supabase.service';
 
 @Component({
@@ -12,10 +12,15 @@ export class ForumComponent {
   view:string = 'menu';
   menuList:IForumMenu[];
   topicList:IForumTopic[];
+  postList:IForumPost[];
+
+  topicHeader:string;
 
   handleClick(topic){
     console.log(topic);
   }
+
+  navToMenu(){this.view = "menu"}
 
   handleMenuObs(x:IForumMenu[]){
     this.view = "menu"
@@ -27,20 +32,31 @@ export class ForumComponent {
     this.topicList = x;
   }
 
+  handlePostObs(x:IForumPost[]){
+    this.view = "post"
+    this.postList = x;
+  }
+
   ngOnInit(): void {
     console.log("ForumMenuComponent >> ngOnInit()")
     this.supabase.getForumMenu();
   }
 
   constructor(private fs:ForumService, private supabase:SupabaseService){
+    
     this.fs.getMenuObs().subscribe((x:IForumMenu[]) =>  {
-      console.log("ForumMenuComponent >> getMenuObs()")
+      console.log("ForumMenuComponent >> getMenu-Obs()")
       this.handleMenuObs(x);
     });
 
     this.fs.getTopicObs().subscribe((x:IForumTopic[]) =>  {
-      console.log("ForumMenuComponent >> getTopicObs()")
+      console.log("ForumMenuComponent >> getTopic-Obs()")
       this.handleTopicObs(x);
+    });
+
+    this.fs.getPostObs().subscribe((x:IForumPost[]) =>  {
+      console.log("ForumMenuComponent >> getPost-Obs()")
+      this.handlePostObs(x);
     });
   }
 }

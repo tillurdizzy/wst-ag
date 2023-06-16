@@ -1,4 +1,4 @@
-<div class="forum-menu" *ngIf="view=='menu'">
+<div class="forum-menu" *ngIf="view == 'menu'">
   <ul>
     <li *ngFor="let x of menuList">
       <app-forum-menu [data]="x"></app-forum-menu>
@@ -6,13 +6,28 @@
   </ul>
 </div>
 
-<div class="forum-topic" *ngIf="view=='topic'">
+<div class="forum-topic" *ngIf="view == 'topic'">
+  <div>
+    <button type="button" pButton label="Back" (click)="navToMenu()"></button>
+    <span>{{ topicHeader }}</span>
+  </div>
+
+  <ul>
+    <li *ngFor="let x of topicList">
+      <app-forum-topic [data]="x"></app-forum-topic>
+    </li>
+  </ul>
+</div>
+
+<div class="forum-topic" *ngIf="view == 'post'">
+    <div>
+      <button type="button" pButton label="Back" (click)="navToMenu()"></button>
+      <span>{{ topicHeader }}</span>
+    </div>
+  
     <ul>
       <li *ngFor="let x of topicList">
         <app-forum-topic [data]="x"></app-forum-topic>
       </li>
     </ul>
   </div>
-
-
-

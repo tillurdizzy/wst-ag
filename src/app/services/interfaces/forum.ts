@@ -16,4 +16,13 @@ export interface IForumTopic {
   dislikes: number;
 }
 
+export interface IForumPost {
+  id: number;
+  created_at: string;
+  user_id: string;
+  topic_id: string;
+  body: string;
+  likes: number;
+}
+
 

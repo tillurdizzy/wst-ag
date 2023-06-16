@@ -1,6 +1,8 @@
 <div class="topic-item">
-  <div class="topic-header">
-    {{ data.title }}
+  <div class="topic-header" (click)="topicHeaderClick(data.title)" style="cursor: pointer;">
+    <div class="vertical-center">
+      {{ data.title }}
+    </div>
   </div>
 
   <div class="topic-row">

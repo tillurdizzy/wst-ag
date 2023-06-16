@@ -44,6 +44,7 @@ import { SupabaseService } from './services/supabase.service';
 import { UserService } from './services/user.service';
 import { ForumMenuComponent } from './forum/forum-menu/forum-menu.component';
 import { ForumTopicComponent } from './forum/forum-topic/forum-topic.component';
+import { ForumPostComponent } from './forum/forum-post/forum-post.component';
 
 @NgModule({
   declarations: [
@@ -73,6 +74,7 @@ import { ForumTopicComponent } from './forum/forum-topic/forum-topic.component';
     ForumComponent,
     ForumMenuComponent,
     ForumTopicComponent,
+    ForumPostComponent,
     
   ],
   imports: [

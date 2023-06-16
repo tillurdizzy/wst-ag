@@ -16,7 +16,9 @@ export class SupabaseService {
   dialogRef: DynamicDialogRef;
 
 
+    //* >>>>>>>>>>>>>> FORUM <<<<<<<<<<<<<<<<
   async getForumMenu(){
+    console.log('SupabaseService > getForumMenu()');
     try {
       let { data, error } = await this.supabase.from('forum-menu').select('*')
       let dataObj = {
@@ -31,8 +33,9 @@ export class SupabaseService {
   }
 
   async getForumTopic(topicId:number){
+    console.log('SupabaseService > getForumTopic()');
     try {
-      let { data, error } = await this.supabase.from('forum-topic').select('*').eq('id',topicId)
+      let { data, error } = await this.supabase.from('forum-topic').select('*').eq('menu_id',topicId)
       let dataObj = {
         to: 'ForumService',
         event: 'getForumTopic',
@@ -44,10 +47,20 @@ export class SupabaseService {
     }
   }
 
-
-
-
-
+  async getForumPosts(postId:number){
+    console.log('SupabaseService > getForumPosts()');
+    try {
+      let { data, error } = await this.supabase.from('forum-post').select('*').eq('topic_id',postId)
+      let dataObj = {
+        to: 'ForumService',
+        event: 'getForumPosts',
+        result: data
+      };
+      this.sendData(dataObj);
+    } catch (error) {
+      alert("ERROR: getForumPosts "  + JSON.stringify(error))
+    }
+  }
 
   //* >>>>>>>>>>>>>> MESSENGER <<<<<<<<<<<<<<<<
 
@@ -79,125 +92,9 @@ export class SupabaseService {
     }, 2000);
   }
 
-  //* AUTH
-  _session: AuthSession | null = null;
-  private currentUser: BehaviorSubject<User | boolean> = new BehaviorSubject(
-    false
-  );
-  public currentUser$ = this.currentUser.asObservable();
+  
 
-  async signIn(credentials: { email: string; password: string }) {
-    console.log('Supabase > signIn() ' + JSON.stringify(credentials));
-    try {
-      var result = await this.supabase.auth.signInWithPassword(credentials);
-      if (result.data.user == null) {
-        throw result.error.message;
-      }
-      let dataObj = {
-        to: 'DataService',
-        event: 'userAuthenticated',
-        result: result,
-      };
-      this.sendData(dataObj);
-    } catch (error) {
-      alert('Error: ' + JSON.stringify(error));
-    }
-  }
-
-  async signUp(credentials: { email: string; password: string }) {
-    console.log('Supabase > signUp()' + JSON.stringify(credentials));
-    try {
-      var result = await this.supabase.auth.signUp(credentials);
-      if (result.data.user == null) {
-        throw result.error.message;
-      } else {
-        this.showResultDialog('User created: ' + result.data.user.id);
-      }
-    } catch (error) {
-      this.showResultDialog('Error: ' + error);
-    }
-  }
-
-  authChanges(
-    callback: (event: AuthChangeEvent, session: Session | null) => void
-  ) {
-    console.log('SupabaseService > authChanges() ');
-    return this.supabase.auth.onAuthStateChange(callback);
-  }
-
-  signOut() {
-    return this.supabase.auth.signOut();
-  }
-
-  // Password Reset... this called first with only Email to initiate change
-  async resetPassword(email: string) {
-    try {
-      const { data, error } = await this.supabase.auth.resetPasswordForEmail(
-        email,
-        {
-          redirectTo: 'http://localhost:4200/password-reset',
-        }
-      );
-      if (error == null) {
-        this.showResultDialog('Check your email for Password Reset link.');
-      }
-    } catch (error) {
-      this.showResultDialog('ERROR: ' + JSON.stringify(error));
-    } finally {
-      this.router.navigate(['/home']);
-    }
-  }
-
-  // Actual Password Update
-  async updatePassword(new_password: string) {
-    try {
-      const { data, error } = await this.supabase.auth.updateUser({
-        password: new_password,
-      });
-      if (error == null) {
-        this.showResultDialog('Password reset.  Please log in.');
-      }
-    } catch (error) {
-    } finally {
-      this.router.navigate(['/home']);
-    }
-  }
-
-  //* >>>>>>>>>>>>>>>>>>> USER / AUTH / SESSION / ACCOUNT <<<<<<<<<<<<<<<<<<<<<<<
-
-  async loadUser() {
-    if (this.currentUser.value) {
-      // User is already set, no need to do anything else
-      return;
-    }
-    // this will create a 401 error when no user is logged it yet-- ignore it
-    const user = await this.supabase.auth.getUser();
-    if (user.data.user) {
-      this.currentUser.next(user.data.user);
-    } else {
-      this.currentUser.next(false);
-    }
-  }
-
-  getCurrentUser(): Observable<User | boolean> {
-    return this.currentUser.asObservable();
-  }
-
-  getCurrentUserId(): string {
-    if (this.currentUser.value) {
-      return (this.currentUser.value as User).id;
-    } else {
-      return '';
-    }
-  }
-
-  get session() {
-    this.supabase.auth.getSession().then(({ data }) => {
-      this._session = data.session;
-    });
-    return this._session;
-  }
-
+ 
   constructor(private router: Router, public dialogService: DialogService) {
     console.log('SupabaseService > constructor() ');
     try {
@@ -209,36 +106,8 @@ export class SupabaseService {
       alert('Create Client error: ' + JSON.stringify(error));
     }
 
-    this.supabase.auth.onAuthStateChange(
-      (event: AuthChangeEvent, sess: Session | null) => {
-        console.log(
-          'Begin: SupabaseService > onAuthStateChange = ' +
-            event +
-            ' > currentUser = ' +
-            (this.currentUser.value as User).id
-        );
+   
 
-        if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
-          let s = sess;
-          if (s != null) {
-            var u: User = s.user;
-            this.currentUser.next(u);
-          }
-        } else if (event === 'PASSWORD_RECOVERY') {
-        } else {
-          this.currentUser.next(false);
-        }
-
-        console.log(
-          'End: SupabaseService > onAuthStateChange:event= ' +
-            event +
-            ' > currentUser = ' +
-            (this.currentUser.value as User).id
-        );
-      }
-    );
-
-    // Trigger initial session load
-    this.loadUser();
+   
   }
 }

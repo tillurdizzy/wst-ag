@@ -1,12 +1,11 @@
 .topic-item {
     display: block;
-
+    margin-bottom:20px;
 }
 
 .topic-row {
     display: flex;
     flex-direction: row;
-
 }
 
 .topic-header {
@@ -14,6 +13,8 @@
     width: 100%;
     background-color: black;
     color: aliceblue;
-    font-size: 1em;
+    font-size: .9em;
+    font-weight: 525;
     padding-left: 6px;
+    position: relative;
 }

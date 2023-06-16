@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators,FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
-import { SupabaseService } from 'src/app/services/supabase.service';
 import { UserService } from 'src/app/services/user.service';
 
 
@@ -38,11 +37,11 @@ export class SigninComponent {
 
   callSupabase(obj) {
     if (this.loginMode == 'IN') {
-      this.supabase.signIn(obj);
+      this.userService.signIn(obj);
     } else if(this.loginMode == 'UP'){
-      this.supabase.signUp(obj);
+      this.userService.signUp(obj);
     }else if(this.loginMode == 'PW'){
-      this.supabase.resetPassword(obj.email);
+      this.userService.resetPassword(obj.email);
     }
     this.myForm.reset();
   }
@@ -59,7 +58,6 @@ export class SigninComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-    private supabase: SupabaseService,
     private router: Router,
     private userService: UserService
   ) {}
