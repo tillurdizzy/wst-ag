@@ -45,6 +45,7 @@ import { UserService } from './services/user.service';
 import { ForumMenuComponent } from './forum/forum-menu/forum-menu.component';
 import { ForumTopicComponent } from './forum/forum-topic/forum-topic.component';
 import { ForumPostComponent } from './forum/forum-post/forum-post.component';
+import { EditResidentComponent } from './users/edit-resident/edit-resident.component';
 
 @NgModule({
   declarations: [
@@ -75,6 +76,7 @@ import { ForumPostComponent } from './forum/forum-post/forum-post.component';
     ForumMenuComponent,
     ForumTopicComponent,
     ForumPostComponent,
+    EditResidentComponent
     
   ],
   imports: [
