@@ -92,7 +92,7 @@ export class SupabaseService {
     }, 2000);
   }
 
-  
+ 
 
  
   constructor(private router: Router, public dialogService: DialogService) {

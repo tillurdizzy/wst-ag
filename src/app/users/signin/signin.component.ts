@@ -17,7 +17,8 @@ export class SigninComponent {
   buttonLabel = "Sign In"
   myForm: FormGroup;
   value:string;
-
+  //! Default password : 'wstadmin'
+  //! for ME personally wstadmin9954
  
 
   ngOnInit() {
@@ -33,6 +34,8 @@ export class SigninComponent {
   onSubmit() {
     const email = this.myForm.get('email').value;
     const password = this.myForm.get('password').value;
+    let obj = {'email':email,'password':password}
+    this.callSupabase(obj)
   };
 
   callSupabase(obj) {

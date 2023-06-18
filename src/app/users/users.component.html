@@ -1,1 +1,19 @@
-<app-signin></app-signin>
+<div *ngIf="userAuthenticated == false">
+  <app-signin></app-signin>
+</div>
+
+<div class="sidebar-container" *ngIf="userAuthenticated == true">
+  <div class="not-sidebar">
+    <p-tabView>
+      <p-tabPanel header="Account">
+       
+      </p-tabPanel>
+      <p-tabPanel header="Unit">
+       
+      </p-tabPanel>
+      <p-tabPanel header="Vehicles">
+        
+      </p-tabPanel>
+    </p-tabView>
+  </div>
+</div>

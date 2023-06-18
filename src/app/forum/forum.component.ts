@@ -8,6 +8,7 @@ import { SupabaseService } from '../services/supabase.service';
   templateUrl: './forum.component.html',
   styleUrls: ['./forum.component.scss']
 })
+
 export class ForumComponent {
   view:string = 'menu';
   menuList:IForumMenu[];
@@ -18,6 +19,7 @@ export class ForumComponent {
 
   handleClick(topic){
     console.log(topic);
+    this.topicHeader = topic;
   }
 
   navToMenu(){this.view = "menu"}
