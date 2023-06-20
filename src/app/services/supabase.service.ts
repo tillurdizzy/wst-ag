@@ -87,9 +87,9 @@ export class SupabaseService {
       closable:false
     });
 
-    setTimeout(() => {
+    /* setTimeout(() => {
       this.dialogRef.close();
-    }, 2000);
+    }, 2000); */
   }
 
  

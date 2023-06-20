@@ -107,4 +107,50 @@ img{
     transform: translateY(-50%);
   }
 
+  .spread-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.flex-row-start {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+}
+
+.flex-row-space-between {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.flex-row-space-even {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+}
+
+.spacer-5 {
+    margin-bottom: 5px;
+}
+
+.spacer-10 {
+    margin-bottom: 10px;
+}
+
+.spacer-15 {
+    margin-bottom: 15px;
+}
+
+.spacer-20 {
+    margin-bottom: 20px;
+}
+
 

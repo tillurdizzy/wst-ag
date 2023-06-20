@@ -46,6 +46,11 @@ import { ForumMenuComponent } from './forum/forum-menu/forum-menu.component';
 import { ForumTopicComponent } from './forum/forum-topic/forum-topic.component';
 import { ForumPostComponent } from './forum/forum-post/forum-post.component';
 import { EditResidentComponent } from './users/edit-resident/edit-resident.component';
+import { AccountComponent } from './users/account/account.component';
+import { ResidentsComponent } from './users/residents/residents.component';
+import { VehiclesComponent } from './users/vehicles/vehicles.component';
+import { ResidentListComponent } from './users/resident-list/resident-list.component';
+import { VehicleListComponent } from './users/vehicle-list/vehicle-list.component';
 
 @NgModule({
   declarations: [
@@ -76,7 +81,12 @@ import { EditResidentComponent } from './users/edit-resident/edit-resident.compo
     ForumMenuComponent,
     ForumTopicComponent,
     ForumPostComponent,
-    EditResidentComponent
+    EditResidentComponent,
+    AccountComponent,
+    ResidentsComponent,
+    VehiclesComponent,
+    ResidentListComponent,
+    VehicleListComponent
     
   ],
   imports: [

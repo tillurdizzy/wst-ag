@@ -36,6 +36,20 @@ export class UserService {
   private currentUser: BehaviorSubject < User | boolean > = new BehaviorSubject(false);
   public currentUser$ = this.currentUser.asObservable();
 
+  getCurrentUser(): Observable <User | boolean> {
+    return this.currentUser.asObservable();
+  }
+
+  private userAccountObs: BehaviorSubject < IUserAccount | boolean > = new BehaviorSubject(false);
+  public userAccount$ = this.userAccountObs.asObservable();
+
+  getUserAccount(): Observable <IUserAccount | boolean> {
+    return this.userAccount$;
+  }
+  setUserAccount(x:IUserAccount){
+    this.userAccountObs.next(x);
+  }
+
 
    //* >>>>>>>>>>>>>>>>>>> USER / AUTH / SESSION / ACCOUNT <<<<<<<<<<<<<<<<<<<<<<<
 
@@ -53,9 +67,7 @@ export class UserService {
     }
   }
 
-  getCurrentUser(): Observable <User | boolean> {
-    return this.currentUser.asObservable();
-  }
+  
 
   getCurrentUserId(): string {
     if (this.currentUser.value) {
@@ -80,8 +92,18 @@ export class UserService {
     this.currentUser.next(this.userObj);
   
     let uid =this.userObj.id;
-    this.getUserAccount(uid);
+    //this.getUserAccount(uid);
   };
+
+  isUserAuthenticated() {
+    let obj = {
+      'auth': this.userAuthenticated, 
+      'account':this.userAccount,
+    }
+    return obj;
+  };
+
+
 
   private processUserAccount(data:any) {
     console.log("UserService >> processUserAccount()");
@@ -102,6 +124,7 @@ export class UserService {
     if(this.userAccount.units.length > 0){
       this.myCurrentUnit = this.userAccount.units[0]
     }
+    this.userAccountObs.next(this.userAccount)
   }
 
  
@@ -308,29 +331,22 @@ export class UserService {
       }
     }
     
-    async getUserAccount(user: string) {
-      console.log('Supabase >> getUserAccount()');
+    async fetchUserAccount(user: string) {
+      console.log('Supabase >> fetchUserAccount()');
       try {
         let { data, error } = await this.supabase.from('accounts').select('*').eq('uuid', user);
         if(data != null){
-          let dataObj = {
-            to: 'DataService',
-            event: 'getUserAccount',
-            result: data
-          };
-          this.sendData(dataObj);
+          this.processUserAccount(data);
         }
       } catch (error) {
-        alert("Sign in error: getUserAccount "  + JSON.stringify(error))
+        alert("Sign in error: fetchUserAccount "  + JSON.stringify(error))
       }
     }
   
     async updateUserAccount(updateObj: IUserUpdate,id:string){
       
       try {
-        const { data, error } = await this.supabase.from('accounts')
-        .update(updateObj)
-        .eq('uuid', id);
+        const { data, error } = await this.supabase.from('accounts').update(updateObj).eq('uuid', id);
         if(error == null){this.showResultDialog('User account updated.')}
       } catch (error) {
         this.showResultDialog('ERROR: ' + JSON.stringify(error))

@@ -329,10 +329,10 @@ export class FormsService {
 
   showResultDialog(message:string){
       
-  
+  /* 
       setTimeout(() => {
-        //this.dialogRef.close();
-      }, 2000);
+        this.dialogRef.close();
+      }, 2000); */
   }
 
  

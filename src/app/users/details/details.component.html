@@ -1,13 +1,12 @@
 
 
 <div class="spacer-10"></div>
-<mat-divider></mat-divider>
+
 <div class="spacer-10"></div>
 <div class="flex-row-space-between">
   <span class="black-16-550">Unit #{{ this.myUnit.unit }}</span>
   <span class="black-13-550">Bdrms: {{ this.myUnit.bdrms }} / SqFt: {{ this.myUnit.sqft }} </span>
 </div>
-
 
 <div class="unit-data-container">
   <div class="label-banner-green">
@@ -139,13 +138,7 @@
 </div>
 <div class="overlay" *ngIf="showSpinner">
   <div class="center">
-    <mat-progress-spinner
-      color="warn"
-      diameter="50"
-      strokeWidth="5"
-      mode="indeterminate"
-    >
-    </mat-progress-spinner>
+   
   </div>
 </div>
 
