@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ForumService } from 'src/app/services/forum.service';
 import { IForumMenu,IForumTopic, IForumPost } from 'src/app/services/interfaces/forum';
 import { SupabaseService } from '../services/supabase.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-forum',
@@ -14,6 +15,10 @@ export class ForumComponent {
   menuList:IForumMenu[];
   topicList:IForumTopic[];
   postList:IForumPost[];
+
+  subscriptionOne: Subscription;
+  subscriptionTwo: Subscription;
+  subscriptionThree: Subscription;
 
   topicHeader:string;
 
@@ -43,20 +48,25 @@ export class ForumComponent {
     console.log("ForumMenuComponent >> ngOnInit()")
     this.supabase.getForumMenu();
   }
+  ngOnDestroy(): void {
+    this.subscriptionOne.unsubscribe();
+    this.subscriptionTwo.unsubscribe();
+    this.subscriptionThree.unsubscribe();
+  }
 
   constructor(private fs:ForumService, private supabase:SupabaseService){
     
-    this.fs.getMenuObs().subscribe((x:IForumMenu[]) =>  {
+    this.subscriptionOne = this.fs.getMenuObs().subscribe((x:IForumMenu[]) =>  {
       console.log("ForumMenuComponent >> getMenu-Obs()")
       this.handleMenuObs(x);
     });
 
-    this.fs.getTopicObs().subscribe((x:IForumTopic[]) =>  {
+    this.subscriptionTwo = this.fs.getTopicObs().subscribe((x:IForumTopic[]) =>  {
       console.log("ForumMenuComponent >> getTopic-Obs()")
       this.handleTopicObs(x);
     });
 
-    this.fs.getPostObs().subscribe((x:IForumPost[]) =>  {
+    this.subscriptionThree = this.fs.getPostObs().subscribe((x:IForumPost[]) =>  {
       console.log("ForumMenuComponent >> getPost-Obs()")
       this.handlePostObs(x);
     });

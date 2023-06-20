@@ -1,3 +1,11 @@
+export interface IUserAuth{
+  id:string;
+  aud:string;
+  role:string;
+  email:string;
+}
+
+
 export interface IUserAccount {
   id:number,
   created_at?:string

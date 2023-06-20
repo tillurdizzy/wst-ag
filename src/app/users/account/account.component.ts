@@ -13,25 +13,32 @@ import { IResidentAccount } from 'src/app/services/interfaces/iuser';
 })
 export class AccountComponent implements OnInit{
   subscription: Subscription;
-  userAuthenticated:boolean = false;
+ 
   userAccount:IUserAccount = { id:0, username: '', role: '', cell: '', email: '', units: [], uuid:'' ,firstname:'',lastname:'',csz:'',street:'',alerts:''};
  
   unitCount:number = 0;
 
   ngOnInit(): void {
-    let storedData = this.us.isUserAuthenticated();
-    // Before LogIn these will be filled with empty "init" data
-    // Auth will be false and unitCount 0
-    this.userAuthenticated = storedData.auth;
-    this.userAccount = storedData.account;
-    this.unitCount = this.userAccount.units.length;
-    
+   
   }
 
   updateUserAccount(){
     //this.router.navigate(['/forms/user-update']);
   }
 
-  constructor(private us: UserService, private fs: FormsService, private router: Router) {}
+  handleUserAccountObs(x){
+    this.userAccount = x;
+    //this.unitCount = this.userAccount.units.length;
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
+  constructor(private us: UserService, private fs: FormsService, private router: Router) {
+    this.subscription = this.us.getUserAccount$().subscribe(x => {
+      this.handleUserAccountObs(x);
+    })
+  }
 
 }

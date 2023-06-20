@@ -4,7 +4,7 @@ import { IVehicle } from 'src/app/services/interfaces/iuser';
 import { Subscription } from 'rxjs'
 import { Router } from '@angular/router'
 import { IResident, IResidentAccount, IResidentInsert } from 'src/app/services/interfaces/iuser';
-import { FormsService } from 'src/app/services/forms.service';
+import { ResidentsService } from 'src/app/services/residents.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -14,7 +14,8 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class ResidentsComponent {
   me: string = "ResidentsComponent "
-  userSubscribe: Subscription;
+  subscriptionOne: Subscription;
+  subscriptionTwo: Subscription;
   ownerRole:string = 'resident'
   myProfiles: IResidentAccount[] = [{ firstname: '', lastname: '', email: '', cell: '',uuid:'', id:0, alerts:''}];
  
@@ -27,15 +28,15 @@ export class ResidentsComponent {
   ngOnInit(): void {
     console.log(this.me + " ngOnInit()")
     //this.ownerRole = this.us.getOwnerRole();
-    let u = this.fs.getCurrentUnit;
+    //let u = this.rs.getCurrentUnit;
     //this.fs.unitSelectionHandler(u)
   }
 
   onResidentClick(n: number) {
     console.log(this.me + " onResidentClick() = " + n)
     this.editProfile = this.myProfiles[n];
-    this.fs.setSelectedProfile(this.editProfile);
-    this.router.navigate(['/units/edit-resident']);
+    //this.rs.setSelectedProfile(this.editProfile);
+    //this.router.navigate(['/units/edit-resident']);
   };
 
 //* >>>>>>>>>>>>  SUBSCRIPTION HANDLERS  >>>>>>>>>>>>\\
@@ -60,16 +61,6 @@ private processProfiles(data:any){
     this.myProfiles.push(clone);
   }
  
-  this.fs.setUnitProfiles(this.myProfiles);
-  let x = this.myProfiles.length;
-  /* if(x > 2) {x = 2}
-  if (x == 2) {
-    this.residentHiddenState = {residentOne:true,residentTwo:true}
-  } else if (x == 1) {
-    this.residentHiddenState = {residentOne:true,residentTwo:false}
-  } else if (x == 0) {
-    this.residentHiddenState = {residentOne:false,residentTwo:false}
-  } */
   if(this.ownerRole == 'resident'){
     //this.residentEditStates.residentOne = false;
   }
@@ -79,14 +70,15 @@ private processProfiles(data:any){
 
   ngOnDestroy() {
     this.us.clearData();
-    this.userSubscribe.unsubscribe();
+    this.subscriptionOne.unsubscribe();
+    this.subscriptionTwo.unsubscribe();
   };
 
 
   constructor(private router: Router, 
-    private fs: FormsService, private us: UserService) {
+    private rs: ResidentsService, private us: UserService) {
 
-    this.fs.getResidentsObs().subscribe((x:IResidentAccount[]) =>  {
+    this.subscriptionOne = this.rs.getResidentsObs().subscribe((x:IResidentAccount[]) =>  {
       console.log(this.me + '>> getResidentsObs()')
       if(x.length > 0){
         this.processProfiles(x);
@@ -94,7 +86,7 @@ private processProfiles(data:any){
     });
 
    
-    this.fs.getUnitObs().subscribe((x:IUnit) =>  {
+    this.subscriptionTwo = this.rs.getUnitObs().subscribe((x:IUnit) =>  {
       this.myUnit = x;
       console.log(this.me + '>> getUnitObs = ' + this.myUnit.unit + " sqft = " + this.myUnit.sqft)
     });

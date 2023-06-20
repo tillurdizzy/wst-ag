@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject, Subscription, BehaviorSubject } from 'rxjs'
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { IUnit } from './interfaces/iuser';
+
 import { IProfile, IProfileUpdate } from './interfaces/iuser';
-import { ISpaceUpdate, IVehicle, IVehicleTable } from './interfaces/iuser';
+
 import { SupabaseService } from '../services/supabase.service';
-import { IResidentAccount, IResidentInsert } from './interfaces/iuser';
+
+import { IWorkOrder, IBasicForm } from './interfaces/iforms';
 import { IUserAccount, IUserUpdate } from './interfaces/iuser';
 import { environment } from '../../environments/environment';
 
@@ -26,140 +27,39 @@ export class FormsService {
     540, 541, 542, 543, 544, 545, 546, 547, 548, 549, 550, 551, 552, 553]
 
   
-  private unitVehicles: IVehicle[] = [];
-  private unitProfiles: IProfile[] = [];
 
- 
-  //private ownerInfo: IUnit = { name: '', unit: 0, street: '', csz: '', cell: '', email: '' };
-  private selectedUnit: IUnit = { unit:100, street:'',sqft:0, bdrms:1 , bldg:''};
-  private userAccount: IUserAccount = { id:0, username: '', role: '', cell: '', email: '', units: [], uuid:'' ,firstname:'',lastname:'',csz:'',street:'',alerts:''};
-  private emptyResidentAccount: IResidentAccount= { firstname:'', lastname:'', cell: '', email: '',uuid:'', id:0, alerts:''};
-  
-
-  // * Selected for any reason... most likely for editing
-  private selectedProfile: IProfile;
-  private selectedVehicle: IVehicle;
 
   private currentUnit: number;
 
-  //* >>>>>>>>>>> OBSERVABLES  <<<<<<<<<<<<
-  //^unit$
-  private unitBS: BehaviorSubject<IUnit> = new BehaviorSubject(this.selectedUnit);
-  public unit$ = this.unitBS.asObservable();
-
-  getUnitObs(): Observable<IUnit> {
-    return this.unit$
-  }
-  setUnitObs(u:IUnit){
-    this.unitBS.next(u)
-  }
+  
 
   
-  //^residents$
-  private residentsBS: BehaviorSubject<IResidentAccount[]> = new BehaviorSubject([]);
-  public residents$ = this.residentsBS.asObservable();
+  
 
-  getResidentsObs(): Observable<IResidentAccount[]> {
-    return this.residents$
-  }
-  setResidentObs(n:IResidentAccount[]){
-     //Sort descending order... larger number is "Primary" resident - i.e. Owner
-    n.sort((e1, e2) => e1.id > e2.id ? -1 : e1.id < e2.id ? 1 : 0);
+  
 
-    let role = this.userAccount.role;
-    var ownerUuid = this.userAccount.uuid;
-    var clone = structuredClone(this.emptyResidentAccount);
-    var residentAccountArray = [];
-    if (role == 'admin') {
-      residentAccountArray.push(n[0])
-      residentAccountArray.push(n[1])
-
-    }else if(role == 'non-resident'){
-      residentAccountArray.push(n[0])
-      residentAccountArray.push(n[1])
-      
-    }else if (role == 'resident' && ownerUuid != null) {
-      clone.firstname = this.userAccount.firstname;
-      clone.lastname = this.userAccount.lastname;
-      clone.cell = this.userAccount.cell;
-      clone.email = this.userAccount.email;
-      clone.id = this.userAccount.id;
-      clone.alerts = this.userAccount.alerts;
-      clone.uuid = this.userAccount.uuid;
-      residentAccountArray.push(clone)
-      residentAccountArray.push(n[1])
-      
-    } else if (role == 'resident +') {
-      // If owner is 'resident +', get currentUnit info from Accounts table Units.reSidesAt!
-      //^ currentUnitselected == ResidesAt
-      let u = this.userAccount.units;
-      let v = this.parseObj(u, 'residesAt');
-      if (v == this.currentUnit  && ownerUuid != null)  {
-        residentAccountArray.push(n[0])
-        residentAccountArray.push(n[1])
-      } 
-    }
-    this.residentsBS.next(residentAccountArray);
-  }
-
-  //^vehicles$
-  private vehiclesBS: BehaviorSubject<IVehicle[]> = new BehaviorSubject([]);
-  public vehicles$ = this.vehiclesBS.asObservable();
-
-  getVehiclesObs(): Observable<IVehicle[]> {
-    return this.vehicles$
-  }
-
-  setVehiclesObs(n:IVehicle[]){
-    n.sort((e1, e2) => e1.space > e2.space ? 1 : e1.space < e2.space ? -1 : 0);
-    this.vehiclesBS.next(n);
-  }
-
-  unitSelectionHandler(u:number){
-    console.log("UnitService  > unitSelectionHandler() = " + u)
-    this.currentUnit = u;
-    //this.us.fetchUnit(u);
-    this.fetchResidentProfiles(this.currentUnit);
-    //this.supabase.fetchResidentVehicles(this.currentUnit);
-  }
-
-  updateResidentProfile(updatedProfile:IProfile){
-    console.log("UnitService  > updateResidentProfile()")
-    var subData:IResidentAccount[] = undefined;
-    var newData:IResidentAccount[] = [];
-    const sub = this.residentsBS.subscribe(p => subData = p);
-    sub.unsubscribe();
-    let updateID =  updatedProfile.id;
-    for (let index = 0; index < subData.length; index++) {
-      const element = subData[index];
-      let thisID = element.id;
-      if (thisID = updateID) {
-        subData[index].email = updatedProfile.email
-        subData[index].firstname = updatedProfile.firstname
-        subData[index].lastname = updatedProfile.lastname
-        subData[index].cell = updatedProfile.cell
-      }
-      newData.push(subData[index])
-    }
-    this.residentsBS.next(subData);
-  }
-
- 
-
-  async removeVehicle(id: number, unit: number) {
-    let noCar = {
-      name: '',
-      tag: '',
-      make: '',
-      model: '',
-      color: ''
-    };
+  //* >>>>>>>>>>>>  FORMS  <<<<<<<<<<<<\\
+  async insertWorkOrder(wo:IWorkOrder){
     try {
-      let { data, error } = await this.supabase.from('parking').update(noCar).eq('id', id).select();
+      const { data, error } = await this.supabase.from('work-orders').insert(wo);
       if(error == null){
+        this.showResultDialog('Work Order submitted.')
+      }else{
+        this.showResultDialog('ERROR: ' + JSON.stringify(error))
+      }
+      
+    } catch (error) {
+      this.showResultDialog('ERROR: ' + JSON.stringify(error))
+    }finally{
+      //this.router.navigate(['/home']);
+    }
+  }
 
-        this.fetchResidentVehicles(unit);
-        this.showResultDialog('Vehicle removed.')
+  async insertBasicForm(frm:IBasicForm,message:string){
+    try {
+      const { data, error } = await this.supabase.from('forms').insert(frm).select();
+      if(error == null){
+        this.showResultDialog(message)
       }else{
         this.showResultDialog('ERROR: ' + JSON.stringify(error))
       }
@@ -167,42 +67,6 @@ export class FormsService {
       this.showResultDialog('ERROR: ' + JSON.stringify(error))
     }finally{
       //this.router.navigate(['/home']);
-      
-    }
-  };
-
-  async updateParkingSpace(
-    space: ISpaceUpdate,
-    id: string,
-    nav: string,
-    unit: number
-  ) {
-    try {
-      let { data, error } = await this.supabase.from('parking').update(space).eq('id', id).select();
-     
-     if(data != null){
-      this.fetchResidentVehicles(unit);
-      this.showResultDialog('Vehicle Updated.')
-     }
-    } catch (error) {
-      this.showResultDialog('ERROR: ' + JSON.stringify(error))
-    }finally{
-      //this.router.navigate([nav]);
-    }
-  };
-
-  
-
-  async updateVehicle(obj: IVehicleTable, s: number) {
-    const { error } = await this.supabase
-      .from('parking')
-      .update(obj)
-      .match({ space: s });
-
-    if (error) {
-      this.showResultDialog('ERROR: ' + JSON.stringify(error))
-    } else {
-      //this.getUserVehicles(this.ds.getUserUnitNumber());
     }
   }
   
@@ -261,43 +125,11 @@ export class FormsService {
 
   //* SUPABASE CALLS
 
-  //* >>>>>>>>>>>>>>>>>>> FETCH RESIDENT DATA <<<<<<<<<<<<<<<<<<<<<<<
-  async fetchResidentProfiles(unit: number) {
-    this.doConsole('SupabaseService > fetchResidentProfiles()');
-    try {
-      let data = await this.supabase.from('profiles').select('*').eq('unit', unit);
-      this.publishData('UnitService','fetchResidentProfiles',data.data);
-    } catch (error) {
-      this.showResultDialog('ERROR: ' + JSON.stringify(error))
-    }
-  }
+  
 
-  async fetchResidentVehicles(unit: number) {
-    this.doConsole('SupabaseService > fetchResidentVehicles()');
-    try {
-      let data = await this.supabase.from('parking').select('*').eq('unit', unit);
-      if(data != null && data!=undefined){
-        this.publishData('UnitService','fetchResidentVehicles',data.data);
-      }
-    } catch (error) {
-      this.showResultDialog('ERROR: ' + JSON.stringify(error))
-    }
-  }
+ 
 
-  async fetchUnit(unit: number) {
-    this.doConsole('SupabaseService > fetchUnit()');
-    try {
-      let { data, error } = await this.supabase.from('units').select('*').eq('unit', unit).single();
-      if(data != null){
-        this.publishUnitData(data); 
-      }else{
-        this.showResultDialog('ERROR: ' + JSON.stringify(error))
-      }
-     
-    } catch (error) {
-      this.showResultDialog('ERROR: ' + JSON.stringify(error))
-    }
-  }
+  
 
   publishUnitData(data) {
 
@@ -308,12 +140,7 @@ export class FormsService {
     };
     this.sendData(dataObj);
     //! replace with Obsv
-    /* this.dataObj = {
-      to: 'DetailsComponent',
-      event: 'publishUnitData',
-      iUnit: data,
-    };
-    this.sendData(this.dataObj); */
+
   }
 
   publishData(to:string,event:string,data:any) {
@@ -335,95 +162,7 @@ export class FormsService {
       }, 2000); */
   }
 
- 
 
-  // * SETTERS
-  setUnitProfiles(data: IProfile[]) {
-    this.unitProfiles = data;
-  }
-
-  setUnitVehicles(data: IVehicle[]) {
-    this.unitVehicles = data;
-  };
-
-  setUserAccount(account:IUserAccount){
-    this.userAccount = account;
-  };
-  
-
-  setSelectedProfile(p: IProfile) {
-    this.selectedProfile = p;
-  };
-
-  setSelectedVehicle(car: IVehicle) {
-    this.selectedVehicle = car;
-  };
-
-  
-  /* setCurrentUnit(u: number) {
-    this.currentUnit = u;
-    this.supabase.fetchUnit(u);
-    
-  }; */
-
-  // Called ngDestroy in  AdminComponent
-  resetUnitData() {
-    this.unitVehicles = [];
-    this.unitProfiles = [];
-    this.currentUnit = 0;
-    this.selectedUnit = { unit:100, street:'',sqft:0, bdrms:1 , bldg:''};
-  }
-
-  //* GETTERS
-
-  getAdminProfiles(): IProfile[] {
-    return this.unitProfiles;
-  };
-
-  getSelectedUnit(): IUnit{
-    return this.selectedUnit
-  }
-
-  getUserVehicles(): IVehicle[] {
-    return this.unitVehicles;
-  };
-
-  getSelectedProfile(): IProfile {
-    return this.selectedProfile;
-  };
-
-  getUpdateProfileID():number{
-    var x = 0;
-    if(this.selectedProfile != undefined){
-      x = this.selectedProfile.id;
-    }
-    return x;
-  }
-
-  getSelectedVehicle(): IVehicle {
-    return this.selectedVehicle;
-  };
-
-  getCurrentUnit() {
-    return this.selectedUnit.unit;
-  };
-
-  getResidentID(): number {
-    var id: number = this.selectedProfile.id;
-    return id;
-  };
-
-  isSpaceValid(space: string) {
-    return true;
-  };
-
-  isSpaceAvailable(space: string) {
-    return true;
-  };
-
-  ngOnDestroy(): void {
-    this.supaSubscription.unsubscribe();
-  }
 
   //* >>>>>>>>>>>>>>> CONSTRUCTOR / SUBSCRIPTIONS <<<<<<<<<<<<<<<<<<<<
 

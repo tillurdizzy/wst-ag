@@ -5,7 +5,7 @@ import { Router } from '@angular/router'
 import { Subscription } from 'rxjs';
 import { SupabaseService } from '../../services/supabase.service'
 import { UserService } from 'src/app/services/user.service';
-import { FormsService } from 'src/app/services/forms.service';
+import { ResidentsService } from 'src/app/services/residents.service';
 import { IProfileUpdate } from 'src/app/services/interfaces/iuser';
 
 @Component({
@@ -33,8 +33,8 @@ export class EditResidentComponent {
 
   ngOnInit() {
     console.log(this.me + " ngOnInit()")
-    this.myProfile = this.removeNull(this.fs.getSelectedProfile());
-    this.profileID = this.fs.getUpdateProfileID()
+    //this.myProfile = this.removeNull(this.rs.getSelectedProfile());
+    //this.profileID = this.rs.getUpdateProfileID()
     this.myForm.reset();
     this.setFormValues();
   };
@@ -72,13 +72,13 @@ export class EditResidentComponent {
   };
 
   submitBtnDelete(){
-    let unitNumber = this.fs.getCurrentUnit();
+    //let unitNumber = this.rs.getCurrentUnit();
     //this.supabase.deleteProfile(this.profileID);
   }
 
   updateResidentProfile() {
     console.log(this.me + " > updateResidentProfile()")
-    let id = this.fs.getResidentID();
+    //let id = this.rs.getResidentID();
     //this.supabase.updateProfile(this.myProfile, id);
   };
 
@@ -100,7 +100,7 @@ export class EditResidentComponent {
 
 
   constructor(private router: Router, private supabase: SupabaseService, 
-    private us: UserService, private fs:FormsService) {
+    private us: UserService, private rs:ResidentsService) {
 
     this.supaSubscription = this.supabase.getData().subscribe(x => {
       if (x == null) { return };

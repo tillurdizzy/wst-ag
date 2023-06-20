@@ -9,5 +9,6 @@ import { UserService } from '../services/user.service';
 export class HomeComponent {
   constructor(private us: UserService){
     console.log("HomeComponent >> constructor()")
+    this.us. signOut();
   }
 }

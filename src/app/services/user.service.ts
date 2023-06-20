@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { Observable, Subject, BehaviorSubject } from 'rxjs';
+import { Router } from '@angular/router';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { DialogComponent } from '../library/dialog/dialog.component';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { AuthChangeEvent, AuthSession } from '@supabase/supabase-js';
 import { Session, User } from '@supabase/supabase-js';
-import { Observable, Subject, BehaviorSubject } from 'rxjs';
-import { IWorkOrder, IBasicForm } from './interfaces/iforms';
 import { IUserAccount, IUserUpdate } from './interfaces/iuser';
 import { IResidentInsert } from './interfaces/iuser';
 import { IProfileFetch, IProfileUpdate, IProfile } from './interfaces/iuser';
@@ -33,45 +32,45 @@ export class UserService {
 
      //* Observables
   _session: AuthSession | null = null;
-  private currentUser: BehaviorSubject < User | boolean > = new BehaviorSubject(false);
-  public currentUser$ = this.currentUser.asObservable();
+  private userAuth: BehaviorSubject < User | boolean > = new BehaviorSubject(false);
+  public userAuth$ = this.userAuth.asObservable();
 
-  getCurrentUser(): Observable <User | boolean> {
-    return this.currentUser.asObservable();
+  getAuth$(): Observable <User | boolean> {
+    return this.userAuth.asObservable();
   }
 
   private userAccountObs: BehaviorSubject < IUserAccount | boolean > = new BehaviorSubject(false);
   public userAccount$ = this.userAccountObs.asObservable();
 
-  getUserAccount(): Observable <IUserAccount | boolean> {
+  getUserAccount$(): Observable <IUserAccount | boolean> {
     return this.userAccount$;
   }
   setUserAccount(x:IUserAccount){
     this.userAccountObs.next(x);
   }
 
+  
+
 
    //* >>>>>>>>>>>>>>>>>>> USER / AUTH / SESSION / ACCOUNT <<<<<<<<<<<<<<<<<<<<<<<
 
   async loadUser() {
-    console.log('UserService > loadUser() ' + this.currentUser.value);
-    if (this.currentUser.value) {// User is already set, no need to do anything else
+    console.log('UserService > loadUser() ' + this.userAuth.value);
+    if (this.userAuth.value) {// User is already set, no need to do anything else
       return;
     }
     // this will create a 401 error when no user is logged it yet-- ignore it
     const user = await this.supabase.auth.getUser();
     if (user.data.user) {
-      this.currentUser.next(user.data.user);
+      this.userAuth.next(user.data.user);
     } else {
-      this.currentUser.next(false);
+      this.userAuth.next(false);
     }
   }
 
-  
-
-  getCurrentUserId(): string {
-    if (this.currentUser.value) {
-      return (this.currentUser.value as User).id;
+  getuserAuthId(): string {
+    if (this.userAuth.value) {
+      return (this.userAuth.value as User).id;
     } else {
       return '';
     }
@@ -89,10 +88,9 @@ export class UserService {
     this.userAuthenticated = true;
     this.userObj = data.data.user;
     this.session = data.session;
-    this.currentUser.next(this.userObj);
+    this.userAuth.next(this.userObj);
   
     let uid =this.userObj.id;
-    //this.getUserAccount(uid);
   };
 
   isUserAuthenticated() {
@@ -125,11 +123,12 @@ export class UserService {
       this.myCurrentUnit = this.userAccount.units[0]
     }
     this.userAccountObs.next(this.userAccount)
+    
   }
 
  
 
-  // Chain of Calls... signIn >> getUserAccount >> ds.getOwner
+
   async signIn(credentials: { email: string; password: string }) {
     console.log('UserService > signIn() ' + JSON.stringify(credentials));
     try {
@@ -137,7 +136,7 @@ export class UserService {
       if(result.data.user == null){
         throw result.error.message
       }
-      this.authenticateUser(result)
+      this.authenticateUser(result);
     } catch (error) {
       alert("Error: "  + JSON.stringify(error))
     }
@@ -196,41 +195,11 @@ export class UserService {
   }
 
   
-  //* >>>>>>>>>>>>  FORMS  <<<<<<<<<<<<\\
-  async insertWorkOrder(wo:IWorkOrder){
-    try {
-      const { data, error } = await this.supabase.from('work-orders').insert(wo);
-      if(error == null){
-        this.showResultDialog('Work Order submitted.')
-      }else{
-        this.showResultDialog('ERROR: ' + JSON.stringify(error))
-      }
-      
-    } catch (error) {
-      this.showResultDialog('ERROR: ' + JSON.stringify(error))
-    }finally{
-      this.router.navigate(['/home']);
-    }
-  }
-
-  async insertBasicForm(frm:IBasicForm,message:string){
-    try {
-      const { data, error } = await this.supabase.from('forms').insert(frm).select();
-      if(error == null){
-        this.showResultDialog(message)
-      }else{
-        this.showResultDialog('ERROR: ' + JSON.stringify(error))
-      }
-    } catch (error) {
-      this.showResultDialog('ERROR: ' + JSON.stringify(error))
-    }finally{
-      this.router.navigate(['/home']);
-    }
-  }
+  
 
     //* >>>>>>>>>>>>>>>>>>> FETCH RESIDENT DATA <<<<<<<<<<<<<<<<<<<<<<<
     async fetchResidentProfiles(unit: number) {
-      this.doConsole('SupabaseService > fetchResidentProfiles()');
+      this.doConsole('UserService > fetchResidentProfiles()');
       try {
         let data = await this.supabase.from('profiles').select('*').eq('unit', unit);
         this.publishData('UnitService','fetchResidentProfiles',data.data);
@@ -240,7 +209,7 @@ export class UserService {
     }
   
     async fetchResidentVehicles(unit: number) {
-      this.doConsole('SupabaseService > fetchResidentVehicles()');
+      this.doConsole('UserService > fetchResidentVehicles()');
       try {
         let data = await this.supabase.from('parking').select('*').eq('unit', unit);
         if(data != null && data!=undefined){
@@ -252,7 +221,7 @@ export class UserService {
     }
   
     async fetchUnit(unit: number) {
-      this.doConsole('SupabaseService > fetchUnit()');
+      this.doConsole('UserService > fetchUnit()');
       try {
         let { data, error } = await this.supabase.from('units').select('*').eq('unit', unit).single();
         if(data != null){
@@ -298,7 +267,7 @@ export class UserService {
     }
   
     async insertNewProfile(profile: IProfileFetch) {
-      this.doConsole('SupabaseService > insertNewProfile() profile >>' + JSON.stringify(profile));
+      this.doConsole('UserService > insertNewProfile() profile >>' + JSON.stringify(profile));
       try {
         const { data, error } = await this.supabase.from('profiles').insert(profile);
         this.showResultDialog('New resident profile added.')
@@ -332,9 +301,9 @@ export class UserService {
     }
     
     async fetchUserAccount(user: string) {
-      console.log('Supabase >> fetchUserAccount()');
+      console.log('UserService >> fetchUserAccount()');
       try {
-        let { data, error } = await this.supabase.from('accounts').select('*').eq('uuid', user);
+        let { data, error } = await this.supabase.from('accounts').select('*').eq('uuid', user).single();
         if(data != null){
           this.processUserAccount(data);
         }
@@ -370,7 +339,7 @@ export class UserService {
     }
   
     async updateOwnerAccount(a:IResidentInsert,units){
-      this.doConsole('SupabaseService > updateOwnerAccount() data >>' + JSON.stringify(a));
+      this.doConsole('UserService > updateOwnerAccount() data >>' + JSON.stringify(a));
       try {
         const { data, error } = await this.supabase.from('units')
         .update(a)
@@ -511,21 +480,21 @@ export class UserService {
 
     this.supabase.auth.onAuthStateChange(
       (event: AuthChangeEvent, sess: Session | null) => {
-        console.log('Begin: UserService > onAuthStateChange = ' + event +' > currentUser = ' + (this.currentUser.value as User).id);
+        console.log('Begin: UserService > onAuthStateChange = ' + event +' > userAuth = ' + (this.userAuth.value as User).id);
 
-        if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+        if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED' || event ===  'INITIAL_SESSION') {
           let s = sess;
           if (s != null) {
             var u: User = s.user;
-            this.currentUser.next(u);
+            this.userAuth.next(u);
           }
         } else if (event === 'PASSWORD_RECOVERY') {
         } else {
-          this.currentUser.next(false);
+          this.userAuth.next(false);
         }
 
         console.log(
-          'End: UserService > onAuthStateChange:event= ' + event + ' > currentUser = ' + (this.currentUser.value as User).id
+          'End: UserService > onAuthStateChange:event= ' + event + ' > userAuth = ' + (this.userAuth.value as User).id
         );
       }
     );
