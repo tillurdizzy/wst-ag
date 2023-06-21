@@ -3,7 +3,7 @@
   <div class="sidebar-container">
     <div class="not-sidebar">
         <div class="section-header">User / Owner</div>
-        <div class="small-black-14 flex-row-space-between">
+        <div class="small-black-14 flex-row-space-between" *ngIf="userAccount.id > 0">
             <div>
               <span class="small-black-text"></span>{{ userAccount.firstname }} {{userAccount.lastname}}<br>
               <span class="small-black-text">Street: </span>{{ userAccount.street }}<br>

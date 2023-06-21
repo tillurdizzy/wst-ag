@@ -16,12 +16,12 @@ import { IUnit } from './interfaces/iuser';
 export class ResidentsService {
   private supabase: SupabaseClient;
   private userAccount: IUserAccount = { id:0, username: '', role: '', cell: '', email: '', units: [], uuid:'' ,firstname:'',lastname:'',csz:'',street:'',alerts:''};
-  private emptyResidentAccount: IResidentAccount= { firstname:'', lastname:'', cell: '', email: '',uuid:'', id:0, alerts:''};
-  private myUnit: IUnit = { unit:100, street:'',sqft:0, bdrms:1 , bldg:''};
+  private emptyResidentAccount: IResidentAccount[]= [{ firstname:'', lastname:'', cell: '', email: '',uuid:'', id:0, alerts:''}];
+  private myUnit: IUnit = { unit:0, street:'',sqft:0, bdrms:1 , bldg:''};
   currentUnit:number = 0;
 
   unitSelectionHandler(u:number){
-    console.log("UnitService  > unitSelectionHandler() = " + u)
+    console.log("ResidentsService  > unitSelectionHandler() = " + u)
     this.currentUnit = u;
     //this.us.fetchUnit(u);
     this.fetchResidentProfiles(this.currentUnit);
@@ -33,7 +33,7 @@ export class ResidentsService {
   private unitBS: BehaviorSubject<IUnit> = new BehaviorSubject(this.myUnit);
   public unit$ = this.unitBS.asObservable();
 
-  getUnitObs(): Observable<IUnit> {
+  getUnitObs(): Observable<IUnit | boolean> {
     return this.unit$
   }
   setUnitObs(u:IUnit){
@@ -41,10 +41,10 @@ export class ResidentsService {
   }
 
 //^residents$
-private residentsBS: BehaviorSubject<IResidentAccount[]> = new BehaviorSubject([]);
+private residentsBS: BehaviorSubject<IResidentAccount[]> = new BehaviorSubject(this.emptyResidentAccount);
 public residents$ = this.residentsBS.asObservable();
 
-getResidentsObs(): Observable<IResidentAccount[]> {
+getResidentsObs(): Observable<IResidentAccount[] | boolean> {
   return this.residents$
 }
 setResidentObs(n:IResidentAccount[]){
@@ -53,7 +53,7 @@ setResidentObs(n:IResidentAccount[]){
 
   let role = this.userAccount.role;
   var ownerUuid = this.userAccount.uuid;
-  var clone = structuredClone(this.emptyResidentAccount);
+  var clone = structuredClone(this.emptyResidentAccount[0]);
   var residentAccountArray = [];
   if (role == 'admin') {
     residentAccountArray.push(n[0])
@@ -87,8 +87,32 @@ setResidentObs(n:IResidentAccount[]){
   this.residentsBS.next(residentAccountArray);
 }
 
+processResidentData(data){
+  console.log("ResidentsService  > processResidentData()")
+  if(data == null){return}
+    
+    let myProfiles = [];
+    for (let index = 0; index < data.length; index++) {
+      let p:IResidentAccount = { firstname: '', lastname: '', email: '', cell: '', uuid: '', id:0, alerts:''};
+      const element = data[index];
+      p.firstname = element.firstname;
+      p.lastname = element.lastname;
+      p.email = element.email;
+      p.cell = element.cell;
+      p.uuid = element.uuid;
+      p.id = element.id;
+      p.alerts = element.alerts;
+     
+      let clone = structuredClone(p);
+      myProfiles.push(clone);
+    }
+    console.log("ResidentsService  > residentsBS.next(myProfiles)")
+    this.residentsBS.next(myProfiles);
+  }
+
+
 updateResidentProfile(updatedProfile:IProfile){
-  console.log("UnitService  > updateResidentProfile()")
+ /*  console.log("ResidentsService  > updateResidentProfile()")
   var subData:IResidentAccount[] = undefined;
   var newData:IResidentAccount[] = [];
   const sub = this.residentsBS.subscribe(p => subData = p);
@@ -105,26 +129,26 @@ updateResidentProfile(updatedProfile:IProfile){
     }
     newData.push(subData[index])
   }
-  this.residentsBS.next(subData);
+  this.residentsBS.next(subData); */
 }
 
 //* >>>>>>>>>>>>>>>>>>> FETCH RESIDENT DATA <<<<<<<<<<<<<<<<<<<<<<<
 async fetchResidentProfiles(unit: number) {
-  console.log('SupabaseService > fetchResidentProfiles()');
+  console.log('ResidentsService > fetchResidentProfiles() unit = ' + unit);
   try {
     let data = await this.supabase.from('profiles').select('*').eq('unit', unit);
-    //this.publishData('UnitService','fetchResidentProfiles',data.data);
+    this.processResidentData(data.data)
   } catch (error) {
     //this.showResultDialog('ERROR: ' + JSON.stringify(error))
   }
 }
 
 async fetchUnit(unit: number) {
-  console.log('SupabaseService > fetchUnit()');
+  console.log('ResidentsService > fetchUnit()');
   try {
     let { data, error } = await this.supabase.from('units').select('*').eq('unit', unit).single();
     if(data != null){
-      //this.publishUnitData(data); 
+      this.setUnitObs(data as IUnit)
     }else{
       //this.showResultDialog('ERROR: ' + JSON.stringify(error))
     }
@@ -154,6 +178,11 @@ removeNull(obj) {
   });
   return obj;
 };
+
+resetService(){
+  this.unitBS.next(this.myUnit);
+  this.residentsBS.next(this.emptyResidentAccount);
+}
 
   constructor() {
 

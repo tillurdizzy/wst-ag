@@ -1,14 +1,16 @@
 <div class="sidebar-container">
   <div class="not-sidebar">
     <div class="section-header">Residents</div>
-    <div class="flex-row-space-between">
-      <span class="black-16-550">Unit #{{ this.myUnit.unit }}</span>
-      <span class="black-13-550">Bdrms: {{ this.myUnit.bdrms }} / SqFt: {{ this.myUnit.sqft }}</span>
+    <div class="flex-row-space-between" *ngIf="myUnit.unit > 0">
+      <span class="black-16-550">Unit #{{ myUnit.unit }}</span>
+      <span class="black-13-550">Bdrms: {{ myUnit.bdrms }} / SqFt: {{ this.myUnit.sqft }}</span>
     </div>
+    <div  class="no-bullet" *ngIf="myProfiles[0].id > 0">
     <ul>
       <li *ngFor="let x of myProfiles">
         <app-resident-list [data]="x"></app-resident-list>
       </li>
     </ul>
+  </div>
   </div>
 </div>

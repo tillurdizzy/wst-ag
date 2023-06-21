@@ -19,7 +19,7 @@ export class ResidentsComponent {
   ownerRole:string = 'resident'
   myProfiles: IResidentAccount[] = [{ firstname: '', lastname: '', email: '', cell: '',uuid:'', id:0, alerts:''}];
  
-  myUnit: IUnit = { unit:100, street:'',sqft:0, bdrms:1 , bldg:''};
+  myUnit: IUnit = { unit:0, street:'',sqft:0, bdrms:1 , bldg:''};
 
   //* Single objects chosen from table to edit
   editProfile: IResidentAccount = { firstname: 'x', lastname: 'x', email: '', cell: 'x', uuid: '', id:0, alerts:''};
@@ -27,9 +27,6 @@ export class ResidentsComponent {
 
   ngOnInit(): void {
     console.log(this.me + " ngOnInit()")
-    //this.ownerRole = this.us.getOwnerRole();
-    //let u = this.rs.getCurrentUnit;
-    //this.fs.unitSelectionHandler(u)
   }
 
   onResidentClick(n: number) {
@@ -44,29 +41,12 @@ export class ResidentsComponent {
 private processProfiles(data:any){
   console.log(this.me + " processProfiles()")
   if(data == null){return}
-  //this.resetTableData()
-  this.myProfiles = [];
-  for (let index = 0; index < data.length; index++) {
-    let p:IResidentAccount = { firstname: '', lastname: '', email: '', cell: '', uuid: '', id:0, alerts:''};
-    const element = data[index];
-    p.firstname = element.firstname;
-    p.lastname = element.lastname;
-    p.email = element.email;
-    p.cell = element.cell;
-    p.uuid = element.uuid;
-    p.id = element.id;
-    p.alerts = element.alerts;
-   
-    let clone = structuredClone(p);
-    this.myProfiles.push(clone);
-  }
+  this.myProfiles = data
  
   if(this.ownerRole == 'resident'){
     //this.residentEditStates.residentOne = false;
   }
 }
-
-
 
   ngOnDestroy() {
     this.us.clearData();
@@ -77,15 +57,14 @@ private processProfiles(data:any){
 
   constructor(private router: Router, 
     private rs: ResidentsService, private us: UserService) {
-
+      console.log(this.me + " constructor()")
     this.subscriptionOne = this.rs.getResidentsObs().subscribe((x:IResidentAccount[]) =>  {
-      console.log(this.me + '>> getResidentsObs()')
+      console.log(this.me + '>> getResidentsObs() count =' + x.length)
       if(x.length > 0){
         this.processProfiles(x);
       }
     });
 
-   
     this.subscriptionTwo = this.rs.getUnitObs().subscribe((x:IUnit) =>  {
       this.myUnit = x;
       console.log(this.me + '>> getUnitObs = ' + this.myUnit.unit + " sqft = " + this.myUnit.sqft)

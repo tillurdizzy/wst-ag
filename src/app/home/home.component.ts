@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { UserService } from '../services/user.service';
+import { ResidentsService } from '../services/residents.service';
+import { VehiclesService } from '../services/vehicles.service';
 
 @Component({
   selector: 'app-home',
@@ -7,8 +9,11 @@ import { UserService } from '../services/user.service';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
-  constructor(private us: UserService){
+  constructor(private us: UserService, private rs:ResidentsService, private vs:VehiclesService){
     console.log("HomeComponent >> constructor()")
-    this.us. signOut();
+    this.us.resetService()
+    this.rs.resetService()
+    this.vs.resetService()
+   
   }
 }

@@ -15,10 +15,10 @@ export class VehiclesService {
 
 
   //^vehicles$
-  private vehiclesBS: BehaviorSubject<IVehicle[]> = new BehaviorSubject([]);
+  private vehiclesBS: BehaviorSubject<IVehicle[] | boolean> = new BehaviorSubject([]);
   public vehicles$ = this.vehiclesBS.asObservable();
 
-  getVehiclesObs(): Observable<IVehicle[]> {
+  getVehiclesObs(): Observable<IVehicle[] | boolean> {
     return this.vehicles$
   }
 
@@ -71,16 +71,21 @@ export class VehiclesService {
       //this.router.navigate([nav]);
     }
   };
+
   async fetchResidentVehicles(unit: number) {
-    console.log('SupabaseService > fetchResidentVehicles()');
+    console.log('VehiclesService > fetchResidentVehicles()');
     try {
       let data = await this.supabase.from('parking').select('*').eq('unit', unit);
       if(data != null && data!=undefined){
-        //this.publishData('UnitService','fetchResidentVehicles',data.data);
+        this.processRawVehicleData(data.data);
       }
     } catch (error) {
       this.showResultDialog('ERROR: ' + JSON.stringify(error))
     }
+  }
+
+  processRawVehicleData(data){
+
   }
   
 
@@ -103,6 +108,10 @@ export class VehiclesService {
         setTimeout(() => {
           this.dialogRef.close();
         }, 2000); */
+    }
+
+    resetService(){
+      this.vehiclesBS.next(false);
     }
   
   constructor() {

@@ -111,11 +111,11 @@ export class EditResidentComponent {
       if(ar.indexOf("UpdateResidentComponent")> -1){
 
         if ((dataPassed.from == 'SupabaseService') && (dataPassed.event == 'updateResidentProfile success!')) {
-          this.us.doConsole(this.me + 'supaSubscription > updateResidentProfile success!')
+          console.log(this.me + 'supaSubscription > updateResidentProfile success!')
           
 
         } else if ((dataPassed.from == 'SupabaseService') && (dataPassed.event == 'delete_adminResident')) {
-          this.us.doConsole(this.me + 'supaSubscription > delete Profile success!!')
+          console.log(this.me + 'supaSubscription > delete Profile success!!')
          
 
         } else if (dataPassed.from == '' && dataPassed.event == '') {

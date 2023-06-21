@@ -4,14 +4,11 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { DialogComponent } from '../library/dialog/dialog.component';
 import { AuthChangeEvent, AuthSession } from '@supabase/supabase-js';
 import { Session, User } from '@supabase/supabase-js';
 import { IUserAccount, IUserUpdate } from './interfaces/iuser';
-import { IResidentInsert } from './interfaces/iuser';
 import { IProfileFetch, IProfileUpdate, IProfile } from './interfaces/iuser';
-import { ISpaceUpdate, ISpaceBasic } from './interfaces/iuser';
-import { IVehicle, IVehicleTable, IVehicleUpdate } from './interfaces/iuser';
+
 
 
 @Injectable({
@@ -20,15 +17,12 @@ import { IVehicle, IVehicleTable, IVehicleUpdate } from './interfaces/iuser';
 export class UserService {
   private supabase: SupabaseClient;
   private userAuthenticated: boolean = false;
-  private userid: string | null = null;
+  //private userid: string | null = null;
   private session:{} = {};
   private userObj:User = null;
   private userAccount: IUserAccount = { id:0, username: '', role: '', cell: '', email: '', units: [], uuid:'' ,firstname:'',lastname:'',csz:'',street:'',alerts:''};
   private myCurrentUnit: number;
-  private iProfile: IProfile;
-
-  private vehicle: IVehicle;
-  private myVehicles: IVehicle[] = [];
+  //private iProfile: IProfile;
 
      //* Observables
   _session: AuthSession | null = null;
@@ -49,10 +43,7 @@ export class UserService {
     this.userAccountObs.next(x);
   }
 
-  
-
-
-   //* >>>>>>>>>>>>>>>>>>> USER / AUTH / SESSION / ACCOUNT <<<<<<<<<<<<<<<<<<<<<<<
+  //* >>>>>>>>>>>>>>>>>>> USER / AUTH / SESSION / ACCOUNT <<<<<<<<<<<<<<<<<<<<<<<
 
   async loadUser() {
     console.log('UserService > loadUser() ' + this.userAuth.value);
@@ -93,13 +84,13 @@ export class UserService {
     let uid =this.userObj.id;
   };
 
-  isUserAuthenticated() {
+ /*  isUserAuthenticated() {
     let obj = {
       'auth': this.userAuthenticated, 
       'account':this.userAccount,
     }
     return obj;
-  };
+  }; */
 
 
 
@@ -123,10 +114,8 @@ export class UserService {
       this.myCurrentUnit = this.userAccount.units[0]
     }
     this.userAccountObs.next(this.userAccount)
-    
-  }
 
- 
+  }
 
 
   async signIn(credentials: { email: string; password: string }) {
@@ -143,7 +132,7 @@ export class UserService {
   }
 
   async signUp(credentials: { email: string; password: string }) {
-    this.doConsole('UserService > signUp()' + JSON.stringify(credentials));
+    console.log('UserService > signUp()' + JSON.stringify(credentials));
     try {
       var result = await this.supabase.auth.signUp(credentials);
       if(result.data.user == null) {
@@ -157,7 +146,7 @@ export class UserService {
   }
 
   authChanges(callback: (event: AuthChangeEvent, session: Session | null) => void) {
-    this.doConsole('UserService > authChanges() ');
+    console.log('UserService > authChanges() ');
     return this.supabase.auth.onAuthStateChange(callback);
   }
 
@@ -194,34 +183,9 @@ export class UserService {
     }
   }
 
-  
-  
 
-    //* >>>>>>>>>>>>>>>>>>> FETCH RESIDENT DATA <<<<<<<<<<<<<<<<<<<<<<<
-    async fetchResidentProfiles(unit: number) {
-      this.doConsole('UserService > fetchResidentProfiles()');
-      try {
-        let data = await this.supabase.from('profiles').select('*').eq('unit', unit);
-        this.publishData('UnitService','fetchResidentProfiles',data.data);
-      } catch (error) {
-        this.showResultDialog('ERROR: ' + JSON.stringify(error))
-      }
-    }
-  
-    async fetchResidentVehicles(unit: number) {
-      this.doConsole('UserService > fetchResidentVehicles()');
-      try {
-        let data = await this.supabase.from('parking').select('*').eq('unit', unit);
-        if(data != null && data!=undefined){
-          this.publishData('UnitService','fetchResidentVehicles',data.data);
-        }
-      } catch (error) {
-        this.showResultDialog('ERROR: ' + JSON.stringify(error))
-      }
-    }
-  
     async fetchUnit(unit: number) {
-      this.doConsole('UserService > fetchUnit()');
+      console.log('UserService > fetchUnit()');
       try {
         let { data, error } = await this.supabase.from('units').select('*').eq('unit', unit).single();
         if(data != null){
@@ -237,12 +201,12 @@ export class UserService {
   
     publishUnitData(data) {
   
-      let dataObj = {
+     /*  let dataObj = {
         to: 'UnitService',
         event: 'publishUnitData',
         iUnit: data,
       };
-      this.sendData(dataObj);
+      this.sendData(dataObj); */
       //! replace with Obsv
       /* this.dataObj = {
         to: 'DetailsComponent',
@@ -267,7 +231,7 @@ export class UserService {
     }
   
     async insertNewProfile(profile: IProfileFetch) {
-      this.doConsole('UserService > insertNewProfile() profile >>' + JSON.stringify(profile));
+      console.log('UserService > insertNewProfile() profile >>' + JSON.stringify(profile));
       try {
         const { data, error } = await this.supabase.from('profiles').insert(profile);
         this.showResultDialog('New resident profile added.')
@@ -279,7 +243,7 @@ export class UserService {
     }
   
     async updateProfile(p: IProfileUpdate, id: number) {
-      this.doConsole('updateProfile id = ' + id);
+      console.log('updateProfile id = ' + id);
       try {
         const { data, error } = await this.supabase.from('profiles').update(p).eq('id',id ).select();
         if(data != null){
@@ -324,102 +288,9 @@ export class UserService {
       }
     }
   
-    async getOwnerAccount(unit:number){
-      try {
-        let { data, error } = await this.supabase.from('units').select('*').eq('unit', unit);
-        let dataObj = {
-          to: 'DataService',
-          event: 'getOwnerAccount',
-          result: data[0]
-        };
-        this.sendData(dataObj);
-      } catch (error) {
-        alert("Sign in error: getOwner "  + JSON.stringify(error))
-      }
-    }
+   
   
-    async updateOwnerAccount(a:IResidentInsert,units){
-      this.doConsole('UserService > updateOwnerAccount() data >>' + JSON.stringify(a));
-      try {
-        const { data, error } = await this.supabase.from('units')
-        .update(a)
-        .in('unit', units);
-        if(error == null){this.showResultDialog('Owner account updated.')}
-      } catch (error) {
-        this.showResultDialog('ERROR: ' + JSON.stringify(error))
-      }finally{
-        this.router.navigate(['/home']);
-      }
-    }
-  
-    //*>>>>>>>>>>>>>>>>>> Vehicles <<<<<<<<<<<<<<<<<<<<
-  
-    async removeVehicle(id: number, unit: number) {
-      let noCar = {
-        name: '',
-        tag: '',
-        make: '',
-        model: '',
-        color: ''
-      };
-      try {
-        let { data, error } = await this.supabase.from('parking').update(noCar).eq('id', id).select();
-        if(error == null){
-  
-          this.fetchResidentVehicles(unit);
-          this.showResultDialog('Vehicle removed.')
-        }else{
-          this.showResultDialog('ERROR: ' + JSON.stringify(error))
-        }
-      } catch (error) {
-        this.showResultDialog('ERROR: ' + JSON.stringify(error))
-      }finally{
-        this.router.navigate(['/home']);
-        
-      }
-    };
-  
-    async updateParkingSpace(
-      space: ISpaceUpdate,
-      id: string,
-      nav: string,
-      unit: number
-    ) {
-      try {
-        let { data, error } = await this.supabase.from('parking').update(space).eq('id', id).select();
-       
-       if(data != null){
-        this.fetchResidentVehicles(unit);
-        this.showResultDialog('Vehicle Updated.')
-       }
-      } catch (error) {
-        this.showResultDialog('ERROR: ' + JSON.stringify(error))
-      }finally{
-        this.router.navigate([nav]);
-      }
-    };
-  
-    private setMyVehicle(data: any) {
-      this.myVehicles.length = 0;
-      for (var i = 0; i < data.length; i++) {
-        this.vehicle = data[i];
-        this.myVehicles.push(this.vehicle);
-      }
-    }
-  
-    async updateVehicle(obj: IVehicleTable, s: number) {
-      const { error } = await this.supabase
-        .from('parking')
-        .update(obj)
-        .match({ space: s });
-  
-      if (error) {
-        this.showResultDialog('ERROR: ' + JSON.stringify(error))
-      } else {
-        //this.getUserVehicles(this.ds.getUserUnitNumber());
-      }
-    }
-
+    
   //* >>>>>>>>>>>>>> MESSENGER <<<<<<<<<<<<<<<<
 
   private subject = new Subject<any>();
@@ -437,19 +308,6 @@ export class UserService {
     return this.subject.asObservable();
   }
 
-  publishData(to:string,event:string,data:any) {
-    let dataObj = {
-      to:to,
-      event: event,
-      data: data
-    };
-    this.sendData(dataObj);
-  }
-
-  doConsole(message: string) {
-    console.log(message); 
-  }
-
   showResultDialog(message:string){
      /*  const dialogConfig = new MatDialogConfig();
       dialogConfig.autoFocus = true;
@@ -463,6 +321,12 @@ export class UserService {
       setTimeout(() => {
         this.dialogRef.close();
       }, 2000); */
+  }
+
+  resetService(){
+    this.userAccountObs.next(false);
+    this.userAuth.next(false);
+    this.supabase.auth.signOut();
   }
 
   //* >>>>>>>>>>>>>>> CONSTRUCTOR / SUBSCRIPTIONS <<<<<<<<<<<<<<<<<<<<
