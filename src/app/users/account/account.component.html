@@ -1,22 +1,77 @@
-
-
-  <div class="sidebar-container">
-    <div class="not-sidebar">
-        <div class="section-header">User / Owner</div>
-        <div class="small-black-14 flex-row-space-between" *ngIf="userAccount.id > 0">
-            <div>
-              <span class="small-black-text"></span>{{ userAccount.firstname }} {{userAccount.lastname}}<br>
-              <span class="small-black-text">Street: </span>{{ userAccount.street }}<br>
-              <span class="small-black-text">City: </span>{{ userAccount.csz }}<br>
-              <span class="small-black-text">Cell: </span>{{ userAccount.cell }}<br>
-              <span class="small-black-text">Email: </span>{{ userAccount.email }}<br>
-            </div>
-            <div class="edit-button">
-
-              <p-button label="Edit" icon="pi pi-file-edit" styleClass="p-button-sm" (click)="updateUserAccount()"></p-button>
-            </div>
-          </div>
-        <p-divider></p-divider>
-        
+<div class="sidebar-container">
+  <div class="not-sidebar">
+    <div class="section-header">User / Owner</div>
+    <div *ngIf="display == 'data'">
+    <div class="small-black-14" style="margin-top: 15px" *ngIf="userAccount.id > 0"><div>
+        <span class="small-black-text"></span>{{ userAccount.firstname }} {{ userAccount.lastname }}<br />
+        <span class="small-black-text">Street: </span>{{ userAccount.street}}<br />
+        <span class="small-black-text">City: </span>{{ userAccount.csz }}<br />
+        <span class="small-black-text">Cell: </span>{{ userAccount.cell }}<br />
+        <span class="small-black-text">Email: </span>{{ userAccount.email}}<br />
+      </div>
+      <div class="edit-button" style="margin-top: 15px">
+        <p-button label="Edit" icon="pi pi-file-edit" styleClass="p-button-sm"
+          (click)="showUpdateForm()"
+        ></p-button>
+      </div>
     </div>
+  </div>
+    <div id="accountForm" class="form-group" *ngIf="display == 'form'">
+      <form [formGroup]="form" (ngSubmit)="submitForm()">
+        <div class="p-fluid">
+          <div class="p-field">
+
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" formControlName="firstName" pInputText class="p-inputtext-sm">
+
+            <small *ngIf="form.get('firstName')?.invalid && form.get('firstName')?.touched" class="p-error">
+              First Name is required.
+            </small>
+          </div>
+
+          <div class="p-field">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" formControlName="lastName" pInputText class="p-inputtext-sm">
+            <small *ngIf="form.get('lastName')?.invalid && form.get('lastName')?.touched" class="p-error">
+              Last Name is required.
+            </small>
+          </div>
+
+          <div class="p-field">
+            <label for="street">Street</label>
+            <input type="text" id="street" formControlName="street" pInputText class="p-inputtext-sm">
+            <small *ngIf="form.get('street')?.invalid && form.get('street')?.touched" class="p-error">
+              Street is required.
+            </small>
+          </div>
+
+          <div class="p-field">
+            <label for="city">City, State, Zip</label>
+            <input type="text" id="city" formControlName="city" pInputText class="p-inputtext-sm">
+            <small *ngIf="form.get('city')?.invalid && form.get('city')?.touched" class="p-error">
+              City, State, Zip is required.
+            </small>
+          </div>
+
+          <div class="p-field">
+            <label for="cell">Cell</label>
+            <input type="text" id="cell" formControlName="cell" pInputText class="p-inputtext-sm">
+            <small *ngIf="form.get('cell')?.invalid && form.get('cell')?.touched" class="p-error">
+              Cell is required.
+            </small>
+          </div>
+
+          <div class="p-field">
+            <label for="email">Email</label>
+            <input type="email" id="email" formControlName="email" pInputText class="p-inputtext-sm">
+          </div>
+
+          <button type="submit" pButton label="Submit" [disabled]="form.invalid"></button>
+          <button type="button" pButton label="Cancel" style="margin-top:10px" styleClass="p-button-warning"
+          (click)="hideUpdateForm()"></button>
+        </div>
+      </form>
+
+    </div>
+  </div>
 </div>

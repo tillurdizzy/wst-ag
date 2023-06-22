@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { Observable, Subject, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { Subscription } from 'rxjs'
 import { Router } from '@angular/router';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { DialogComponent } from '../library/dialog/dialog.component';
@@ -9,12 +10,14 @@ import { IResidentAccount, IResidentInsert } from './interfaces/iuser';
 import { IProfile, IProfileUpdate } from './interfaces/iuser';
 import { IUserAccount, IUserUpdate } from './interfaces/iuser';
 import { IUnit } from './interfaces/iuser';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ResidentsService {
   private supabase: SupabaseClient;
+  private subscription:Subscription
   private userAccount: IUserAccount = { id:0, username: '', role: '', cell: '', email: '', units: [], uuid:'' ,firstname:'',lastname:'',csz:'',street:'',alerts:''};
   private emptyResidentAccount: IResidentAccount[]= [{ firstname:'', lastname:'', cell: '', email: '',uuid:'', id:0, alerts:''}];
   private myUnit: IUnit = { unit:0, street:'',sqft:0, bdrms:1 , bldg:''};
@@ -47,23 +50,24 @@ public residents$ = this.residentsBS.asObservable();
 getResidentsObs(): Observable<IResidentAccount[] | boolean> {
   return this.residents$
 }
-setResidentObs(n:IResidentAccount[]){
+setResidentObs(data:IResidentAccount[]){
    //Sort descending order... larger number is "Primary" resident - i.e. Owner
-  n.sort((e1, e2) => e1.id > e2.id ? -1 : e1.id < e2.id ? 1 : 0);
+   data.sort((e1, e2) => e1.id > e2.id ? -1 : e1.id < e2.id ? 1 : 0);
 
   let role = this.userAccount.role;
   var ownerUuid = this.userAccount.uuid;
   var clone = structuredClone(this.emptyResidentAccount[0]);
-  var residentAccountArray = [];
+  var residentDisplay = [];
   if (role == 'admin') {
-    residentAccountArray.push(n[0])
-    residentAccountArray.push(n[1])
+    residentDisplay.push(data[0])
+    residentDisplay.push(data[1])
 
   }else if(role == 'non-resident'){
-    residentAccountArray.push(n[0])
-    residentAccountArray.push(n[1])
+    residentDisplay.push(data[0])
+    residentDisplay.push(data[1])
     
   }else if (role == 'resident' && ownerUuid != null) {
+    //* If Ower/User is also Resident, get Primary Resident name and info from Account because profile table is empty
     clone.firstname = this.userAccount.firstname;
     clone.lastname = this.userAccount.lastname;
     clone.cell = this.userAccount.cell;
@@ -71,8 +75,8 @@ setResidentObs(n:IResidentAccount[]){
     clone.id = this.userAccount.id;
     clone.alerts = this.userAccount.alerts;
     clone.uuid = this.userAccount.uuid;
-    residentAccountArray.push(clone)
-    residentAccountArray.push(n[1])
+    residentDisplay.push(clone)
+    residentDisplay.push(data[1])
     
   } else if (role == 'resident +') {
     // If owner is 'resident +', get currentUnit info from Accounts table Units.reSidesAt!
@@ -80,11 +84,11 @@ setResidentObs(n:IResidentAccount[]){
     let u = this.userAccount.units;
     let v = this.parseObj(u, 'residesAt');
     if (v == this.currentUnit  && ownerUuid != null)  {
-      residentAccountArray.push(n[0])
-      residentAccountArray.push(n[1])
+      residentDisplay.push(data[0])
+      residentDisplay.push(data[1])
     } 
   }
-  this.residentsBS.next(residentAccountArray);
+  this.residentsBS.next(residentDisplay);
 }
 
 processResidentData(data){
@@ -107,7 +111,7 @@ processResidentData(data){
       myProfiles.push(clone);
     }
     console.log("ResidentsService  > residentsBS.next(myProfiles)")
-    this.residentsBS.next(myProfiles);
+    this.setResidentObs(myProfiles);
   }
 
 
@@ -158,6 +162,10 @@ async fetchUnit(unit: number) {
   }
 }
 
+handleAccount$(x){
+  this.userAccount = x;
+}
+
 //* >>>>>>>>>>>>>>>  UTILITIES <<<<<<<<<<<<<<<<<<<<<<<>
 
 parseObj(obj, key) {
@@ -184,7 +192,7 @@ resetService(){
   this.residentsBS.next(this.emptyResidentAccount);
 }
 
-  constructor() {
+  constructor(private us:UserService) {
 
     console.log('ResidentsService > constructor() ');
     try {
@@ -195,5 +203,9 @@ resetService(){
     } catch (error) {
       alert('Create Client error: ' + JSON.stringify(error));
     }
+
+    this.subscription = this.us.getUserAccount$().subscribe((x) => {
+      this.handleAccount$(x);
+    });
   }
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input  } from '@angular/core';
 
 @Component({
   selector: 'app-vehicle-list',
@@ -6,5 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./vehicle-list.component.scss']
 })
 export class VehicleListComponent {
+  @Input() data = null;
 
 }

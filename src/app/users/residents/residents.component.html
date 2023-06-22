@@ -5,7 +5,7 @@
       <span class="black-16-550">Unit #{{ myUnit.unit }}</span>
       <span class="black-13-550">Bdrms: {{ myUnit.bdrms }} / SqFt: {{ this.myUnit.sqft }}</span>
     </div>
-    <div  class="no-bullet" *ngIf="myProfiles[0].id > 0">
+    <div  class="dataList" *ngIf="myProfiles[0].id > 0">
     <ul>
       <li *ngFor="let x of myProfiles">
         <app-resident-list [data]="x"></app-resident-list>

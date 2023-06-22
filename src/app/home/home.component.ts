@@ -11,6 +11,8 @@ import { VehiclesService } from '../services/vehicles.service';
 export class HomeComponent {
   constructor(private us: UserService, private rs:ResidentsService, private vs:VehiclesService){
     console.log("HomeComponent >> constructor()")
+
+    //! Comment out !!!
     this.us.resetService()
     this.rs.resetService()
     this.vs.resetService()

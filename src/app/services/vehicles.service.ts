@@ -85,7 +85,8 @@ export class VehiclesService {
   }
 
   processRawVehicleData(data){
-
+    let x = data as IVehicle[];
+    this.setVehiclesObs(x)
   }
   
 

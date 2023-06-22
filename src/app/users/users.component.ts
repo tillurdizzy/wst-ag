@@ -53,10 +53,12 @@ export class UsersComponent {
     if (this.isIUserAccount(x)) {
       this.userAccount = x;
       let units = this.userAccount.units;
+      //! Fetch Unit, Residents and Vehicles
       this.rs.fetchUnit(units[0]);
       this.rs.fetchResidentProfiles(units[0]);
+      this.vs.fetchResidentVehicles(units[0]);
     } else {
-      // myObject is not of type MyInterface
+      
     }
   }
 

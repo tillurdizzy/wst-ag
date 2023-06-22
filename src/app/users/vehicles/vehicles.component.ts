@@ -26,8 +26,7 @@ export class VehiclesComponent {
     let x = this.myVehicles.length;
    
   }
-  constructor(private router: Router, 
-    private vs: VehiclesService, private us: UserService) {
+  constructor(private vs: VehiclesService, private us: UserService) {
 
     this.vs.getVehiclesObs().subscribe((x:IVehicle[]) =>  {
       console.log(this.me + '>> getVehiclesObs()')
