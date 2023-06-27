@@ -1,12 +1,69 @@
 <div class="sidebar-container">
-    <div class="not-sidebar">
-      <div class="section-header">Vehicles</div>
-      <div  class="dataList" *ngIf="myVehicles[0].id > 0">
+  <div class="not-sidebar">
+    <div class="section-header">Vehicles</div>
+    <div *ngIf="display=='data'">
+      <div class="dataList" *ngIf="myVehicles[0].id > 0">
         <ul>
           <li *ngFor="let x of myVehicles">
-            <app-vehicle-list [data]="x"></app-vehicle-list>
+            <app-vehicle-list
+              [data]="x"
+              (sendData)="handleChildData($event)"
+            ></app-vehicle-list>
           </li>
         </ul>
       </div>
     </div>
+    <div class="form-group">
+      <form [formGroup]="form" (ngSubmit)="submitForm()">
+        <div class="p-fluid">
+          
+          <div class="p-field" *ngIf="display=='form'">
+            <label for="name">Name</label>
+            <input type="text" id="name" formControlName="name" pInputText class="p-inputtext-sm">
+            <small *ngIf="form.get('name')?.invalid && form.get('name')?.touched" class="p-error">
+              Name is required.
+            </small>
+          </div>
+
+          <div class="p-field" *ngIf="display=='form'">
+            <label for="tag">License</label>
+            <input type="text" id="tag" formControlName="tag" pInputText class="p-inputtext-sm">
+            <small *ngIf="form.get('tag')?.invalid && form.get('tag')?.touched" class="p-error">
+              Licemse Tag is required.
+            </small>
+          </div>
+
+          <div class="p-field" *ngIf="display=='form'">
+            <label for="make">Make</label>
+            <input type="text" id="make" formControlName="make" pInputText class="p-inputtext-sm">
+            <small *ngIf="form.get('make')?.invalid && form.get('make')?.touched" class="p-error">
+              Make is required.
+            </small>
+          </div>
+
+          <div class="p-field" *ngIf="display=='form'">
+            <label for="model">Model</label>
+            <input type="text" id="model" formControlName="model" pInputText class="p-inputtext-sm">
+            <small *ngIf="form.get('model')?.invalid && form.get('model')?.touched" class="p-error">
+              Model is required.
+            </small>
+          </div>
+
+          <div class="p-field" *ngIf="display=='form'">
+            <label for="color">Color</label>
+            <input type="text" id="color" formControlName="color" pInputText class="p-inputtext-sm">
+            <small *ngIf="form.get('color')?.invalid && form.get('color')?.touched" class="p-error">
+              Color is required.
+            </small>
+          </div>
+          <div class="flex-column" *ngIf="display=='form'">
+            <p-button type="submit" label="Submit"  [disabled]="form.invalid"></p-button>
+            <p-button label="Cancel" styleClass="p-button-warning"  (click)="hideUpdateForm()"></p-button>
+        </div>
+
+          
+        </div>
+      </form>
+    </div>
   </div>
+</div>

@@ -1,4 +1,4 @@
-import { Component, Input  } from '@angular/core';
+import { Component, EventEmitter, Input, Output  } from '@angular/core';
 
 @Component({
   selector: 'app-vehicle-list',
@@ -7,5 +7,10 @@ import { Component, Input  } from '@angular/core';
 })
 export class VehicleListComponent {
   @Input() data = null;
+  @Output() sendData: EventEmitter<any> = new EventEmitter<any>();
 
+
+  sendToParent(spaceNum){
+    this.sendData.emit(spaceNum);
+  }
 }

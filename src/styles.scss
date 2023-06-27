@@ -56,6 +56,12 @@ body {
         font-weight: bold;
       }
 }
+
+.flex-column{
+    display:flex;
+    flex-direction: column;
+    row-gap: 10px;
+}
 .paragraph-header {
     display: block;
     font-size: 1em;
@@ -70,6 +76,7 @@ body {
 .paragraph-copy {
     display: block;
     font-size: 1em;
+    margin-bottom:12px;
 }
 
 .paragraph-copy-bold {
@@ -98,6 +105,9 @@ body {
 img{
     border: 2px solid #000;
 }
+.image-noborder{
+    border:none;
+}
 
 .no-border{
     border:0;
@@ -123,6 +133,7 @@ img{
     justify-content: flex-start;
     align-items: center;
     width: 100%;
+    
 }
 
 .flex-row-space-between {
@@ -166,6 +177,10 @@ img{
 
 .spacer-20 {
     margin-bottom: 20px;
+}
+
+.padding-right-10{
+    padding-right:10px;
 }
 
 

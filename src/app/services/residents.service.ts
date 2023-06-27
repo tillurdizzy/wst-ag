@@ -114,27 +114,19 @@ processResidentData(data){
     this.setResidentObs(myProfiles);
   }
 
-
-updateResidentProfile(updatedProfile:IProfile){
- /*  console.log("ResidentsService  > updateResidentProfile()")
-  var subData:IResidentAccount[] = undefined;
-  var newData:IResidentAccount[] = [];
-  const sub = this.residentsBS.subscribe(p => subData = p);
-  sub.unsubscribe();
-  let updateID =  updatedProfile.id;
-  for (let index = 0; index < subData.length; index++) {
-    const element = subData[index];
-    let thisID = element.id;
-    if (thisID = updateID) {
-      subData[index].email = updatedProfile.email
-      subData[index].firstname = updatedProfile.firstname
-      subData[index].lastname = updatedProfile.lastname
-      subData[index].cell = updatedProfile.cell
+  async updateResident(p:IResidentInsert, id:number, obs:IResidentAccount[]){
+    console.log('ResidentsService  > updateResident() id = ' + id);
+    try {
+      let { data, error } = await this.supabase.from('profiles').update(p).match({ id: id });
+      if(error == null){
+        this.setResidentObs(obs);
+      }  
+    } catch (error) {
+      alert(error.message);
     }
-    newData.push(subData[index])
   }
-  this.residentsBS.next(subData); */
-}
+
+
 
 //* >>>>>>>>>>>>>>>>>>> FETCH RESIDENT DATA <<<<<<<<<<<<<<<<<<<<<<<
 async fetchResidentProfiles(unit: number) {

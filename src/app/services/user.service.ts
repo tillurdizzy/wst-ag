@@ -4,15 +4,15 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DialogComponent } from '../library/dialog/dialog.component';
 import { AuthChangeEvent, AuthSession } from '@supabase/supabase-js';
 import { Session, User } from '@supabase/supabase-js';
 import { IUserAccount, IUserUpdate } from './interfaces/iuser';
 import { IProfileFetch, IProfileUpdate, IProfile } from './interfaces/iuser';
 
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
   private supabase: SupabaseClient;
@@ -33,13 +33,14 @@ export class UserService {
     return this.userAuth.asObservable();
   }
 
-  private userAccountObs: BehaviorSubject < IUserAccount | boolean > = new BehaviorSubject(false);
+  private userAccountObs: BehaviorSubject < IUserAccount> = new BehaviorSubject(this.userAccount);
   public userAccount$ = this.userAccountObs.asObservable();
 
-  getUserAccount$(): Observable <IUserAccount | boolean> {
+  getUserAccount$(): Observable <IUserAccount> {
     return this.userAccount$;
   }
-  setUserAccount(x:IUserAccount){
+  setUserAccount$(x:IUserAccount){
+    console.log('UserService >> setUserAccount$() ' + x);
     this.userAccountObs.next(x);
   }
 
@@ -84,40 +85,6 @@ export class UserService {
     let uid =this.userObj.id;
   };
 
- /*  isUserAuthenticated() {
-    let obj = {
-      'auth': this.userAuthenticated, 
-      'account':this.userAccount,
-    }
-    return obj;
-  }; */
-
-
-
-  private processUserAccount(data:any) {
-    console.log("UserService >> processUserAccount()");
-   
-    this.userAccount.cell = data.cell;
-    this.userAccount.email = data.email;
-    this.userAccount.id = data.id;
-    this.userAccount.uuid = data.uuid;
-    this.userAccount.username = data.username;
-    this.userAccount.role = data.role;
-    this.userAccount.firstname = data.firstname;
-    this.userAccount.lastname = data.lastname;
-    this.userAccount.alerts = data.alerts;
-    this.userAccount.street = data.street;
-    this.userAccount.csz = data.csz;
-    this.userAccount.units = data.units.units;
-  
-    if(this.userAccount.units.length > 0){
-      this.myCurrentUnit = this.userAccount.units[0]
-    }
-    this.userAccountObs.next(this.userAccount)
-
-  }
-
-
   async signIn(credentials: { email: string; password: string }) {
     console.log('UserService > signIn() ' + JSON.stringify(credentials));
     try {
@@ -138,10 +105,10 @@ export class UserService {
       if(result.data.user == null) {
         throw result.error.message
       }else {
-        this.showResultDialog('User created: ' + result.data.user.id)
+        this.showResultDialog('Result','User created: ' + result.data.user.id)
       }
     } catch (error) {
-      this.showResultDialog('Error: ' + error)
+      this.showResultDialog('Result','Error: ' + error)
     };
   }
 
@@ -160,10 +127,10 @@ export class UserService {
       const { data, error } = await this.supabase.auth.resetPasswordForEmail(email, {
         redirectTo: 'http://localhost:4200/password-reset'})
       if(error == null){
-        this.showResultDialog('Check your email for Password Reset link.')
+        this.showResultDialog('Result','Check your email for Password Reset link.')
       }
     } catch (error) {
-      this.showResultDialog('ERROR: ' + JSON.stringify(error))
+      this.showResultDialog('Result','ERROR: ' + JSON.stringify(error))
     }finally{
       this.router.navigate(['/home']);
     }
@@ -174,12 +141,12 @@ export class UserService {
     try {
       const { data, error } = await this.supabase.auth.updateUser({password: new_password})
       if(error == null){
-        this.showResultDialog('Password reset.  Please log in.')
+        this.showResultDialog('Result','Password reset.  Please log in.')
       }
     } catch (error) {
       
     }finally{
-      this.router.navigate(['/home']);
+      
     }
   }
 
@@ -191,29 +158,16 @@ export class UserService {
         if(data != null){
           this.publishUnitData(data); 
         }else{
-          this.showResultDialog('ERROR: ' + JSON.stringify(error))
+          this.showResultDialog('Result','ERROR: ' + JSON.stringify(error))
         }
        
       } catch (error) {
-        this.showResultDialog('ERROR: ' + JSON.stringify(error))
+        this.showResultDialog('Result','ERROR: ' + JSON.stringify(error))
       }
     }
   
     publishUnitData(data) {
   
-     /*  let dataObj = {
-        to: 'UnitService',
-        event: 'publishUnitData',
-        iUnit: data,
-      };
-      this.sendData(dataObj); */
-      //! replace with Obsv
-      /* this.dataObj = {
-        to: 'DetailsComponent',
-        event: 'publishUnitData',
-        iUnit: data,
-      };
-      this.sendData(this.dataObj); */
     }
   
   
@@ -222,9 +176,9 @@ export class UserService {
     async deleteProfile(id:number) {
       try {
         let { data, error } = await this.supabase.from('profiles').delete().eq('id', id);
-        this.showResultDialog('Resident deleted.')
+        this.showResultDialog('Result','Resident deleted.')
       } catch (error) {
-        this.showResultDialog('ERROR: ' + JSON.stringify(error))
+        this.showResultDialog('Result','ERROR: ' + JSON.stringify(error))
       }finally{
         this.router.navigate(['units/units-detail']);
       }
@@ -234,9 +188,9 @@ export class UserService {
       console.log('UserService > insertNewProfile() profile >>' + JSON.stringify(profile));
       try {
         const { data, error } = await this.supabase.from('profiles').insert(profile);
-        this.showResultDialog('New resident profile added.')
+        this.showResultDialog('Result','New resident profile added.')
       } catch (error) {
-        this.showResultDialog('ERROR: ' + JSON.stringify(error))
+        this.showResultDialog('Result','ERROR: ' + JSON.stringify(error))
       }finally{
         this.router.navigate(['/units/units-detail']);
       }
@@ -258,7 +212,7 @@ export class UserService {
         }
         
       } catch (error) {
-        this.showResultDialog('ERROR: ' + JSON.stringify(error))
+        this.showResultDialog('Result','ERROR: ' + JSON.stringify(error))
       }finally{
         this.router.navigate(['/home']);
       }
@@ -277,16 +231,41 @@ export class UserService {
     }
   
     async updateUserAccount(updateObj: IUserUpdate,id:string){
-      
       try {
-        const { data, error } = await this.supabase.from('accounts').update(updateObj).eq('uuid', id);
-        if(error == null){this.showResultDialog('User account updated.')}
+        const { data, error } = await this.supabase.from('accounts').update(updateObj).eq('uuid', id).select();
+        if(error == null){
+          this.processUserAccount(data[0]);
+          //this.showResultDialog('Success','User account updated.')
+        }
       } catch (error) {
-        this.showResultDialog('ERROR: ' + JSON.stringify(error))
+        this.showResultDialog('Result','ERROR: ' + JSON.stringify(error))
       }finally{
-        this.router.navigate(['/home']);
+        
       }
     }
+
+    private processUserAccount(data:any) {
+      console.log("UserService >> processUserAccount() " + data);
+     
+      this.userAccount.cell = data.cell;
+      this.userAccount.email = data.email;
+      this.userAccount.id = data.id;
+      this.userAccount.uuid = data.uuid;
+      this.userAccount.username = data.username;
+      this.userAccount.role = data.role;
+      this.userAccount.firstname = data.firstname;
+      this.userAccount.lastname = data.lastname;
+      this.userAccount.alerts = data.alerts;
+      this.userAccount.street = data.street;
+      this.userAccount.csz = data.csz;
+      this.userAccount.units = data.units.units;
+    
+      if(this.userAccount.units.length > 0){
+        this.myCurrentUnit = this.userAccount.units[0]
+      }
+      this.setUserAccount$(this.userAccount);
+    }
+  
   
    
   
@@ -308,23 +287,22 @@ export class UserService {
     return this.subject.asObservable();
   }
 
-  showResultDialog(message:string){
-     /*  const dialogConfig = new MatDialogConfig();
-      dialogConfig.autoFocus = true;
-      dialogConfig.hasBackdrop = false;
-      dialogConfig.data = {
-        title: 'Result',
-        message: message,
-      };
-      this.dialogRef = this.dialog.open(DialogComponent, dialogConfig);
-  
-      setTimeout(() => {
-        this.dialogRef.close();
-      }, 2000); */
+  showResultDialog(title: string, message: string) {
+    const ref = this.dialogService.open(DialogComponent, {
+      data:{title:title, message:message},
+      header: title,
+      width: '200px',
+      dismissableMask: true,
+      showHeader: true
+    });
+
+    setTimeout(() => {
+      ref.close();
+    }, 2000);
   }
 
   resetService(){
-    this.userAccountObs.next(false);
+    this.userAccountObs.next(this.userAccount);
     this.userAuth.next(false);
     this.supabase.auth.signOut();
   }

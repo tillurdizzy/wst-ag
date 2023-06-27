@@ -15,8 +15,8 @@ export class UsersComponent {
   subscriptionA: Subscription;
   subscriptionB: Subscription;
   subscriptionC: Subscription;
-  private userAccount: IUserAccount | boolean = {
-    id: 0,
+  private userAccount: IUserAccount = {
+    id: 1,
     username: '',
     role: '',
     cell: '',
@@ -42,23 +42,32 @@ export class UsersComponent {
       this.user.aud = x.aud;
       this.user.role = x.role;
       this.userAuthenticated = true;
+      console.log('UsersComponent > handleUser$() = ' + x);
       this.us.fetchUserAccount(this.user.id);
     }
-
     console.log('UsersComponent > handleUser() = ' + this.userAuthenticated);
   }
 
-  handleAccount$(x: IUserAccount | boolean) {
-    console.log('UsersComponent > handleAccount$() = ' + x);
-    if (this.isIUserAccount(x)) {
+  // userAccount
+  // this defaults to id = 1
+  // UserService de3faults to id = 0
+  handleAccount$(x: IUserAccount ) {
+    console.log('UsersComponent > handleAccount$() id = ' + x.id);
+    if(this.userAccount.id == 1 && x.id == 0){
+      // this would be the initial run when component created it subscribes to userAccount$ but no account has been retrieved yet
+      // dont do anything just let it pass
+    }else if(this.userAccount.id == 1 && x.id > 0){
+     // now we have real account
       this.userAccount = x;
       let units = this.userAccount.units;
       //! Fetch Unit, Residents and Vehicles
+      console.log('UsersComponent > Fetch Unit, Residents and Vehicles');
       this.rs.fetchUnit(units[0]);
       this.rs.fetchResidentProfiles(units[0]);
       this.vs.fetchResidentVehicles(units[0]);
-    } else {
-      
+    }else{
+      // this means we are updating ... just set userAccoount but don't call all the other fetches
+      this.userAccount = x;
     }
   }
 
@@ -79,13 +88,14 @@ export class UsersComponent {
     console.log('UsersComponent > constructor()');
     this.userAuthenticated = false;
     this.subscriptionA = this.us.getAuth$().subscribe((x) => {
-      console.log('UsersComponent > getAuth$()' + x);
+      console.log('UsersComponent > subscription >> getAuth$()' + x);
       if (x != null) {
         this.handleUser$(x);
       }
     });
 
     this.subscriptionB = this.us.getUserAccount$().subscribe((x) => {
+      console.log('UsersComponent > subscription >> getUserAccount$()' + x);
       this.handleAccount$(x);
     });
   }

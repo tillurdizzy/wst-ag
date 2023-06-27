@@ -1,16 +1,59 @@
 <div class="sidebar-container">
   <div class="not-sidebar">
     <div class="section-header">Residents</div>
-    <div class="flex-row-space-between" *ngIf="myUnit.unit > 0">
-      <span class="black-16-550">Unit #{{ myUnit.unit }}</span>
-      <span class="black-13-550">Bdrms: {{ myUnit.bdrms }} / SqFt: {{ this.myUnit.sqft }}</span>
+    <div *ngIf="myUnit.unit > 0">
+      <span class="black-16-550">Unit #{{ myUnit.unit }} / Bdrms: {{ myUnit.bdrms }} / SqFt: {{ this.myUnit.sqft }}</span>
     </div>
-    <div  class="dataList" *ngIf="myProfiles[0].id > 0">
-    <ul>
-      <li *ngFor="let x of myProfiles">
-        <app-resident-list [data]="x"></app-resident-list>
-      </li>
-    </ul>
-  </div>
+      <div *ngIf="display=='data'">
+        <div  class="dataList" *ngIf="myProfiles[0].id > 0">
+          <ul>
+            <li *ngFor="let x of myProfiles">
+              <app-resident-list [data]="x" (sendData)="handleChildData($event)"></app-resident-list>
+            </li>
+          </ul>
+      </div>
+    </div>
+    <div *ngIf="display=='form'" class="form-group">
+      <form [formGroup]="form" (ngSubmit)="submitForm()">
+        <div class="p-fluid">
+          <div class="p-field">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" formControlName="firstName" pInputText class="p-inputtext-sm">
+            <small *ngIf="form.get('firstName')?.invalid && form.get('firstName')?.touched" class="p-error">
+              First Name is required.
+            </small>
+          </div>
+
+          <div class="p-field">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" formControlName="lastName" pInputText class="p-inputtext-sm">
+            <small *ngIf="form.get('lastName')?.invalid && form.get('lastName')?.touched" class="p-error">
+              Last Name is required.
+            </small>
+          </div>
+
+          <div class="p-field">
+            <label for="cell">Cell</label>
+            <input type="text" id="cell" formControlName="cell" pInputText class="p-inputtext-sm">
+            <small *ngIf="form.get('cell')?.invalid && form.get('cell')?.touched" class="p-error">
+              Cell is required.
+            </small>
+          </div>
+
+          <div class="p-field">
+            <label for="email">Email</label>
+            <input type="email" id="email" formControlName="email" pInputText class="p-inputtext-sm">
+          </div>
+
+          <div class="flex-column">
+            <button type="submit" pButton label="Submit" [disabled]="form.invalid"></button>
+            <p-button label="Cancel" styleClass="p-button-warning"  (click)="hideUpdateForm()"></p-button>
+        </div>
+        </div>
+
+        
+      </form>
+    </div>
+
   </div>
 </div>

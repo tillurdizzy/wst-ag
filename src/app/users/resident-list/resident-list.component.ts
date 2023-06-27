@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-resident-list',
@@ -7,4 +7,9 @@ import { Component, Input } from '@angular/core';
 })
 export class ResidentListComponent {
   @Input() data = null;
+  @Output() sendData: EventEmitter<any> = new EventEmitter<any>();
+
+  sendToParent(id){
+    this.sendData.emit(id);
+  }
 }

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
 import { Subscription } from 'rxjs';
 import { IUserAccount, IUserUpdate } from 'src/app/services/interfaces/iuser';
-import { ReactiveFormsModule, FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, Validators, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-account',
@@ -15,41 +15,48 @@ export class AccountComponent implements OnInit{
   userAccount:IUserAccount = { id:0, username: '', role: '', cell: '', email: '', units: [], uuid:'' ,firstname:'',lastname:'',csz:'',street:'',alerts:''};
   unitCount:number = 0;
   display:string = 'data';
-  form!: FormGroup;
+  form: FormGroup = new FormGroup({
+    firstname: new FormControl ("", Validators.required),
+    lastname:  new FormControl("", Validators.required),
+    street: new FormControl ("", Validators.required),
+    csz: new FormControl ("", Validators.required),
+    cell: new FormControl ("", Validators.required)
+  });
 
   ngOnInit(): void {
    
   }
 
   submitForm() {
+    console.log("AccountComponent >> submitForm()")
     if (this.form.valid) {
       console.log(this.form.value); // Perform further actions with the form data
-      let formData = this.form.value;
-      let updateObj:IUserUpdate = {firstname:'',lastname:'',csz:'',street:'', cell:''}
-
-      //this.us.updateUserAccount(obj, id)
-      this.form.reset(); // Optional: Reset the form after submission
+      let formData = this.form.value as IUserUpdate;
+      let updateObj:IUserUpdate = {firstname:'',lastname:'',csz:'',street:'', cell:''};
+      let uuid = this.userAccount.uuid;
+      this.us.updateUserAccount(formData, uuid)
     }
   }
 
   showUpdateForm(){
-    this.form = this.formBuilder.group({
-      firstName: [this.userAccount.firstname, Validators.required],
-      lastName: [this.userAccount.lastname, Validators.required],
-      street: [this.userAccount.street, Validators.required],
-      city: [this.userAccount.csz, Validators.required],
-      cell: [this.userAccount.cell, Validators.required],
-      email: [this.userAccount.email, [Validators.required, Validators.email]]
-    });
+    console.log("AccountComponent >> showUpdateForm()")
+    this.form.patchValue(this.userAccount);
     this.display = 'form'
   }
+
   hideUpdateForm(){
-    this.display = 'data'
+    console.log("AccountComponent >> hideUpdateForm()")
+    this.form.reset(); // Optional: Reset the form after submission
+    this.display = 'data';
   }
 
 
   handleUserAccountObs(x){
-    this.userAccount = x;
+    console.log("AccountComponent >> handleUserAccountObs()")
+    if(x!=false){
+      this.userAccount = x;
+    }
+   
     //this.unitCount = this.userAccount.units.length;
   }
 
@@ -57,8 +64,11 @@ export class AccountComponent implements OnInit{
     this.subscription.unsubscribe();
   }
 
-  constructor(private us: UserService, private formBuilder: FormBuilder) {
+  constructor(private us: UserService) {
+    console.log('AccountComponent >> constructor() ');
     this.subscription = this.us.getUserAccount$().subscribe(x => {
+      console.log("AccountComponent >> getUserAccount$()")
+      this.hideUpdateForm()
       this.handleUserAccountObs(x);
     })
   }

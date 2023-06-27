@@ -1,4 +1,9 @@
-<div>
-  <h2>Result</h2>
-  <p>{{ message }}</p>
-</div>
+<p-dialog [(visible)]="displayDialog" [modal]="true" [closable]="false" >
+  <p-header>{{ title }}</p-header>
+  <div>{{ message }}</div>
+  <p-footer>
+    <button pButton type="button" (click)="closeDialog()" label="Close" class="ui-button-secondary"></button>
+  </p-footer>
+  
+</p-dialog>
+

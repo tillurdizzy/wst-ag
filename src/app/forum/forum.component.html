@@ -1,33 +1,22 @@
-<div class="forum-menu" *ngIf="view == 'menu'">
-  <ul>
-    <li *ngFor="let x of menuList">
-      <app-forum-menu [data]="x"></app-forum-menu>
-    </li>
-  </ul>
+<div class="flex-row-start spacer-15">
+  <img class="image-noborder padding-right-10" src="assets\images\whatsapp150.jpg" />
+  <span>Join our WhatsApp group to keep up with the latest developments and participate in discussions.</span>
 </div>
 
-<div class="forum-topic" *ngIf="view == 'topic'">
-  <div>
-    <button type="button" pButton label="Back" (click)="navToMenu()"></button>
-    <span>{{ topicHeader }}</span>
-  </div>
-
-  <ul>
-    <li *ngFor="let x of topicList">
-      <app-forum-topic [data]="x"></app-forum-topic>
-    </li>
-  </ul>
+<div class="flex-row-start spacer-15">
+  <img class="image-noborder  padding-right-10" src="assets\images\WhatsApp.png" />
+  <span>Scan this image with your phone camera or WhatApp camera. </span>
 </div>
 
-<div class="forum-topic" *ngIf="view == 'post'">
-    <div>
-      <button type="button" pButton label="Back" (click)="navToMenu()"></button>
-      <span>{{ topicHeader }}</span>
-    </div>
-  
-    <ul>
-      <li *ngFor="let x of topicList">
-        <app-forum-topic [data]="x"></app-forum-topic>
-      </li>
-    </ul>
-  </div>
+<div>
+  <span class="spacer-20">You may also follow this link to join:</span><br/>
+  <a href="https://chat.whatsapp.com/FLRJAdjffbNJQf8gUJzhvO" target="_blank">Join WST Advocacy Group</a>
+</div>
+
+
+
+
+
+
+
+

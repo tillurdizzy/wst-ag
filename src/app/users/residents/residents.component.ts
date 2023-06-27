@@ -1,8 +1,8 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IUnit } from 'src/app/services/interfaces/iuser';
 import { IVehicle } from 'src/app/services/interfaces/iuser';
 import { Subscription } from 'rxjs'
-import { Router } from '@angular/router'
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { IResident, IResidentAccount, IResidentInsert } from 'src/app/services/interfaces/iuser';
 import { ResidentsService } from 'src/app/services/residents.service';
 import { UserService } from 'src/app/services/user.service';
@@ -14,6 +14,8 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class ResidentsComponent {
   me: string = "ResidentsComponent "
+  display:string = 'data'
+  form!: FormGroup;
   subscriptionOne: Subscription;
   subscriptionTwo: Subscription;
   ownerRole:string = 'resident'
@@ -23,18 +25,57 @@ export class ResidentsComponent {
 
   //* Single objects chosen from table to edit
   editProfile: IResidentAccount = { firstname: 'x', lastname: 'x', email: '', cell: 'x', uuid: '', id:0, alerts:''};
+  updatedProfiles:IResidentAccount[] = [];
  
 
   ngOnInit(): void {
     console.log(this.me + " ngOnInit()")
   }
 
-  onResidentClick(n: number) {
-    console.log(this.me + " onResidentClick() = " + n)
-    this.editProfile = this.myProfiles[n];
-    //this.rs.setSelectedProfile(this.editProfile);
-    //this.router.navigate(['/units/edit-resident']);
-  };
+  handleChildData(idNum:number){
+    this.updatedProfiles = [];
+    for (let index = 0; index < this.myProfiles.length; index++) {
+      const element = this.myProfiles[index];
+      if(element.id == idNum){
+        this.editProfile = element;
+      }else{
+        this.updatedProfiles.push(element);
+      }
+     
+      this.showUpdateForm()
+    }
+  }
+
+  submitForm() {
+    if (this.form.valid) {
+      console.log(this.form.value); // Perform further actions with the form data
+      let formData:IResidentInsert = this.form.value;
+      this.editProfile.firstname = formData.firstname;
+      this.editProfile.lastname= formData.lastname;
+      this.editProfile.cell = formData.cell;
+      this.editProfile.email= formData.email;
+      this.updatedProfiles.push(this.editProfile);
+
+      this.rs.updateResident(formData, this.editProfile.id, this.updatedProfiles)
+      this.form.reset(); // Optional: Reset the form after submission
+      this.display = 'data'
+    }
+  }
+
+  showUpdateForm(){
+    this.form = this.formBuilder.group({
+      firstName: [this.editProfile.firstname, Validators.required],
+      lastName: [this.editProfile.lastname, Validators.required],
+      cell: [this.editProfile.cell, Validators.required],
+      email: [this.editProfile.email, [Validators.required, Validators.email]]
+    });
+    this.display = 'form'
+  }
+
+
+  hideUpdateForm(){
+    this.display = 'data'
+  }
 
 //* >>>>>>>>>>>>  SUBSCRIPTION HANDLERS  >>>>>>>>>>>>\\
 
@@ -55,8 +96,7 @@ private processProfiles(data:any){
   };
 
 
-  constructor(private router: Router, 
-    private rs: ResidentsService, private us: UserService) {
+  constructor(private rs: ResidentsService, private us: UserService, private formBuilder: FormBuilder) {
       console.log(this.me + " constructor()")
     this.subscriptionOne = this.rs.getResidentsObs().subscribe((x:IResidentAccount[]) =>  {
       console.log(this.me + '>> getResidentsObs() count =' + x.length)
