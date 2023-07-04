@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { DynamicDialogRef } from 'primeng/dynamicdialog';
+
 
 @Component({
   selector: 'app-dialog',
@@ -7,14 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DialogComponent implements OnInit {
   displayDialog = false;
-  title: string;
-  message: string;
+  @Input() title: string;
+  @Input() message: string;
 
   ngOnInit() {
-   console.log(this.message)
+
   }
 
   closeDialog() {
-    this.displayDialog = false;
+    this.ref.close();
   }
+  constructor(private ref: DynamicDialogRef) { }
 }

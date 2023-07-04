@@ -44,7 +44,7 @@ export class VehiclesComponent implements OnInit{
       console.log(this.form.value); // Perform further actions with the form data
       let formData:IVehicleUpdate = this.form.value;
 
-      //this.vs.updateParkingSpace(formData)
+      this.vs.updateParkingSpace(formData,this.editVehicle.id,this.editVehicle.unit )
       this.form.reset(); // Optional: Reset the form after submission
       this.display = 'data'
     }

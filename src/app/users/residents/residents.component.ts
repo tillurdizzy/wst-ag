@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { IUnit } from 'src/app/services/interfaces/iuser';
 import { IVehicle } from 'src/app/services/interfaces/iuser';
 import { Subscription } from 'rxjs'
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { IResident, IResidentAccount, IResidentInsert } from 'src/app/services/interfaces/iuser';
 import { ResidentsService } from 'src/app/services/residents.service';
 import { UserService } from 'src/app/services/user.service';
@@ -15,7 +15,6 @@ import { UserService } from 'src/app/services/user.service';
 export class ResidentsComponent {
   me: string = "ResidentsComponent "
   display:string = 'data'
-  form!: FormGroup;
   subscriptionOne: Subscription;
   subscriptionTwo: Subscription;
   ownerRole:string = 'resident'
@@ -28,6 +27,13 @@ export class ResidentsComponent {
   updatedProfiles:IResidentAccount[] = [];
  
 
+  form: FormGroup = new FormGroup({
+    firstname: new FormControl ("", Validators.required),
+    lastname:  new FormControl("", Validators.required),
+    cell: new FormControl ("", Validators.required),
+    email: new FormControl ("", Validators.required)
+  });
+
   ngOnInit(): void {
     console.log(this.me + " ngOnInit()")
   }
@@ -38,10 +44,7 @@ export class ResidentsComponent {
       const element = this.myProfiles[index];
       if(element.id == idNum){
         this.editProfile = element;
-      }else{
-        this.updatedProfiles.push(element);
       }
-     
       this.showUpdateForm()
     }
   }
@@ -54,21 +57,16 @@ export class ResidentsComponent {
       this.editProfile.lastname= formData.lastname;
       this.editProfile.cell = formData.cell;
       this.editProfile.email= formData.email;
-      this.updatedProfiles.push(this.editProfile);
 
-      this.rs.updateResident(formData, this.editProfile.id, this.updatedProfiles)
+      this.rs.updateResident(formData, this.editProfile.id, this.myUnit.unit)
       this.form.reset(); // Optional: Reset the form after submission
       this.display = 'data'
     }
   }
 
   showUpdateForm(){
-    this.form = this.formBuilder.group({
-      firstName: [this.editProfile.firstname, Validators.required],
-      lastName: [this.editProfile.lastname, Validators.required],
-      cell: [this.editProfile.cell, Validators.required],
-      email: [this.editProfile.email, [Validators.required, Validators.email]]
-    });
+    console.log(this.me + ">> showUpdateForm()")
+    this.form.patchValue(this.editProfile);
     this.display = 'form'
   }
 
@@ -96,7 +94,7 @@ private processProfiles(data:any){
   };
 
 
-  constructor(private rs: ResidentsService, private us: UserService, private formBuilder: FormBuilder) {
+  constructor(private rs: ResidentsService, private us: UserService) {
       console.log(this.me + " constructor()")
     this.subscriptionOne = this.rs.getResidentsObs().subscribe((x:IResidentAccount[]) =>  {
       console.log(this.me + '>> getResidentsObs() count =' + x.length)

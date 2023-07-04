@@ -1,10 +1,12 @@
 import { NgModule,CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { ToastrModule } from 'ngx-toastr';
 import { ButtonModule } from 'primeng/button';
 import { MenubarModule } from 'primeng/menubar';
 import { TabViewModule } from 'primeng/tabview';
@@ -13,8 +15,6 @@ import { DividerModule } from 'primeng/divider';
 import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { PasswordModule } from 'primeng/password';
-import { DynamicDialogModule } from 'primeng/dynamicdialog';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { TopbarMenuComponent } from './topbar-menu/topbar-menu.component';
 import { HomeComponent } from './home/home.component';
@@ -91,6 +91,8 @@ import { VehicleListComponent } from './users/vehicle-list/vehicle-list.componen
   ],
   imports: [
     BrowserModule,
+    CommonModule,
+    ToastrModule.forRoot({timeOut:2500,positionClass:'toast-center-center',preventDuplicates:true}),
     BrowserAnimationsModule,
     ReactiveFormsModule,
     FormsModule,
@@ -104,10 +106,9 @@ import { VehicleListComponent } from './users/vehicle-list/vehicle-list.componen
     TableModule,
     InputTextModule,
     DialogModule,
-    DynamicDialogModule,
     PasswordModule
   ],
-  providers: [ForumService,SupabaseService,UserService,DialogService],
+  providers: [ForumService,SupabaseService,UserService],
   bootstrap: [AppComponent],
   schemas:[CUSTOM_ELEMENTS_SCHEMA]
 })

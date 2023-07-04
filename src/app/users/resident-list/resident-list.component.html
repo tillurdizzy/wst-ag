@@ -1,8 +1,9 @@
 <div class="small-black-14">
+    <span class="sub-header">Resident #{{index+1}}</span><br />
     <span>{{data.firstname + " " + data.lastname}}</span><br />
     <span class="small-black-text"></span> {{ data.email}}<br />
     <span class="small-black-text"></span> {{ data.cell }}<br />
-    <div class="edit-button" style="margin-top: 15px">
+    <div class="edit-button" style="margin-top: 15px" [hidden]="data.firstname=='Owner Occupied'">
         <p-button label="Edit" icon="pi pi-file-edit" styleClass="p-button-sm"
           (click)="sendToParent(data.id)"
         ></p-button>

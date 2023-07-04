@@ -1,9 +1,8 @@
-<p-dialog [(visible)]="displayDialog" [modal]="true" [closable]="false" >
-  <p-header>{{ title }}</p-header>
-  <div>{{ message }}</div>
+<p-dialog [(visible)]="displayDialog" [modal]="true" [closable]="false" [responsive]="true">
+  <p-header></p-header>
   <p-footer>
     <button pButton type="button" (click)="closeDialog()" label="Close" class="ui-button-secondary"></button>
   </p-footer>
-  
+  <div>{{ message }}</div>
 </p-dialog>
 

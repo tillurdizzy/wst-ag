@@ -7,7 +7,9 @@ import { Component, Input, EventEmitter, Output } from '@angular/core';
 })
 export class ResidentListComponent {
   @Input() data = null;
+  @Input() index: number;
   @Output() sendData: EventEmitter<any> = new EventEmitter<any>();
+
 
   sendToParent(id){
     this.sendData.emit(id);

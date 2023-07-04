@@ -3,7 +3,6 @@ import { environment } from '../../environments/environment';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { DialogComponent } from '../library/dialog/dialog.component';
 import { ISpaceUpdate, IVehicle, IVehicleTable } from './interfaces/iuser';
 
@@ -54,8 +53,7 @@ export class VehiclesService {
 
   async updateParkingSpace(
     space: ISpaceUpdate,
-    id: string,
-    nav: string,
+    id: number,
     unit: number
   ) {
     try {
@@ -68,7 +66,7 @@ export class VehiclesService {
     } catch (error) {
       this.showResultDialog('ERROR: ' + JSON.stringify(error))
     }finally{
-      //this.router.navigate([nav]);
+     
     }
   };
 

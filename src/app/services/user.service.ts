@@ -3,8 +3,7 @@ import { environment } from '../../environments/environment';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { DialogComponent } from '../library/dialog/dialog.component';
+import { ToastrService } from 'ngx-toastr';
 import { AuthChangeEvent, AuthSession } from '@supabase/supabase-js';
 import { Session, User } from '@supabase/supabase-js';
 import { IUserAccount, IUserUpdate } from './interfaces/iuser';
@@ -235,7 +234,7 @@ export class UserService {
         const { data, error } = await this.supabase.from('accounts').update(updateObj).eq('uuid', id).select();
         if(error == null){
           this.processUserAccount(data[0]);
-          //this.showResultDialog('Success','User account updated.')
+          this.showResultDialog('Success','User account updated.')
         }
       } catch (error) {
         this.showResultDialog('Result','ERROR: ' + JSON.stringify(error))
@@ -288,17 +287,7 @@ export class UserService {
   }
 
   showResultDialog(title: string, message: string) {
-    const ref = this.dialogService.open(DialogComponent, {
-      data:{title:title, message:message},
-      header: title,
-      width: '200px',
-      dismissableMask: true,
-      showHeader: true
-    });
-
-    setTimeout(() => {
-      ref.close();
-    }, 2000);
+    this.toastr.success(message, title);
   }
 
   resetService(){
@@ -309,7 +298,7 @@ export class UserService {
 
   //* >>>>>>>>>>>>>>> CONSTRUCTOR / SUBSCRIPTIONS <<<<<<<<<<<<<<<<<<<<
 
-  constructor(private router: Router, public dialogService: DialogService) {
+  constructor(private router: Router,private toastr: ToastrService) {
     console.log('UserService > constructor() ');
     try {
       this.supabase = createClient(

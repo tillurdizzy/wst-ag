@@ -4,7 +4,6 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { Subscription } from 'rxjs'
 import { Router } from '@angular/router';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { DialogComponent } from '../library/dialog/dialog.component';
 import { IResidentAccount, IResidentInsert } from './interfaces/iuser';
 import { IProfile, IProfileUpdate } from './interfaces/iuser';
@@ -68,10 +67,10 @@ setResidentObs(data:IResidentAccount[]){
     
   }else if (role == 'resident' && ownerUuid != null) {
     //* If Ower/User is also Resident, get Primary Resident name and info from Account because profile table is empty
-    clone.firstname = this.userAccount.firstname;
-    clone.lastname = this.userAccount.lastname;
-    clone.cell = this.userAccount.cell;
-    clone.email = this.userAccount.email;
+    clone.firstname = "Owner Occupied"
+    clone.lastname = "";
+    clone.cell = "";
+    clone.email = "";
     clone.id = this.userAccount.id;
     clone.alerts = this.userAccount.alerts;
     clone.uuid = this.userAccount.uuid;
@@ -114,12 +113,12 @@ processResidentData(data){
     this.setResidentObs(myProfiles);
   }
 
-  async updateResident(p:IResidentInsert, id:number, obs:IResidentAccount[]){
+  async updateResident(p:IResidentInsert, id:number,unitNum:number){
     console.log('ResidentsService  > updateResident() id = ' + id);
     try {
-      let { data, error } = await this.supabase.from('profiles').update(p).match({ id: id });
+      let { data, error } = await this.supabase.from('profiles').update(p).match({ id: id }).select();
       if(error == null){
-        this.setResidentObs(obs);
+        this.fetchResidentProfiles(unitNum)
       }  
     } catch (error) {
       alert(error.message);
@@ -157,6 +156,7 @@ async fetchUnit(unit: number) {
 handleAccount$(x){
   this.userAccount = x;
 }
+
 
 //* >>>>>>>>>>>>>>>  UTILITIES <<<<<<<<<<<<<<<<<<<<<<<>
 

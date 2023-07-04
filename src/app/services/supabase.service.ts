@@ -5,7 +5,6 @@ import { AuthChangeEvent, AuthSession } from '@supabase/supabase-js';
 import { Session, User } from '@supabase/supabase-js';
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { DialogComponent } from '../library/dialog/dialog.component';
 
 @Injectable({
@@ -13,7 +12,6 @@ import { DialogComponent } from '../library/dialog/dialog.component';
 })
 export class SupabaseService {
   private supabase: SupabaseClient;
-  dialogRef: DynamicDialogRef;
 
 
     //* >>>>>>>>>>>>>> FORUM <<<<<<<<<<<<<<<<
@@ -77,25 +75,13 @@ export class SupabaseService {
 
 
   showResultDialog(message: string) {
-    this.dialogRef = this.dialogService.open(DialogComponent, {
-      data: {message:message},
-      header: 'Result',
-      width: '40%',
-      contentStyle: { overflow: 'auto' },
-      baseZIndex: 10000,
-      maximizable: false,
-      closable:false
-    });
-
-    /* setTimeout(() => {
-      this.dialogRef.close();
-    }, 2000); */
+    
   }
 
  
 
  
-  constructor(private router: Router, public dialogService: DialogService) {
+  constructor(private router: Router ) {
     console.log('SupabaseService > constructor() ');
     try {
       this.supabase = createClient(

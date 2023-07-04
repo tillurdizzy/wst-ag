@@ -2,13 +2,13 @@
   <div class="not-sidebar">
     <div class="section-header">Residents</div>
     <div *ngIf="myUnit.unit > 0">
-      <span class="black-16-550">Unit #{{ myUnit.unit }} / Bdrms: {{ myUnit.bdrms }} / SqFt: {{ this.myUnit.sqft }}</span>
+      <span class="black-13-550">Unit #{{ myUnit.unit }} / Bdrms: {{ myUnit.bdrms }} / SqFt: {{ this.myUnit.sqft }}</span>
     </div>
       <div *ngIf="display=='data'">
         <div  class="dataList" *ngIf="myProfiles[0].id > 0">
           <ul>
-            <li *ngFor="let x of myProfiles">
-              <app-resident-list [data]="x" (sendData)="handleChildData($event)"></app-resident-list>
+            <li *ngFor="let x of myProfiles; let i = index">
+              <app-resident-list [data]="x"  [index]="i" (sendData)="handleChildData($event)"></app-resident-list>
             </li>
           </ul>
       </div>
@@ -17,17 +17,17 @@
       <form [formGroup]="form" (ngSubmit)="submitForm()">
         <div class="p-fluid">
           <div class="p-field">
-            <label for="firstName">First Name</label>
-            <input type="text" id="firstName" formControlName="firstName" pInputText class="p-inputtext-sm">
-            <small *ngIf="form.get('firstName')?.invalid && form.get('firstName')?.touched" class="p-error">
+            <label for="firstname">First Name</label>
+            <input type="text" id="firstname" formControlName="firstname" pInputText class="p-inputtext-sm">
+            <small *ngIf="form.get('firstname')?.invalid && form.get('firstname')?.touched" class="p-error">
               First Name is required.
             </small>
           </div>
 
           <div class="p-field">
-            <label for="lastName">Last Name</label>
-            <input type="text" id="lastName" formControlName="lastName" pInputText class="p-inputtext-sm">
-            <small *ngIf="form.get('lastName')?.invalid && form.get('lastName')?.touched" class="p-error">
+            <label for="lastname">Last Name</label>
+            <input type="text" id="lastname" formControlName="lastname" pInputText class="p-inputtext-sm">
+            <small *ngIf="form.get('lastname')?.invalid && form.get('lastname')?.touched" class="p-error">
               Last Name is required.
             </small>
           </div>
