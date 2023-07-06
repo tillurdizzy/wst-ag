@@ -45,7 +45,6 @@ import { UserService } from './services/user.service';
 import { ForumMenuComponent } from './forum/forum-menu/forum-menu.component';
 import { ForumTopicComponent } from './forum/forum-topic/forum-topic.component';
 import { ForumPostComponent } from './forum/forum-post/forum-post.component';
-import { EditResidentComponent } from './users/edit-resident/edit-resident.component';
 import { AccountComponent } from './users/account/account.component';
 import { ResidentsComponent } from './users/residents/residents.component';
 import { VehiclesComponent } from './users/vehicles/vehicles.component';
@@ -81,7 +80,6 @@ import { VehicleListComponent } from './users/vehicle-list/vehicle-list.componen
     ForumMenuComponent,
     ForumTopicComponent,
     ForumPostComponent,
-    EditResidentComponent,
     AccountComponent,
     ResidentsComponent,
     VehiclesComponent,
