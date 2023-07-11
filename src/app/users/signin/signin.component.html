@@ -1,6 +1,7 @@
 <div class="page-content" *ngIf="loginMode !='PW'">
  
   <div class="section-header">{{ pageTitle }}</div>
+  <div>
   <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <span class="black12">Email</span>
@@ -16,6 +17,12 @@
   <div>
     <p-button label="Change/Forgot Password" styleClass="p-button-link" (click)="showPasswordRestForm()"></p-button>
   </div>
+</div>
+<div>
+  <span class="black12">Enter your email and the password "wstadmin".  If the login is successful, you may then change your password. <br>
+    If the log in is unsuccessful, send an email request to tillurdizzy@gmail.com with your name and unit #.
+  </span>
+</div>
 </div>
 
 <div class="page-content" *ngIf="loginMode =='PW'">
