@@ -60,13 +60,22 @@ export class UsersComponent {
      // now we have real account
       this.userAccount = x;
       let units = this.userAccount.units;
+      //^ Roles amd multiunit owners
+      if(units.length > 1){
+        if(this.user.role == "admin" || this.user.role == "non-resident"){
+          // continue but init unit selector
+        }else if(this.user.role == "resident +"){
+          // 
+        }
+      }
+
       //! Fetch Unit, Residents and Vehicles
       console.log('UsersComponent > Fetch Unit, Residents and Vehicles');
       this.rs.fetchUnit(units[0]);
       this.rs.fetchResidentProfiles(units[0]);
       this.vs.fetchResidentVehicles(units[0]);
     }else{
-      // this means we are updating ... just set userAccoount but don't call all the other fetches
+      // this means we are updating ... just set userAccount but don't call all the other fetches
       this.userAccount = x;
     }
   }
@@ -74,6 +83,25 @@ export class UsersComponent {
   isIUserAccount(obj: any): obj is IUserAccount {
     return (obj as IUserAccount).id !== undefined;
   }
+
+  parseObj(obj, key) {
+    var x;
+    Object.keys(obj).forEach((k) => {
+      if (k == key) {
+        x = obj[k];
+      }
+    });
+    return x;
+  }
+
+  removeNull(obj) {
+    Object.keys(obj).forEach(k => {
+      if (obj[k] === null || obj[k] === undefined) {
+        obj[k] = '';
+      }
+    });
+    return obj;
+  };
 
   ngOnDestroy(): void {
     this.subscriptionA.unsubscribe();

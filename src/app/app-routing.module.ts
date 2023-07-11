@@ -16,6 +16,7 @@ import { ExpendituresComponent } from './hoa/expenditures/expenditures.component
 import { DocsComponent } from './hoa/docs/docs.component';
 import { UsersComponent } from './users/users.component';
 import { ForumComponent } from './forum/forum.component';
+import { PasswordResetComponent } from './users/password-reset/password-reset.component';
 
 
 const routes: Routes = [
@@ -49,6 +50,7 @@ const routes: Routes = [
           ]},
       {path:'members', component: UsersComponent},
       {path:'forum', component: ForumComponent },
+      {path:'password-reset', component: PasswordResetComponent },
       {path:'404', component: NavErrorComponent },
       {path:'**', redirectTo: '404',outlet:"app"},
     ]

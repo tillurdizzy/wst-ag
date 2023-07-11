@@ -20,14 +20,10 @@
 
 <div class="page-content" *ngIf="loginMode =='PW'">
   <div class="section-header">{{ pageTitle }}</div>
-  <form [formGroup]="resetForm" (ngSubmit)="onSubmitPassword()">
+  <form [formGroup]="resetForm" (ngSubmit)="onSubmitReset()">
     <div class="form-group">
       <span class="black12">Email</span>
       <input type="text" pInputText formControlName="email" />
-    </div>
-    <div class="form-group">
-      <span class="black12">New Password</span>
-      <input type="text" pInputText formControlName="password" />
     </div>
     <button type="submit" pButton label="Submit"></button>
   </form>

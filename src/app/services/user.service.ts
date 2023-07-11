@@ -126,7 +126,7 @@ export class UserService {
       const { data, error } = await this.supabase.auth.resetPasswordForEmail(email, {
         redirectTo: 'http://localhost:4200/password-reset'})
       if(error == null){
-        this.showResultDialog('Result','Check your email for Password Reset link.')
+        this.showResultDialog('Result','Check your email (possibly Junk folder) for Password Reset link.')
       }
     } catch (error) {
       this.showResultDialog('Result','ERROR: ' + JSON.stringify(error))
@@ -145,7 +145,7 @@ export class UserService {
     } catch (error) {
       
     }finally{
-      
+      this.router.navigate(['/members']);
     }
   }
 

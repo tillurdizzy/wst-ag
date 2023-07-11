@@ -25,9 +25,7 @@ export class ResidentsService {
   unitSelectionHandler(u:number){
     console.log("ResidentsService  > unitSelectionHandler() = " + u)
     this.currentUnit = u;
-    //this.us.fetchUnit(u);
     this.fetchResidentProfiles(this.currentUnit);
-    //this.supabase.fetchResidentVehicles(this.currentUnit);
   }
 
   //* >>>>>>>>>>> OBSERVABLES  <<<<<<<<<<<<

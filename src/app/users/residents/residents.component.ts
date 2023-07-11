@@ -1,27 +1,31 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input ,OnInit} from '@angular/core';
 import { IUnit } from 'src/app/services/interfaces/iuser';
-import { IVehicle } from 'src/app/services/interfaces/iuser';
+//import { DropdownModule } from 'primeng/dropdown';
 import { Subscription } from 'rxjs'
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { IResident, IResidentAccount, IResidentInsert } from 'src/app/services/interfaces/iuser';
 import { ResidentsService } from 'src/app/services/residents.service';
 import { UserService } from 'src/app/services/user.service';
+import { VehiclesService } from 'src/app/services/vehicles.service';
 
 @Component({
   selector: 'app-residents',
   templateUrl: './residents.component.html',
   styleUrls: ['./residents.component.scss']
 })
-export class ResidentsComponent {
+export class ResidentsComponent implements OnInit{
+
+
   me: string = "ResidentsComponent "
   display:string = 'data'
   subscriptionOne: Subscription;
   subscriptionTwo: Subscription;
+  subscriptionThree: Subscription;
   ownerRole:string = 'resident'
   myProfiles: IResidentAccount[] = [{ firstname: '', lastname: '', email: '', cell: '',uuid:'', id:0, alerts:''}];
  
   myUnit: IUnit = { unit:0, street:'',sqft:0, bdrms:1 , bldg:''};
-
+  multiUnits:number[];
   //* Single objects chosen from table to edit
   editProfile: IResidentAccount = { firstname: 'x', lastname: 'x', email: '', cell: 'x', uuid: '', id:0, alerts:''};
   updatedProfiles:IResidentAccount[] = [];
@@ -34,10 +38,19 @@ export class ResidentsComponent {
     email: new FormControl ("", Validators.required)
   });
 
-  ngOnInit(): void {
-    console.log(this.me + " ngOnInit()")
-  }
+  dropDown: FormGroup = new FormGroup({
+    selectedUnit:new FormControl<number>(null)
+  });
 
+  ngOnInit(): void {
+    this.dropDown.valueChanges.subscribe(value => {
+      console.log('Form value changed:', value);
+      this.rs.fetchUnit(value.selectedUnit);
+      this.rs.fetchResidentProfiles(value.selectedUnit);
+      this.vs.fetchResidentVehicles(value.selectedUnit);
+    });
+  }
+  
   handleChildData(idNum:number){
     this.updatedProfiles = [];
     for (let index = 0; index < this.myProfiles.length; index++) {
@@ -87,6 +100,11 @@ private processProfiles(data:any){
   }
 }
 
+handleUserAccountObs(x){
+  // get units for dropdown
+  this.multiUnits = x.units
+}
+
   ngOnDestroy() {
     this.us.clearData();
     this.subscriptionOne.unsubscribe();
@@ -94,7 +112,7 @@ private processProfiles(data:any){
   };
 
 
-  constructor(private rs: ResidentsService, private us: UserService) {
+  constructor(private rs: ResidentsService, private us: UserService, private vs: VehiclesService) {
       console.log(this.me + " constructor()")
     this.subscriptionOne = this.rs.getResidentsObs().subscribe((x:IResidentAccount[]) =>  {
       console.log(this.me + '>> getResidentsObs() count =' + x.length)
@@ -107,6 +125,11 @@ private processProfiles(data:any){
       this.myUnit = x;
       console.log(this.me + '>> getUnitObs = ' + this.myUnit.unit + " sqft = " + this.myUnit.sqft)
     });
+
+    this.subscriptionThree = this.us.getUserAccount$().subscribe(x => {
+      console.log(this.me + ">> getUserAccount$()")
+      this.handleUserAccountObs(x);
+    })
 
    
   }

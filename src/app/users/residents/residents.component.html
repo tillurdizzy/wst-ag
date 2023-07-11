@@ -1,6 +1,11 @@
 <div class="sidebar-container">
   <div class="not-sidebar">
     <div class="section-header">Residents</div>
+    <div *ngIf="multiUnits.length > 0">
+      <form [formGroup]="dropDown">
+        <p-dropdown formControlName="selectedUnit" [options]="multiUnits" placeholder="Select unit"></p-dropdown>
+      </form>
+    </div>
     <div *ngIf="myUnit.unit > 0">
       <span class="black-13-550">Unit #{{ myUnit.unit }} / Bdrms: {{ myUnit.bdrms }} / SqFt: {{ this.myUnit.sqft }}</span>
     </div>

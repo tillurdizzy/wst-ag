@@ -16,6 +16,7 @@ import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { PasswordModule } from 'primeng/password';
 import { InputTextModule } from 'primeng/inputtext';
+import { DropdownModule } from 'primeng/dropdown';
 import { TopbarMenuComponent } from './topbar-menu/topbar-menu.component';
 import { HomeComponent } from './home/home.component';
 import { HoaComponent } from './hoa/hoa.component';
@@ -50,6 +51,7 @@ import { ResidentsComponent } from './users/residents/residents.component';
 import { VehiclesComponent } from './users/vehicles/vehicles.component';
 import { ResidentListComponent } from './users/resident-list/resident-list.component';
 import { VehicleListComponent } from './users/vehicle-list/vehicle-list.component';
+import { PasswordResetComponent } from './users/password-reset/password-reset.component';
 
 @NgModule({
   declarations: [
@@ -84,7 +86,8 @@ import { VehicleListComponent } from './users/vehicle-list/vehicle-list.componen
     ResidentsComponent,
     VehiclesComponent,
     ResidentListComponent,
-    VehicleListComponent
+    VehicleListComponent,
+    PasswordResetComponent
     
   ],
   imports: [
@@ -104,7 +107,8 @@ import { VehicleListComponent } from './users/vehicle-list/vehicle-list.componen
     TableModule,
     InputTextModule,
     DialogModule,
-    PasswordModule
+    PasswordModule,
+    DropdownModule
   ],
   providers: [ForumService,SupabaseService,UserService],
   bootstrap: [AppComponent],

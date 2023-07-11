@@ -42,11 +42,9 @@ export class SigninComponent {
     this.callSupabase(obj)
   };
 
-  onSubmitPassword(){
+  onSubmitReset(){
     const email = this.resetForm.get('email').value;
-    const password = this.resetForm.get('password').value;
-    let obj = {'email':email,'password':password}
-    this.callSupabase(obj)
+    this.userService.resetPassword(email);
   };
 
   callSupabase(obj) {
