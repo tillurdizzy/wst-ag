@@ -1,7 +1,7 @@
 <div class="sidebar-container">
   <div class="not-sidebar">
     <div class="section-header">Residents</div>
-    <div *ngIf="multiUnits.length > 0">
+    <div *ngIf="multiUnits.length > 1">
       <form [formGroup]="dropDown">
         <p-dropdown formControlName="selectedUnit" [options]="multiUnits" placeholder="Select unit"></p-dropdown>
       </form>
