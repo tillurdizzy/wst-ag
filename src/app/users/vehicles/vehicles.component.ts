@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, SimpleChanges, Input } from '@angular/core';
 import { IUnit } from 'src/app/services/interfaces/iuser';
 import { IVehicle, IVehicleUpdate } from 'src/app/services/interfaces/iuser';
 import { Subscription } from 'rxjs'
@@ -13,6 +13,13 @@ import { FormGroup, Validators, FormControl } from '@angular/forms';
   styleUrls: ['./vehicles.component.scss']
 })
 export class VehiclesComponent implements OnInit{
+  @Input() reset: boolean = false;
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['reset'] && changes['reset'].currentValue) {
+      this.hideUpdateForm();
+    }
+  }
   me = "VehiclesComponent";
  
   display:string = "data";
@@ -29,14 +36,14 @@ export class VehiclesComponent implements OnInit{
   });
 
   ngOnInit(): void {
-   
+    this.hideUpdateForm();
   }
 
   private processVehicles(data:any){
     console.log(this.me + '>> processVehicles()')
     if(data == null){return}
     this.myVehicles = data;
-    let x = this.myVehicles.length;
+    //let x = this.myVehicles.length;
   }
 
   submitForm() {
@@ -68,17 +75,20 @@ export class VehiclesComponent implements OnInit{
     this.display = 'form'
   }
 
-  hideUpdateForm(){
+  public hideUpdateForm(){
     this.display = 'data'
   }
 
   constructor(private vs: VehiclesService, private us: UserService) {
     console.log('VehiclesComponent >> constructor() ');
+
+
     this.vs.getVehiclesObs().subscribe((x:IVehicle[]) =>  {
       console.log(this.me + '>> getVehiclesObs()')
       if(x.length > 0){
         this.processVehicles(x);
       }
     });
+
   }
 };

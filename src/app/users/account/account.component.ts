@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input , SimpleChanges } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
 import { Subscription } from 'rxjs';
 import { IUserAccount, IUserUpdate } from 'src/app/services/interfaces/iuser';
@@ -10,7 +10,14 @@ import { FormGroup, Validators, FormControl } from '@angular/forms';
   styleUrls: ['./account.component.scss']
 })
 
-export class AccountComponent implements OnInit{
+export class AccountComponent implements OnInit {
+  @Input() reset: boolean = false;
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['reset'] && changes['reset'].currentValue) {
+      this.hideUpdateForm();
+    }
+  }
   subscription: Subscription;
   userAccount:IUserAccount = { id:0, username: '', role: '', cell: '', email: '', units: [], uuid:'' ,firstname:'',lastname:'',csz:'',street:'',alerts:''};
   unitCount:number = 0;
@@ -24,8 +31,10 @@ export class AccountComponent implements OnInit{
   });
 
   ngOnInit(): void {
-   
+    this.hideUpdateForm()
   }
+
+
 
   submitForm() {
     console.log("AccountComponent >> submitForm()")

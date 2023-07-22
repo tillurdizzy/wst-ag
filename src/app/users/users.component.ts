@@ -12,23 +12,16 @@ import { IUserAccount } from '../services/interfaces/iuser';
   styleUrls: ['./users.component.scss'],
 })
 export class UsersComponent {
+  selectedTab: string = '';
+  onTabChange(event: any): void {
+    this.selectedTab = event.originalEvent.target.innerText.trim();
+  }
   subscriptionA: Subscription;
   subscriptionB: Subscription;
   subscriptionC: Subscription;
   private userAccount: IUserAccount = {
-    id: 1,
-    username: '',
-    role: '',
-    cell: '',
-    email: '',
-    units: [],
-    uuid: '',
-    firstname: '',
-    lastname: '',
-    csz: '',
-    street: '',
-    alerts: '',
-  };
+    id: 1,username: '',role: '',cell: '',email: '',units: [],uuid: '',
+    firstname: '',lastname: '',csz: '',street: '',alerts: '',};
 
   user: IUserAuth = { id: '', aud: '', role: '', email: '' };
   userAuthenticated: Boolean = false;

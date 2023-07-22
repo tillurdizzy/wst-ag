@@ -1,4 +1,4 @@
-import { Component, Input ,OnInit} from '@angular/core';
+import { Component, Input ,OnInit, SimpleChanges} from '@angular/core';
 import { IUnit } from 'src/app/services/interfaces/iuser';
 //import { DropdownModule } from 'primeng/dropdown';
 import { Subscription } from 'rxjs'
@@ -14,6 +14,13 @@ import { VehiclesService } from 'src/app/services/vehicles.service';
   styleUrls: ['./residents.component.scss']
 })
 export class ResidentsComponent implements OnInit{
+  @Input() reset: boolean = false;
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['reset'] && changes['reset'].currentValue) {
+      this.hideUpdateForm();
+    }
+  }
 
 
   me: string = "ResidentsComponent "
@@ -43,6 +50,7 @@ export class ResidentsComponent implements OnInit{
   });
 
   ngOnInit(): void {
+    this.hideUpdateForm()
     this.dropDown.valueChanges.subscribe(value => {
       console.log('Form value changed:', value);
       this.rs.fetchUnit(value.selectedUnit);
