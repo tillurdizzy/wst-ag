@@ -68,11 +68,6 @@ export class TopbarMenuComponent implements OnInit {
                     routerLink:"hoa/hoa-issues",
                 },
                 {
-                    label: 'Major Expenditures',
-                    icon: 'pi pi-fw pi-dollar',
-                    routerLink:'hoa/hoa-expenditures',
-                },
-                {
                     label: 'Documents',
                     icon: 'pi pi-fw pi-align-center',
                     routerLink:'hoa/hoa-docs',
@@ -86,7 +81,7 @@ export class TopbarMenuComponent implements OnInit {
         },
        
         {
-            label: 'Forum',
+            label: 'WhatsApp',
             icon: 'pi pi-fw pi-book',
             routerLink:'/forum'
         },
