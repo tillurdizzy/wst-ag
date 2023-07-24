@@ -20,7 +20,7 @@ export class UsersComponent {
   subscriptionB: Subscription;
   subscriptionC: Subscription;
   private userAccount: IUserAccount = {
-    id: 1,username: '',role: '',cell: '',email: '',units: [],uuid: '',
+    id: 1,username: '',role: '',cell: '',email: '',units: [],uuid: '',residesAt:0,
     firstname: '',lastname: '',csz: '',street: '',alerts: '',};
 
   user: IUserAuth = { id: '', aud: '', role: '', email: '' };

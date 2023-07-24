@@ -19,7 +19,7 @@ export class UserService {
   //private userid: string | null = null;
   private session:{} = {};
   private userObj:User = null;
-  private userAccount: IUserAccount = { id:0, username: '', role: '', cell: '', email: '', units: [], uuid:'' ,firstname:'',lastname:'',csz:'',street:'',alerts:''};
+  private userAccount: IUserAccount = { id:0, username: '', role: '', cell: '', email: '', units: [],residesAt:0, uuid:'' ,firstname:'',lastname:'',csz:'',street:'',alerts:''};
   private myCurrentUnit: number;
   //private iProfile: IProfile;
 
@@ -258,6 +258,7 @@ export class UserService {
       this.userAccount.street = data.street;
       this.userAccount.csz = data.csz;
       this.userAccount.units = data.units.units;
+      this.userAccount.residesAt = data.units.residesAt;
     
       if(this.userAccount.units.length > 0){
         this.myCurrentUnit = this.userAccount.units[0]

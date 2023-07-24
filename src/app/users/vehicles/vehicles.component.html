@@ -59,6 +59,7 @@
           <div class="flex-column" *ngIf="display=='form'">
             <p-button type="submit" label="Submit"  [disabled]="form.invalid"></p-button>
             <p-button label="Cancel" styleClass="p-button-warning"  (click)="hideUpdateForm()"></p-button>
+            <p-button label="Remove" styleClass="p-button-danger"  (click)="removeVehicle()"></p-button>
         </div>
 
           

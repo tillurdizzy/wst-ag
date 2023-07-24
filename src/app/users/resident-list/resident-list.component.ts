@@ -12,6 +12,8 @@ export class ResidentListComponent {
 
 
   sendToParent(id){
-    this.sendData.emit(id);
+    if (this.data.firstname !== 'Owner Occupied') {
+      this.sendData.emit(id);
+    }
   }
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit, SimpleChanges, Input } from '@angular/core';
 import { IUnit } from 'src/app/services/interfaces/iuser';
-import { IVehicle, IVehicleUpdate } from 'src/app/services/interfaces/iuser';
+import { IVehicle, IVehicleUpdate,ISpaceUpdate } from 'src/app/services/interfaces/iuser';
 import { Subscription } from 'rxjs'
 import { Router } from '@angular/router'
 import { VehiclesService } from 'src/app/services/vehicles.service';
@@ -49,12 +49,20 @@ export class VehiclesComponent implements OnInit{
   submitForm() {
     if (this.form.valid) {
       console.log(this.form.value); // Perform further actions with the form data
-      let formData:IVehicleUpdate = this.form.value;
+      let formData:ISpaceUpdate = this.form.value;
 
       this.vs.updateParkingSpace(formData,this.editVehicle.id,this.editVehicle.unit )
       this.form.reset(); // Optional: Reset the form after submission
       this.display = 'data'
     }
+  }
+
+  removeVehicle(){
+    let formData:ISpaceUpdate = { name: '', tag: '', make: '', model: '', color: ''}
+
+      this.vs.updateParkingSpace(formData,this.editVehicle.id,this.editVehicle.unit )
+      this.form.reset(); // Optional: Reset the form after submission
+      this.display = 'data'
   }
 
   handleChildData(spaceNum){

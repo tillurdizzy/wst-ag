@@ -20,6 +20,7 @@ export interface IUserAccount {
   uuid:string;
   alerts:string;
   units:number[];
+  residesAt:number;
 };
 
 export interface IUserUpdate{

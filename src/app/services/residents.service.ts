@@ -17,7 +17,8 @@ import { UserService } from './user.service';
 export class ResidentsService {
   private supabase: SupabaseClient;
   private subscription:Subscription
-  private userAccount: IUserAccount = { id:0, username: '', role: '', cell: '', email: '', units: [], uuid:'' ,firstname:'',lastname:'',csz:'',street:'',alerts:''};
+  private userAccount: IUserAccount = { id:0, username: '', role: '', cell: '', email: '', units: [], residesAt:0,uuid:'' ,
+                                        firstname:'',lastname:'',csz:'',street:'',alerts:''};
   private emptyResidentAccount: IResidentAccount[]= [{ firstname:'', lastname:'', cell: '', email: '',uuid:'', id:0, alerts:''}];
   private myUnit: IUnit = { unit:0, street:'',sqft:0, bdrms:1 , bldg:''};
   currentUnit:number = 0;
@@ -55,11 +56,7 @@ setResidentObs(data:IResidentAccount[]){
   var ownerUuid = this.userAccount.uuid;
   var clone = structuredClone(this.emptyResidentAccount[0]);
   var residentDisplay = [];
-  if (role == 'admin') {
-    residentDisplay.push(data[0])
-    residentDisplay.push(data[1])
-
-  }else if(role == 'non-resident'){
+ if(role == 'non-resident'){
     residentDisplay.push(data[0])
     residentDisplay.push(data[1])
     
@@ -76,14 +73,25 @@ setResidentObs(data:IResidentAccount[]){
     residentDisplay.push(data[1])
     
   } else if (role == 'resident +') {
-    // If owner is 'resident +', get currentUnit info from Accounts table Units.reSidesAt!
+    // If this is the unit in "resideAt", then get Primary Resident name and info from Account because profile table is empty
+    // else, just use as is 
     //^ currentUnitselected == ResidesAt
-    let u = this.userAccount.units;
-    let v = this.parseObj(u, 'residesAt');
-    if (v == this.currentUnit  && ownerUuid != null)  {
+    let v = this.userAccount.residesAt;
+   
+    if (v == this.currentUnit)  {
+      clone.firstname = "Owner Occupied"
+      clone.lastname = "";
+      clone.cell = "";
+      clone.email = "";
+      clone.id = this.userAccount.id;
+      clone.alerts = this.userAccount.alerts;
+      clone.uuid = this.userAccount.uuid;
+      residentDisplay.push(clone)
+      residentDisplay.push(data[1])
+    } else{
       residentDisplay.push(data[0])
       residentDisplay.push(data[1])
-    } 
+    }
   }
   this.residentsBS.next(residentDisplay);
 }
@@ -130,6 +138,7 @@ async fetchResidentProfiles(unit: number) {
   console.log('ResidentsService > fetchResidentProfiles() unit = ' + unit);
   try {
     let data = await this.supabase.from('profiles').select('*').eq('unit', unit);
+    this.currentUnit = unit;
     this.processResidentData(data.data)
   } catch (error) {
     //this.showResultDialog('ERROR: ' + JSON.stringify(error))
@@ -141,6 +150,7 @@ async fetchUnit(unit: number) {
   try {
     let { data, error } = await this.supabase.from('units').select('*').eq('unit', unit).single();
     if(data != null){
+      this.currentUnit = unit;
       this.setUnitObs(data as IUnit)
     }else{
       //this.showResultDialog('ERROR: ' + JSON.stringify(error))

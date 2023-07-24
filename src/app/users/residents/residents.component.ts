@@ -16,6 +16,8 @@ import { VehiclesService } from 'src/app/services/vehicles.service';
 export class ResidentsComponent implements OnInit{
   @Input() reset: boolean = false;
 
+
+    // This sets the display back to data if the user leaves while the form is showing
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['reset'] && changes['reset'].currentValue) {
       this.hideUpdateForm();
@@ -34,17 +36,18 @@ export class ResidentsComponent implements OnInit{
   myUnit: IUnit = { unit:0, street:'',sqft:0, bdrms:1 , bldg:''};
   multiUnits:number[];
   //* Single objects chosen from table to edit
-  editProfile: IResidentAccount = { firstname: 'x', lastname: 'x', email: '', cell: 'x', uuid: '', id:0, alerts:''};
+  editProfile: IResidentAccount = { firstname: '', lastname: '', email: '', cell: '', uuid: '', id:0, alerts:''};
   updatedProfiles:IResidentAccount[] = [];
  
 
   form: FormGroup = new FormGroup({
     firstname: new FormControl ("", Validators.required),
     lastname:  new FormControl("", Validators.required),
-    cell: new FormControl ("", Validators.required),
-    email: new FormControl ("", Validators.required)
+    cell: new FormControl ("")
   });
 
+
+    //^ Valuechange for this form in ngOnInit!
   dropDown: FormGroup = new FormGroup({
     selectedUnit:new FormControl<number>(null)
   });
@@ -83,6 +86,13 @@ export class ResidentsComponent implements OnInit{
       this.form.reset(); // Optional: Reset the form after submission
       this.display = 'data'
     }
+  }
+
+  removeResident(){
+    let formData:IResidentInsert = { firstname: '', lastname: '', email: '', cell: ''};
+    this.rs.updateResident(formData, this.editProfile.id, this.myUnit.unit)
+    this.form.reset(); // Optional: Reset the form after submission
+    this.display = 'data'
   }
 
   showUpdateForm(){
