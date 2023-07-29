@@ -30,7 +30,7 @@ export class SigninComponent {
     console.log("SigninComponent >> ngOnInit()")
    
     this.myForm = this.formBuilder.group({
-      email: ['lawrence.cutright58@gmail.com', Validators.required],
+      email: ['', Validators.required],
       password: ['wstadmin', Validators.required]
     });
   }
