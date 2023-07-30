@@ -21,6 +21,7 @@ export interface IUserAccount {
   alerts:string;
   units:number[];
   residesAt:number;
+  member:boolean;
 };
 
 export interface IUserUpdate{

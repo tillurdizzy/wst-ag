@@ -19,7 +19,8 @@ export class UserService {
   //private userid: string | null = null;
   private session:{} = {};
   private userObj:User = null;
-  private userAccount: IUserAccount = { id:0, username: '', role: '', cell: '', email: '', units: [],residesAt:0, uuid:'' ,firstname:'',lastname:'',csz:'',street:'',alerts:''};
+  private userAccount: IUserAccount = { id:0, username: '', role: '', cell: '', email: '', units: [],residesAt:0, uuid:'',
+  firstname:'',lastname:'',csz:'',street:'',alerts:'',member:false};
   private myCurrentUnit: number;
   //private iProfile: IProfile;
 
@@ -109,6 +110,19 @@ export class UserService {
     } catch (error) {
       this.showResultDialog('Result','Error: ' + error)
     };
+  }
+
+  async setAsMember(){
+    try{
+      const { data, error } = await this.supabase.from('accounts').update({'member':true}).eq('id',this.userAccount.id );
+      if(error === null){
+        this.userAccount.member == true;
+        this.setUserAccount$(this.userAccount)
+        this.showResultDialog('Success','Thank you for your support!')
+      }
+    }catch{
+
+    }
   }
 
   authChanges(callback: (event: AuthChangeEvent, session: Session | null) => void) {
@@ -257,6 +271,7 @@ export class UserService {
       this.userAccount.alerts = data.alerts;
       this.userAccount.street = data.street;
       this.userAccount.csz = data.csz;
+      this.userAccount.member = data.member;
       this.userAccount.units = data.units.units;
       this.userAccount.residesAt = data.units.residesAt;
     

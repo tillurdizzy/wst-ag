@@ -18,7 +18,7 @@ export class ResidentsService {
   private supabase: SupabaseClient;
   private subscription:Subscription
   private userAccount: IUserAccount = { id:0, username: '', role: '', cell: '', email: '', units: [], residesAt:0,uuid:'' ,
-                                        firstname:'',lastname:'',csz:'',street:'',alerts:''};
+                                        firstname:'',lastname:'',csz:'',street:'',alerts:'',member:false};
   private emptyResidentAccount: IResidentAccount[]= [{ firstname:'', lastname:'', cell: '', email: '',uuid:'', id:0, alerts:''}];
   private myUnit: IUnit = { unit:0, street:'',sqft:0, bdrms:1 , bldg:''};
   currentUnit:number = 0;

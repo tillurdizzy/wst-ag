@@ -19,7 +19,8 @@ export class AccountComponent implements OnInit {
     }
   }
   subscription: Subscription;
-  userAccount:IUserAccount = { id:0, username: '', role: '', cell: '', email: '', units: [],residesAt:0, uuid:'' ,firstname:'',lastname:'',csz:'',street:'',alerts:''};
+  userAccount:IUserAccount = { id:0, username: '', role: '', cell: '', email: '', units: [],residesAt:0, uuid:'',
+  firstname:'',lastname:'',csz:'',street:'',alerts:'',member:false};
   unitCount:number = 0;
   display:string = 'data';
   form: FormGroup = new FormGroup({

@@ -1,28 +1,29 @@
 <div class="page-content" *ngIf="loginMode !='PW'">
  
   <div class="section-header">{{ pageTitle }}</div>
-  <div>
-  <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <span class="black12">Email</span>
-      <input type="text" pInputText formControlName="email" />
-    </div>
-    <div class="form-group">
-      <span class="black12">Password</span>
-      <input type="password" pInputText formControlName="password" />
-    </div>
-    <button type="submit" pButton label="Submit"></button>
-  </form>
-
-  <div>
-    <p-button label="Change/Forgot Password" styleClass="p-button-link" (click)="showPasswordRestForm()"></p-button>
+  <div class="black12">Default password <span class="black-12-bold">"wstadmin"</span>. <br>
+    By signing in you agree to be counted as a member.
   </div>
+  <div class="spacer-5"></div>
+  <div>
+    <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <span class="black12">Email</span>
+        <input type="text" pInputText formControlName="email" />
+      </div>
+      <div class="form-group">
+        <span class="black12">Password</span>
+        <input type="password" pInputText formControlName="password" />
+      </div>
+     
+      <button type="submit" pButton label="Submit"></button>
+    </form>
+
+    <div>
+      <p-button label="Change/Forgot Password" styleClass="p-button-link" (click)="showPasswordRestForm()"></p-button>
+    </div>
 </div>
-<div>
-  <span class="black12">Enter your email and the password "wstadmin".  If the login is successful, you may then change your password. <br>
-    If the log in is unsuccessful, send an email request to tillurdizzy@gmail.com with your name and unit #.
-  </span>
-</div>
+
 </div>
 
 <div class="page-content" *ngIf="loginMode =='PW'">

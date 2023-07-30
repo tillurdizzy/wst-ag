@@ -21,10 +21,11 @@ export class UsersComponent {
   subscriptionC: Subscription;
   private userAccount: IUserAccount = {
     id: 1,username: '',role: '',cell: '',email: '',units: [],uuid: '',residesAt:0,
-    firstname: '',lastname: '',csz: '',street: '',alerts: '',};
+    firstname: '',lastname: '',csz: '',street: '',alerts: '',member:null};
 
   user: IUserAuth = { id: '', aud: '', role: '', email: '' };
   userAuthenticated: Boolean = false;
+  
 
   handleUser$(x) {
     if (x == false) {
@@ -35,6 +36,7 @@ export class UsersComponent {
       this.user.aud = x.aud;
       this.user.role = x.role;
       this.userAuthenticated = true;
+     
       console.log('UsersComponent > handleUser$() = ' + x);
       this.us.fetchUserAccount(this.user.id);
     }
@@ -53,6 +55,10 @@ export class UsersComponent {
      // now we have real account
       this.userAccount = x;
       let units = this.userAccount.units;
+      if(x.member == false){
+        this.us.setAsMember();
+      }
+      
       //^ Roles amd multiunit owners
       if(units.length > 1){
         if(this.user.role == "admin" || this.user.role == "non-resident"){
@@ -61,6 +67,7 @@ export class UsersComponent {
           // 
         }
       }
+
 
       //! Fetch Unit, Residents and Vehicles
       console.log('UsersComponent > Fetch Unit, Residents and Vehicles');
@@ -71,6 +78,7 @@ export class UsersComponent {
       // this means we are updating ... just set userAccount but don't call all the other fetches
       this.userAccount = x;
     }
+    
   }
 
   isIUserAccount(obj: any): obj is IUserAccount {
