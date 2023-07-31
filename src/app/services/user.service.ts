@@ -15,7 +15,7 @@ import { IProfileFetch, IProfileUpdate, IProfile } from './interfaces/iuser';
 })
 export class UserService {
   private supabase: SupabaseClient;
-  private userAuthenticated: boolean = false;
+  public userAuthenticated: boolean = false;
   //private userid: string | null = null;
   private session:{} = {};
   private userObj:User = null;
@@ -310,6 +310,10 @@ export class UserService {
     this.userAccountObs.next(this.userAccount);
     this.userAuth.next(false);
     this.supabase.auth.signOut();
+  }
+
+  authGuardAlert(){
+    this.toastr.warning('You must be signed in to access this tab.', 'Alert');
   }
 
   //* >>>>>>>>>>>>>>> CONSTRUCTOR / SUBSCRIPTIONS <<<<<<<<<<<<<<<<<<<<

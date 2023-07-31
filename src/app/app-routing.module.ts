@@ -6,6 +6,7 @@ import { MeetingsComponent } from './hoa/meetings/meetings.component';
 import { MembersComponent } from './hoa/members/members.component';
 import { IssuesComponent } from './hoa/issues/issues.component';
 import { CommitteesComponent } from './committees/committees.component';
+import { UpdatesComponent } from './hoa/updates/updates.component';
 import { LandscapeComponent } from './committees/landscape/landscape.component';
 import { EventsComponent } from './committees/events/events.component';
 import { BylawsComponent } from './committees/bylaws/bylaws.component';
@@ -17,6 +18,7 @@ import { DocsComponent } from './hoa/docs/docs.component';
 import { UsersComponent } from './users/users.component';
 import { ForumComponent } from './forum/forum.component';
 import { PasswordResetComponent } from './users/password-reset/password-reset.component';
+import { authGuard } from './guards/authenticator.guard';
 
 
 const routes: Routes = [
@@ -26,11 +28,12 @@ const routes: Routes = [
     children: [
       {path:'', redirectTo:'home', pathMatch:'full'},
       {path:'home', component: HomeComponent},
-      {path:'hoa', component: HoaComponent,
+      {path:'hoa', component: HoaComponent, canActivate:[authGuard],
         children:
           [
             {path:'', redirectTo:'hoa-meetings', pathMatch:'full'},
             {path:'hoa-meetings', component: MeetingsComponent},
+            {path:'hoa-updates', component: UpdatesComponent},
             {path:'hoa-expenditures', component: ExpendituresComponent},
             {path:'hoa-issues', component: IssuesComponent},
             {path:'hoa-docs', component: DocsComponent},
@@ -49,7 +52,7 @@ const routes: Routes = [
   
           ]},
       {path:'members', component: UsersComponent},
-      {path:'forum', component: ForumComponent },
+      {path:'forum', component: ForumComponent,canActivate:[authGuard], },
       {path:'password-reset', component: PasswordResetComponent },
       {path:'404', component: NavErrorComponent },
       {path:'**', redirectTo: '404',outlet:"app"},

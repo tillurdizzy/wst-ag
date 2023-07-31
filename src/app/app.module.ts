@@ -52,6 +52,7 @@ import { VehiclesComponent } from './users/vehicles/vehicles.component';
 import { ResidentListComponent } from './users/resident-list/resident-list.component';
 import { VehicleListComponent } from './users/vehicle-list/vehicle-list.component';
 import { PasswordResetComponent } from './users/password-reset/password-reset.component';
+import { UpdatesComponent } from './hoa/updates/updates.component';
 
 @NgModule({
   declarations: [
@@ -87,7 +88,8 @@ import { PasswordResetComponent } from './users/password-reset/password-reset.co
     VehiclesComponent,
     ResidentListComponent,
     VehicleListComponent,
-    PasswordResetComponent
+    PasswordResetComponent,
+    UpdatesComponent
     
   ],
   imports: [

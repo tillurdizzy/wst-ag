@@ -58,17 +58,22 @@ export class TopbarMenuComponent implements OnInit {
             icon: 'pi pi-fw pi-sitemap',
             items: [
                 {
+                    label: 'Governing Documents Update',
+                    icon: 'pi pi-fw pi-file-pdf',
+                    routerLink:'hoa/hoa-updates',
+                },
+                {
                     label: 'Meeting Minutes',
                     icon: 'pi pi-fw pi-file-pdf',
                     routerLink:'hoa/hoa-meetings',
                 },
                 {
-                    label: 'Current Affairs',
+                    label: 'Current Issues',
                     icon: 'pi pi-fw pi-bars',
                     routerLink:"hoa/hoa-issues",
                 },
                 {
-                    label: 'Documents',
+                    label: 'Current Governing Documents',
                     icon: 'pi pi-fw pi-align-center',
                     routerLink:'hoa/hoa-docs',
                 },
