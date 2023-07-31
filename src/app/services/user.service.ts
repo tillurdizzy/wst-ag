@@ -94,7 +94,11 @@ export class UserService {
       }
       this.authenticateUser(result);
     } catch (error) {
-      alert("Error: "  + JSON.stringify(error))
+      if(credentials.password == 'wstadmin'){
+        this.showResultDialog('Invalid Email','This email is not registered.')
+      }else{
+        this.showResultDialog('Invalid Credentials','Please check your email and password.')
+      }
     }
   }
 
@@ -108,7 +112,12 @@ export class UserService {
         this.showResultDialog('Result','User created: ' + result.data.user.id)
       }
     } catch (error) {
-      this.showResultDialog('Result','Error: ' + error)
+      if(credentials.email == 'wstadmin'){
+        this.showResultDialog('Error 1','Something went wrong ' + error)
+      }else{
+        this.showResultDialog('Error 2','Something went wrong ' + error)
+      }
+     
     };
   }
 
