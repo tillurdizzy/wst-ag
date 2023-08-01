@@ -41,16 +41,6 @@ export class TopbarMenuComponent implements OnInit {
                     icon: 'pi pi-fw pi-calendar',
                     routerLink:'/committees/committees-events'
                 },
-                {
-                    label: 'By-Laws',
-                    icon: 'pi pi-fw pi-align-center',
-                    routerLink:'/committees/committees-bylaws'
-                },
-                {
-                    label: 'Rules and Regulations',
-                    icon: 'pi pi-fw pi-align-center',
-                    routerLink:'/committees/committees-rules'
-                },
             ]
         },
         {
