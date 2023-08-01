@@ -147,7 +147,7 @@ export class UserService {
   async resetPassword(email: string ){
     try {
       const { data, error } = await this.supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: 'http://localhost:4200/password-reset'})
+        redirectTo: 'https://wst-ag.vercel.app/password-reset'})
       if(error == null){
         this.showResultDialog('Result','Check your email (possibly Junk folder) for Password Reset link.')
       }

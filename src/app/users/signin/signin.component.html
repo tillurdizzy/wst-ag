@@ -32,6 +32,15 @@
 
 <div class="page-content" *ngIf="loginMode =='PW'">
   <div class="section-header">{{ pageTitle }}</div>
+  <p-divider></p-divider>
+ 
+  <div class="small-black-14">Enter your email address  and a link from <span class="black-14-600">noreply@mail.app.supabase.io</span> will be sent to your email to change your password.<br>
+   Depending on youe email security settings, you may receive a warning notice.<br>
+  As long as the sender is from the address shown above, this is nothing to worry about.<br>
+  Dismiss the warning and click the "Reset Password" link.<br>
+    Check your Junk folder if you do not receive an email.
+  </div>
+  <p-divider></p-divider>
   <form [formGroup]="resetForm" (ngSubmit)="onSubmitReset()">
     <div class="form-group">
       <span class="black12">Email</span>
