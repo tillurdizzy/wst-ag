@@ -5,7 +5,7 @@
 <div class="sidebar-container" *ngIf="userAuthenticated == true">
   <div class="not-sidebar">
     As the current official WST website leaves much to be desired, this site may
-    also serve as an altrnative to update owner information and submit other
+    also serve as an alternative to update owner information and submit other
     forms such as maintenance work orders.
     <p-tabView (onChange)="onTabChange($event)">
       <p-tabPanel header="Account">
@@ -23,7 +23,11 @@
           <app-vehicles [reset]="selectedTab === 'Vehicles'"></app-vehicles>
        
       </p-tabPanel>
-      <p-tabPanel header="Forms"> Still to come. </p-tabPanel>
+      <p-tabPanel header="Forms">
+
+        <app-forms [reset]="selectedTab === 'Forms'"></app-forms>
+
+      </p-tabPanel>
     </p-tabView>
   </div>
 </div>

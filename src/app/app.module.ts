@@ -53,6 +53,11 @@ import { ResidentListComponent } from './users/resident-list/resident-list.compo
 import { VehicleListComponent } from './users/vehicle-list/vehicle-list.component';
 import { PasswordResetComponent } from './users/password-reset/password-reset.component';
 import { UpdatesComponent } from './hoa/updates/updates.component';
+import { FormsComponent } from './forms/forms.component';
+import { WorkOrderComponent } from './forms/work-order/work-order.component';
+import { ArchRequestComponent } from './forms/arch-request/arch-request.component';
+import { MessageComponent } from './forms/message/message.component';
+import { ViolationComponent } from './forms/violation/violation.component';
 
 @NgModule({
   declarations: [
@@ -89,8 +94,12 @@ import { UpdatesComponent } from './hoa/updates/updates.component';
     ResidentListComponent,
     VehicleListComponent,
     PasswordResetComponent,
-    UpdatesComponent
-    
+    UpdatesComponent,
+    FormsComponent,
+    WorkOrderComponent,
+    ArchRequestComponent,
+    MessageComponent,
+    ViolationComponent,
   ],
   imports: [
     BrowserModule,
