@@ -7,18 +7,19 @@
           <p-dropdown formControlName="form" [options]="formList" placeholder="Select Form"></p-dropdown>
         </form>
       </div>
+      <p-divider></p-divider>
       <div class="spacer-10"></div>
       <div *ngIf="formView == 'Work Order'">
-        Work Order
+       <app-work-order></app-work-order>
       </div>
       <div *ngIf="formView == 'Message to Board'">
-        Message to Board
+       <app-message></app-message>
       </div>
       <div *ngIf="formView == 'Violation Report'">
-        Violation Report
+        <app-violation></app-violation>
       </div>
       <div *ngIf="formView == 'Architectural Request'">
-        Architectural Request
+        <app-arch-request></app-arch-request>
       </div>
     </div>
 </div>

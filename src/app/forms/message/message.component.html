@@ -1,1 +1,33 @@
-<p>message works!</p>
+<div class="form-group">
+    <form [formGroup]="form" (ngSubmit)="submitForm()">
+      <div class="p-fluid">
+            <div class="p-field">
+                <label for="firstname">First Name</label>
+                <input type="text" id="firstname" formControlName="firstname" pInputText class="p-inputtext-sm">
+                <small *ngIf="form.get('firstname')?.invalid && form.get('firstname')?.touched" class="p-error">
+                    First Name is required.
+                </small>
+            </div>
+
+            <div class="p-field">
+                <label for="lastname">Last Name</label>
+                <input type="text" id="lastname" formControlName="lastname" pInputText class="p-inputtext-sm">
+                <small *ngIf="form.get('lastname')?.invalid && form.get('lastname')?.touched" class="p-error">
+                    Last Name is required.
+                </small>
+            </div>
+
+            <div class="p-field">
+                <label for="cell">Cell</label>
+                <input type="text" id="cell" formControlName="cell" pInputText class="p-inputtext-sm">
+                <small *ngIf="form.get('cell')?.invalid && form.get('cell')?.touched" class="p-error">
+                    Cell is required.
+                </small>
+            </div>
+
+            <div class="flex-column">
+                <button type="submit" pButton label="Submit" [disabled]="form.invalid"></button>
+            </div>
+        </div> 
+    </form>
+</div>

@@ -1,1 +1,25 @@
-<p>arch-request works!</p>
+<div class="form-group">
+    <form [formGroup]="myForm" (ngSubmit)="submitForm()">
+      <div class="p-fluid">
+        <div>
+            <form [formGroup]="dropDown">
+              <p-dropdown formControlName="location" [options]="locList" placeholder="Select Location"></p-dropdown>
+            </form>
+          </div>
+
+            <div class="p-field">
+                <label for="description">Description</label>
+                <input type="text" id="description" formControlName="description" pInputText class="p-inputtext-sm">
+                <small *ngIf="myForm.get('description')?.invalid && myForm.get('description')?.touched" class="p-error">
+                    Description is required.
+                </small>
+            </div>
+
+           
+
+            <div class="flex-column">
+                <button type="submit" pButton label="Submit" [disabled]="myForm.invalid"></button>
+            </div>
+        </div> 
+    </form>
+</div>
