@@ -14,5 +14,5 @@ export class UpdatesComponent {
   }
 
   bylaws:IDocs = {description:"By-Laws Proposed Updates",
-  link:"https://micxgqaegkkcwqjjjaqc.supabase.co/storage/v1/object/sign/documents/WST-Proposed-Bylaws.pdf?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJkb2N1bWVudHMvV1NULVByb3Bvc2VkLUJ5bGF3cy5wZGYiLCJpYXQiOjE2OTA4MTY2NDIsImV4cCI6MTcyMjM1MjY0Mn0.s4zIC77v2ewzpNzGFUenrGj7TK8PTWyISDkkZPrSqzw&t=2023-07-31T15%3A17%3A23.185Z"};
+  link:"https://micxgqaegkkcwqjjjaqc.supabase.co/storage/v1/object/sign/documents/WST-Proposed-Bylaws.pdf?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJkb2N1bWVudHMvV1NULVByb3Bvc2VkLUJ5bGF3cy5wZGYiLCJpYXQiOjE2OTIxMTc3NzQsImV4cCI6MTcyMzY1Mzc3NH0.FwDb-Bjdrdk-1TS0k39w5g3DdF9j8gZx3vPbURMU60A&t=2023-08-15T16%3A42%3A55.031Z"};
 }

@@ -4,9 +4,8 @@
 
 <div class="sidebar-container" *ngIf="userAuthenticated == true">
   <div class="not-sidebar">
-    As the current official WST website leaves much to be desired, this site may
-    also serve as an alternative to update owner information and submit other
-    forms such as maintenance work orders.
+    Below is the information on file for the unit owner, the persons living in the unit, and the vehicles registered to the unit.<br>
+    <span class="red-16-550">It is important that you keep your information up to date.</span> Click the Edit button to update.
     <p-tabView (onChange)="onTabChange($event)">
       <p-tabPanel header="Account">
        
@@ -29,5 +28,6 @@
 
       </p-tabPanel>
     </p-tabView>
+  
   </div>
 </div>
