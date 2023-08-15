@@ -18,7 +18,7 @@ export class SigninComponent {
   myForm: FormGroup;
   value:string;
   //! Default password : 'wstadmin'
-  //! for ME personally wstadmin9954
+  //! for ME personally gmail & lilly9954
   resetForm: FormGroup = new FormGroup({
     email: new FormControl<string>('', Validators.required),
     password: new FormControl<string>('', [Validators.required, Validators.minLength(8)]),
