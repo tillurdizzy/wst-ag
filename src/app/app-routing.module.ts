@@ -24,7 +24,7 @@ import { authGuard } from './guards/authenticator.guard';
 const routes: Routes = [
   {
     path: '', 
-    title: 'WST Owners Advocacy Group',
+    title: 'WST Advocacy Group',
     children: [
       {path:'', redirectTo:'home', pathMatch:'full'},
       {path:'home', component: HomeComponent},
