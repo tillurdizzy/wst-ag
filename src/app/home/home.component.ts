@@ -8,6 +8,7 @@ import { VehiclesService } from '../services/vehicles.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
+
 export class HomeComponent {
   constructor(private us: UserService, private rs:ResidentsService, private vs:VehiclesService){
     console.log("HomeComponent >> constructor()")
