@@ -1,5 +1,7 @@
 import { Component, OnInit, Input , SimpleChanges } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
+import { ResidentsService } from 'src/app/services/residents.service';
+import { VehiclesService } from 'src/app/services/vehicles.service';
 import { Subscription } from 'rxjs';
 import { IUserAccount, IUserUpdate } from 'src/app/services/interfaces/iuser';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
@@ -74,7 +76,14 @@ export class AccountComponent implements OnInit {
     this.subscription.unsubscribe();
   }
 
-  constructor(private us: UserService) {
+  logOut(){
+    this.us.resetService();
+    this.rs.resetService();
+    this.vs.resetService();
+  }
+
+  constructor(private us: UserService,    private rs:ResidentsService,
+    private vs: VehiclesService) {
     console.log('AccountComponent >> constructor() ');
     this.subscription = this.us.getUserAccount$().subscribe(x => {
       console.log("AccountComponent >> getUserAccount$()")
