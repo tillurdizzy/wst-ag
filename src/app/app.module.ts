@@ -34,7 +34,6 @@ import { DialogComponent } from './library/dialog/dialog.component';
 import { PanelTopComponent } from './home/panel-top/panel-top.component';
 import { PanelBottomComponent } from './home/panel-bottom/panel-bottom.component';
 import { PanelMiddleComponent } from './home/panel-middle/panel-middle.component';
-import { PanelSideComponent } from './home/panel-side/panel-side.component';
 import { ExpendituresComponent } from './hoa/expenditures/expenditures.component';
 import { DocsComponent } from './hoa/docs/docs.component';
 import { UsersComponent } from './users/users.component';
@@ -58,6 +57,7 @@ import { WorkOrderComponent } from './forms/work-order/work-order.component';
 import { ArchRequestComponent } from './forms/arch-request/arch-request.component';
 import { MessageComponent } from './forms/message/message.component';
 import { ViolationComponent } from './forms/violation/violation.component';
+import { CorruptionComponent } from './home/corruption/corruption.component';
 
 @NgModule({
   declarations: [
@@ -79,7 +79,6 @@ import { ViolationComponent } from './forms/violation/violation.component';
     PanelTopComponent,
     PanelBottomComponent,
     PanelMiddleComponent,
-    PanelSideComponent,
     ExpendituresComponent,
     DocsComponent,
     UsersComponent,
@@ -100,6 +99,7 @@ import { ViolationComponent } from './forms/violation/violation.component';
     ArchRequestComponent,
     MessageComponent,
     ViolationComponent,
+    CorruptionComponent,
   ],
   imports: [
     BrowserModule,
